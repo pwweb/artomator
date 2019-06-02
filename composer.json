@@ -1,0 +1,43 @@
+{
+    "name": "pwweb/artomator",
+    "description": ":description",
+    "license": "Copyright pw-websolutions.com",
+    "authors": [
+        {
+            "name": "Richard Browne",
+            "email": "richard@pw-websolutions.com",
+            "homepage": "www.pw-websolutions.com"
+        }
+    ],
+    "homepage": "https://github.com/pwweb/artomator",
+    "keywords": ["Laravel", "Artomator"],
+    "require": {
+        "illuminate/support": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3.0",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PWWEB\\Artomator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PWWEB\\Artomator\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PWWEB\\Artomator\\ArtomatorServiceProvider"
+            ],
+            "aliases": {
+                "Artomator": "PWWEB\\Artomator\\Facades\\Artomator"
+            }
+        }
+    }
+}

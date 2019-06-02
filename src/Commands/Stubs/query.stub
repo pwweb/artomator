@@ -1,0 +1,63 @@
+<?php
+
+/*
+ * This file is part of Sticky Fox.
+ * (c) Richard Browne <enquiries@my-sauce.co.uk>
+ * This source file is Copyright (c) my-sauce.co.uk.
+ */
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use GraphQL;
+use GraphQL\Type\Definition\Type;
+use Rebing\GraphQL\Support\Query;
+
+class DummyPluralModelClassQuery extends Query
+{
+    /**
+     * Query Attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'name' => 'DummyPluralModelClass query',
+    ];
+
+    /**
+     * Define the type.
+     *
+     * @return type List of DummyModelVariable.
+     */
+    public function type()
+    {
+        return Type::listOf(GraphQL::type('DummyModelVariable'));
+    }
+
+    /**
+     * Define the available arguments.
+     *
+     * @return array Arguments that are available.
+     */
+    public function args()
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Resolve the request.
+     *
+     * @param string $root Root node.
+     * @param array  $args Argumnents from request.
+     *
+     * @return DummyFullModelClass DummyModelClass
+     */
+    public function resolve($root, $args)
+    {
+        // TODO: Add any filters
+
+        return DummyModelClass::all();
+    }
+}

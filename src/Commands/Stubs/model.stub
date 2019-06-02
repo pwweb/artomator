@@ -1,0 +1,16 @@
+<?php
+
+/*
+ * This file is part of Sticky Fox.
+ * (c) Richard Browne <enquiries@my-sauce.co.uk>
+ * This source file is Copyright (c) my-sauce.co.uk.
+ */
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Model;
+
+class DummyClass extends Model
+{
+    //
+}

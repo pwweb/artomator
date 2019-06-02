@@ -1,0 +1,110 @@
+<?php
+
+/*
+ * This file is part of Sticky Fox.
+ * (c) Richard Browne <enquiries@my-sauce.co.uk>
+ * This source file is Copyright (c) my-sauce.co.uk.
+ */
+
+namespace DummyNamespace;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ValidateDummyModelClass as ValidatedRequest;
+use DummyFullModelClass;
+use Illuminate\Http\Request;
+
+class DummyClass extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('DummyPackageVariableDummyModelVariable.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('DummyPackageVariableDummyModelVariable.add');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\ValidatedDummyModelClass  $request Validated data.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ValidatedRequest $request)
+    {
+        $validated = $request->validated();
+        if ($validated === true) {
+            $DummyModelVariable = new DummyModelClass();
+            // TODO: attach data.
+            $DummyModelVariable->save();
+
+            return redirect('DummyPackageVariableDummyModelVariable.index');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to show.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(DummyModelClass $DummyModelVariable)
+    {
+        return view('DummyPackageVariableDummyModelVariable.show', compact('DummyModelVariable'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to edit
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(DummyModelClass $DummyModelVariable)
+    {
+        return view('DummyPackageVariableDummyModelVariable.edit', compact('DummyModelVariable'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\ValidateDummyModelClass  $request Validated changes to apply.
+     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to apply changes to.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ValidatedRequest $request, DummyModelClass $DummyModelVariable)
+    {
+        $validated = $request->validated();
+        if ($validated === true) {
+            // TODO: Assign data to model.
+            $DummyModelVariable->save();
+
+            return redirect('DummyPackageVariableDummyModelVariable.index');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to destroy.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(DummyModelClass $DummyModelVariable)
+    {
+        //
+    }
+}
