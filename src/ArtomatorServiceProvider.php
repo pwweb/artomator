@@ -78,11 +78,11 @@ class ArtomatorServiceProvider extends ServiceProvider
 
         // Registering package commands.
         $this->commands([
-            CreateAllCommand::class,
-            CreateControllerCommand::class,
-            CreateQueryCommand::class,
-            CreateRequestCommand::class,
-            CreateTypeCommand::class,
+            Commands\CreateAllCommand::class,
+            Commands\CreateControllerCommand::class,
+            Commands\CreateQueryCommand::class,
+            Commands\CreateRequestCommand::class,
+            Commands\CreateTypeCommand::class,
         ]);
     }
 }
