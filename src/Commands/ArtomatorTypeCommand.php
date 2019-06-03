@@ -7,28 +7,28 @@ use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class CreateControllerCommand extends GeneratorCommand
+class ArtomatorTypeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'create:controller';
+    protected $name = 'create:type';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new controller class';
+    protected $description = 'Create a new type class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Controller';
+    protected $type = 'Type';
 
     /**
      * The package of class being generated.
@@ -44,11 +44,8 @@ class CreateControllerCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = null;
 
-        $stub = '/stubs/controller.model.stub';
-
-        $stub = $stub ?? '/stubs/controller.plain.stub';
+        $stub = '/stubs/type.stub';
 
         return __DIR__.$stub;
     }
@@ -61,59 +58,28 @@ class CreateControllerCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Http\Controllers';
+        return $rootNamespace.'\GraphQL\Type';
     }
 
     /**
      * Build the class with the given name.
      *
-     * Remove the base controller import if we are already in base namespace.
+     * Remove the base type import if we are already in base namespace.
      *
      * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
     {
-        $controllerNamespace = $this->getNamespace($name);
+        $typeNamespace = $this->getNamespace($name);
 
         $replace = [];
-
-        // if ($this->option('parent')) {
-        //     $replace = $this->buildParentReplacements();
-        // }
-
-        if ($this->option('model')) {
-            $replace = $this->buildModelReplacements($replace);
-        }
-
-        $replace["use {$controllerNamespace}\Controller;\n"] = '';
+        $replace = $this->buildModelReplacements($replace);
 
         return str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
-
-    /**
-     * Build the replacements for a parent controller.
-     *
-     * @return array
-     */
-    // protected function buildParentReplacements()
-    // {
-    //     $parentModelClass = $this->parseModel($this->option('parent'));
-    //
-    //     if (! class_exists($parentModelClass)) {
-    //         if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
-    //             $this->call('make:model', ['name' => $parentModelClass]);
-    //         }
-    //     }
-    //
-    //     return [
-    //         'ParentDummyFullModelClass' => $parentModelClass,
-    //         'ParentDummyModelClass' => class_basename($parentModelClass),
-    //         'ParentDummyModelVariable' => lcfirst(class_basename($parentModelClass)),
-    //     ];
-    // }
 
     /**
      * Build the model replacement values.
@@ -124,12 +90,6 @@ class CreateControllerCommand extends GeneratorCommand
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel($this->option('model'));
-
-        if (! class_exists($modelClass)) {
-            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
-                $this->call('make:model', ['name' => $modelClass]);
-            }
-        }
 
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
@@ -172,11 +132,7 @@ class CreateControllerCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
-            ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
-            ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource type for the given model.'],
         ];
     }
 }

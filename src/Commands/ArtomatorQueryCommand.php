@@ -7,28 +7,28 @@ use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class CreateTypeCommand extends GeneratorCommand
+class ArtomatorQueryCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'create:type';
+    protected $name = 'create:query';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new type class';
+    protected $description = 'Create a new query class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Type';
+    protected $type = 'Query';
 
     /**
      * The package of class being generated.
@@ -45,7 +45,7 @@ class CreateTypeCommand extends GeneratorCommand
     protected function getStub()
     {
 
-        $stub = '/stubs/type.stub';
+        $stub = '/stubs/query.stub';
 
         return __DIR__.$stub;
     }
@@ -58,20 +58,20 @@ class CreateTypeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\GraphQL\Type';
+        return $rootNamespace.'\GraphQL\Query';
     }
 
     /**
      * Build the class with the given name.
      *
-     * Remove the base type import if we are already in base namespace.
+     * Remove the base query import if we are already in base namespace.
      *
      * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
     {
-        $typeNamespace = $this->getNamespace($name);
+        $queryNamespace = $this->getNamespace($name);
 
         $replace = [];
         $replace = $this->buildModelReplacements($replace);
@@ -94,6 +94,7 @@ class CreateTypeCommand extends GeneratorCommand
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
+            'DummyPluralModelClass' => Str::pluralStudly(class_basename($modelClass)),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             'DummyPackageVariable' => lcfirst($this->package) . ".",
         ]);
@@ -132,7 +133,7 @@ class CreateTypeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource type for the given model.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource query for the given model.'],
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace PWWEB\Artomator\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-class CreateRequestCommand extends GeneratorCommand
+class ArtomatorRequestCommand extends GeneratorCommand
 {
     /**
      * The console command name.

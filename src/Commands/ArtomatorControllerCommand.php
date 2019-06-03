@@ -7,28 +7,28 @@ use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class CreateQueryCommand extends GeneratorCommand
+class ArtomatorControllerCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'create:query';
+    protected $name = 'create:controller';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new query class';
+    protected $description = 'Create a new controller class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Query';
+    protected $type = 'Controller';
 
     /**
      * The package of class being generated.
@@ -44,8 +44,11 @@ class CreateQueryCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        $stub = null;
 
-        $stub = '/stubs/query.stub';
+        $stub = '/stubs/controller.model.stub';
+
+        $stub = $stub ?? '/stubs/controller.plain.stub';
 
         return __DIR__.$stub;
     }
@@ -58,28 +61,59 @@ class CreateQueryCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\GraphQL\Query';
+        return $rootNamespace.'\Http\Controllers';
     }
 
     /**
      * Build the class with the given name.
      *
-     * Remove the base query import if we are already in base namespace.
+     * Remove the base controller import if we are already in base namespace.
      *
      * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
     {
-        $queryNamespace = $this->getNamespace($name);
+        $controllerNamespace = $this->getNamespace($name);
 
         $replace = [];
-        $replace = $this->buildModelReplacements($replace);
+
+        // if ($this->option('parent')) {
+        //     $replace = $this->buildParentReplacements();
+        // }
+
+        if ($this->option('model')) {
+            $replace = $this->buildModelReplacements($replace);
+        }
+
+        $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
         return str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
+
+    /**
+     * Build the replacements for a parent controller.
+     *
+     * @return array
+     */
+    // protected function buildParentReplacements()
+    // {
+    //     $parentModelClass = $this->parseModel($this->option('parent'));
+    //
+    //     if (! class_exists($parentModelClass)) {
+    //         if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
+    //             $this->call('make:model', ['name' => $parentModelClass]);
+    //         }
+    //     }
+    //
+    //     return [
+    //         'ParentDummyFullModelClass' => $parentModelClass,
+    //         'ParentDummyModelClass' => class_basename($parentModelClass),
+    //         'ParentDummyModelVariable' => lcfirst(class_basename($parentModelClass)),
+    //     ];
+    // }
 
     /**
      * Build the model replacement values.
@@ -91,10 +125,15 @@ class CreateQueryCommand extends GeneratorCommand
     {
         $modelClass = $this->parseModel($this->option('model'));
 
+        if (! class_exists($modelClass)) {
+            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
+                $this->call('make:model', ['name' => $modelClass]);
+            }
+        }
+
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
-            'DummyPluralModelClass' => Str::pluralStudly(class_basename($modelClass)),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             'DummyPackageVariable' => lcfirst($this->package) . ".",
         ]);
@@ -133,7 +172,11 @@ class CreateQueryCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource query for the given model.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
+            ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
+            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
+            ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
         ];
     }
 }
