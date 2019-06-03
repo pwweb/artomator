@@ -14,7 +14,7 @@ class ArtomatorTypeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:type';
+    protected $name = 'artomator:type';
 
     /**
      * The console command description.

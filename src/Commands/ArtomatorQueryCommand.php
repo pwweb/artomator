@@ -14,7 +14,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:query';
+    protected $name = 'artomator:query';
 
     /**
      * The console command description.

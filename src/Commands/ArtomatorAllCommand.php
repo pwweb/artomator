@@ -13,7 +13,7 @@ class ArtomatorAllCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:all';
+    protected $name = 'artomator:all';
 
     /**
      * The console command description.
@@ -136,7 +136,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('create:controller', [
+        $this->call('artomator:controller', [
             'name' => "{$controller}Controller",
             '--model' => $modelName,
         ]);
@@ -152,7 +152,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Request');
         $validator = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('create:request', [
+        $this->call('artomator:request', [
             'name' => "Validate{$validator}",
         ]);
     }
@@ -169,7 +169,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('create:query', [
+        $this->call('artomator:query', [
             'name' => "{$query}Query",
             '--model' => $modelName,
         ]);
@@ -187,7 +187,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('create:type', [
+        $this->call('artomator:type', [
             'name' => "{$type}Type",
             '--model' => $modelName,
         ]);

@@ -14,7 +14,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:controller';
+    protected $name = 'artomator:controller';
 
     /**
      * The console command description.

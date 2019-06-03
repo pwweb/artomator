@@ -11,7 +11,7 @@ class ArtomatorRequestCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:request';
+    protected $name = 'artomator:request';
 
     /**
      * The console command description.
