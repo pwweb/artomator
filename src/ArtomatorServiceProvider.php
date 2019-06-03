@@ -57,14 +57,19 @@ class ArtomatorServiceProvider extends ServiceProvider
     protected function bootForConsole()
     {
         // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/artomator.php' => config_path('artomator.php'),
-        ], 'artomator.config');
+        // $this->publishes([
+        //     __DIR__.'/../config/artomator.php' => config_path('artomator.php'),
+        // ], 'artomator.config');
 
         // Publishing the views.
         /*$this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/pwweb'),
         ], 'artomator.views');*/
+
+        // Publishing stubs.
+        /*$this->publishes([
+            __DIR__.'/Commands/stubs' => public_path('vendor/pwweb'),
+        ], 'artomator.stubs');*/
 
         // Publishing assets.
         /*$this->publishes([
