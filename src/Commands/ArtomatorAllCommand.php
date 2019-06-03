@@ -39,7 +39,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $root = base_path() . config('artomator.stubPath');
         $stub = $root . 'model.stub';
 
-        return __DIR__.$stub;
+        return $stub;
     }
 
     /**
