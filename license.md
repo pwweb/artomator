@@ -1,5 +1,3 @@
 # The license
 
-Copyright (c) Richard Browne <richard@pw-websolutions.com>
-
-...Add your license text here...
+Copyright (c) PW*Websolutions <hello@pw-websolutions.com>

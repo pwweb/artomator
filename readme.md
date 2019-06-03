@@ -1,31 +1,65 @@
 # Artomator
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+<!-- [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
+[![Build Status][ico-travis]][link-travis] -->
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+![](robot.png)
+
+**Artomator**: Custom commands making life easier. Take a look at [contributing.md](contributing.md) to see a to do list.
 
 ## Installation
 
-Via Composer
+Via Composer add this to your root node of composer.json file:
+
+``` json
+{
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://bitbucket.koda.tools/scm/pwweb/artomator.git"
+    }],    
+}
+```
+
+Then add this to your require or require-dev object in composer.json:
+
+``` json
+"pwweb/artomator": "dev-master"
+```
+
+Finally run:
 
 ``` bash
-$ composer require pwweb/artomator
+$ composer update pwweb/artomator
 ```
 
 ## Usage
+
+From the command line
+
+``` bash
+$ php artisan artomator:all Namespace/Name
+```
+
+This will create the following files:
+1. Model: `Namespace\Name::class`
+2. Controller: `Namespace\NameController::class`
+3. Validation Request: `ValidateName::class`
+4. GraphQL Query: `Namespace\NameQuery::class`
+5. GraphQL Type: `Namespace\NameType::class`
+6. Standard Database Migration
+7. Database Seeder: `NamespaceNameTableSeeder::class`
+8. Database Factory: `NamespaceNameFactory::class`
 
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
 
-## Testing
+<!-- ## Testing
 
 ``` bash
 $ composer test
-```
+``` -->
 
 ## Contributing
 
@@ -42,16 +76,15 @@ If you discover any security related issues, please email richard@pw-websolution
 
 ## License
 
-Copyright pw-websolutions.com. Please see the [license file](license.md) for more information.
+Copyright &copy; pw-websolutions.com. Please see the [license file](license.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/pwweb/artomator.svg?style=flat-square
+<!-- [ico-version]: https://img.shields.io/packagist/v/pwweb/artomator.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/pwweb/artomator.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/pwweb/artomator/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
+[ico-travis]: https://img.shields.io/travis/pwweb/artomator/master.svg?style=flat-square -->
 
-[link-packagist]: https://packagist.org/packages/pwweb/artomator
+<!-- [link-packagist]: https://packagist.org/packages/pwweb/artomator
 [link-downloads]: https://packagist.org/packages/pwweb/artomator
 [link-travis]: https://travis-ci.org/pwweb/artomator
-[link-styleci]: https://styleci.io/repos/12345678
+[link-styleci]: https://styleci.io/repos/12345678 -->
 [link-author]: https://github.com/pwweb
 [link-contributors]: ../../contributors
