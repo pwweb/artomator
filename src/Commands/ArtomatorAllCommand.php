@@ -36,10 +36,15 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        $stub = 'model.stub';
+        $path = base_path() . config('artomator.stubPath');
+        $path = $path . $stub;
 
-        $stub = '/stubs/model.stub';
-
-        return __DIR__.$stub;
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            return __DIR__ . '/Stubs/' . $stub;
+        }
     }
 
     /**
@@ -71,6 +76,69 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->createRequest();
         $this->createQuery();
         $this->createType();
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * Remove the base controller import if we are already in base namespace.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass($name)
+    {
+        $modelNamespace = $this->getNamespace($name);
+
+        $replace = [];
+
+        $replace = array_merge($replace, [
+            'DummyFullModelClass' => $this->qualifyClass($name),
+            'DummyPackagePlaceholder' => config('app.name'),
+            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
+            'DummyLicensePlaceholder' => config('artomator.license'),
+            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
+        ]);
+
+        return str_replace(
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
+        );
+    }
+
+    /**
+     * Get the formatted author(s) from the config file.
+     *
+     * @param  array[string] $authors Authors array.
+     *
+     * @return string Formmated string of authors.
+     */
+    protected function parseAuthors($authors)
+    {
+        if (is_array($authors) === false and is_string($authors) === false) {
+            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
+        }
+
+        $formatted = '';
+
+        if (is_array($authors) === true) {
+            if (is_string($authors[0]) === false) {
+                throw new InvalidArgumentException('The array of authors must be strings.');
+            }
+            $formatted .= array_shift($authors);
+
+            foreach ($authors as $author) {
+                if (is_string($author) === false) {
+                    throw new InvalidArgumentException('The array of authors must be strings.');
+                }
+                $formatted .= "\n * @author    " . $author;
+            }
+        } else {
+            $formatted .= $authors;
+        }
+
+        return $formatted;
     }
 
     /**
@@ -154,6 +222,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $this->call('artomator:request', [
             'name' => "Validate{$validator}",
+            '--model' => $this->qualifyClass($this->getNameInput()),
         ]);
     }
 

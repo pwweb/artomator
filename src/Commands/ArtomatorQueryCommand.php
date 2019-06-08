@@ -44,10 +44,15 @@ class ArtomatorQueryCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        $stub = 'query.stub';
+        $path = base_path() . config('artomator.stubPath');
+        $path = $path . $stub;
 
-        $stub = '/stubs/query.stub';
-
-        return __DIR__.$stub;
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            return __DIR__ . '/Stubs/' . $stub;
+        }
     }
 
     /**
@@ -77,7 +82,9 @@ class ArtomatorQueryCommand extends GeneratorCommand
         $replace = $this->buildModelReplacements($replace);
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 
@@ -97,7 +104,45 @@ class ArtomatorQueryCommand extends GeneratorCommand
             'DummyPluralModelClass' => Str::pluralStudly(class_basename($modelClass)),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             'DummyPackageVariable' => lcfirst($this->package) . ".",
+            'DummyPackagePlaceholder' => config('app.name'),
+            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
+            'DummyLicensePlaceholder' => config('artomator.license'),
+            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
         ]);
+    }
+
+    /**
+     * Get the formatted author(s) from the config file.
+     *
+     * @param  array[string] $authors Authors array.
+     *
+     * @return string Formmated string of authors.
+     */
+    protected function parseAuthors($authors)
+    {
+        if (is_array($authors) === false and is_string($authors) === false) {
+            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
+        }
+
+        $formatted = '';
+
+        if (is_array($authors) === true) {
+            if (is_string($authors[0]) === false) {
+                throw new InvalidArgumentException('The array of authors must be strings.');
+            }
+            $formatted .= array_shift($authors);
+
+            foreach ($authors as $author) {
+                if (is_string($author) === false) {
+                    throw new InvalidArgumentException('The array of authors must be strings.');
+                }
+                $formatted .= "\n * @author    " . $author;
+            }
+        } else {
+            $formatted .= $authors;
+        }
+
+        return $formatted;
     }
 
     /**
@@ -114,7 +159,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = strstr($model, '/', TRUE) ?? null;
+        $this->package = strstr($model, '/', true) ?? null;
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
