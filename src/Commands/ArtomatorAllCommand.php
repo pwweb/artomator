@@ -222,6 +222,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $this->call('artomator:request', [
             'name' => "Validate{$validator}",
+            '--model' => $this->qualifyClass($this->getNameInput()),
         ]);
     }
 
