@@ -9,7 +9,6 @@
  * @author    DummyAuthorPlaceholder
  * @copyright DummyCopyrightPlaceholder
  * @license   DummyLicensePlaceholder
- *
  */
 
 namespace DummyNamespace;
@@ -44,7 +43,7 @@ class DummyClass extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ValidatedDummyModelClass  $request Validated data.
+     * @param \App\Http\Requests\ValidatedDummyModelClass  $request Validated data.
      *
      * @return \Illuminate\Http\Response
      */
@@ -63,7 +62,7 @@ class DummyClass extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to show.
+     * @param \DummyFullModelClass  $DummyModelVariable DummyModelClass to show.
      *
      * @return \Illuminate\Http\Response
      */
@@ -75,7 +74,8 @@ class DummyClass extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to edit
+     * @param \DummyFullModelClass  $DummyModelVariable DummyModelClass to edit
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(DummyModelClass $DummyModelVariable)
@@ -86,8 +86,8 @@ class DummyClass extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ValidateDummyModelClass  $request Validated changes to apply.
-     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to apply changes to.
+     * @param \App\Http\Requests\ValidateDummyModelClass  $request Validated changes to apply.
+     * @param \DummyFullModelClass  $DummyModelVariable DummyModelClass to apply changes to.
      *
      * @return \Illuminate\Http\Response
      */
@@ -105,12 +105,12 @@ class DummyClass extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable DummyModelClass to destroy.
+     * @param \DummyFullModelClass  $DummyModelVariable DummyModelClass to destroy.
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(DummyModelClass $DummyModelVariable)
     {
-        //
+        // TODO: Define destroy function.
     }
 }

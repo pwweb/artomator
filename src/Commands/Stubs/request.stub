@@ -9,7 +9,6 @@
  * @author    DummyAuthorPlaceholder
  * @copyright DummyCopyrightPlaceholder
  * @license   DummyLicensePlaceholder
- *
  */
 
 namespace DummyNamespace;
@@ -36,7 +35,7 @@ class DummyClass extends FormRequest
     public function rules()
     {
         $base = [
-            //
+            // TODO: Define rules here.
         ];
 
         return $base;
