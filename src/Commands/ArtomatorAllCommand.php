@@ -90,11 +90,14 @@ class ArtomatorAllCommand extends GeneratorCommand
     {
         $modelNamespace = $this->getNamespace($name);
 
+        $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
+
         $replace = [];
 
         $replace = array_merge($replace, [
             'DummyFullModelClass' => $this->qualifyClass($name),
             'DummyPackagePlaceholder' => config('app.name'),
+            'DummySnakeCaseClass' => $table,
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
             'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
