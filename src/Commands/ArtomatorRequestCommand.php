@@ -34,7 +34,15 @@ class ArtomatorRequestCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/request.stub';
+        $stub = 'request.stub';
+        $path = base_path() . config('artomator.stubPath');
+        $path = $path . $stub;
+
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            return __DIR__ . '/Stubs/' . $stub;
+        }
     }
 
     /**

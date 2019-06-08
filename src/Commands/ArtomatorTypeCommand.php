@@ -44,10 +44,15 @@ class ArtomatorTypeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        $stub = 'type.stub';
+        $path = base_path() . config('artomator.stubPath');
+        $path = $path . $stub;
 
-        $stub = '/stubs/type.stub';
-
-        return __DIR__.$stub;
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            return __DIR__ . '/Stubs/' . $stub;
+        }
     }
 
     /**
@@ -77,7 +82,9 @@ class ArtomatorTypeCommand extends GeneratorCommand
         $replace = $this->buildModelReplacements($replace);
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 
@@ -113,7 +120,7 @@ class ArtomatorTypeCommand extends GeneratorCommand
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = strstr($model, '/', TRUE) ?? null;
+        $this->package = strstr($model, '/', true) ?? null;
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 

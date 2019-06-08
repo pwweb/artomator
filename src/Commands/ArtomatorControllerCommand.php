@@ -44,13 +44,15 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = null;
-
         $stub = '/stubs/controller.model.stub';
+        $path = base_path() . config('artomator.stubPath');
+        $path = $path . $stub;
 
-        $stub = $stub ?? '/stubs/controller.plain.stub';
-
-        return __DIR__.$stub;
+        if (file_exists($path)) {
+            return $path;
+        } else {
+            return __DIR__ . '/Stubs/' . $stub;
+        }
     }
 
     /**
@@ -137,7 +139,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
-            'DummyPackageVariable' => lcfirst($this->package) . ".",
+            'DummyPackageVariable' => strtolower($this->package) . ".",
         ]);
     }
 
