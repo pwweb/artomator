@@ -68,6 +68,12 @@ This will put the config file into the `app\config` folder.
 | `copyright` | The copyright text to be displayed in the file docBlock at the top of each created file. |
 | `license` | The license text to be displayed in the file docBlock at the top of each created file. |
 
+**Note:** You may need to clear your config cache file when you've edited the config file. To do this from the command line:
+
+``` base
+$ php artisan config:clear
+```
+
 ### Extending
 
 To alter the default stub files provided with the package, you can publish them from the command line
