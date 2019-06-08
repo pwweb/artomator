@@ -88,7 +88,6 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $this->info('Superseeded');
         $modelNamespace = $this->getNamespace($name);
 
         $replace = [];
