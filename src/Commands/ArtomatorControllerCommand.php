@@ -155,7 +155,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = strstr($model, '/', TRUE) ?? null;
+        $this->package = trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null;
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
