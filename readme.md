@@ -10,27 +10,10 @@
 
 ## Installation
 
-Via Composer add this to your root node of composer.json file:
-
-``` json
-{
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://bitbucket.koda.tools/scm/pwweb/artomator.git"
-    }],    
-}
-```
-
-Then add this to your require or require-dev object in composer.json:
-
-``` json
-"pwweb/artomator": "dev-master"
-```
-
-Finally run:
+Via Composer run the following:
 
 ``` bash
-$ composer update pwweb/artomator
+$ composer require pwweb/artomator
 ```
 
 ## Usage
