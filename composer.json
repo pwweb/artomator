@@ -1,6 +1,6 @@
 {
     "name": "pwweb/artomator",
-    "description": ":description",
+    "description": "A simple extension of the Artisan Make commands with custom stubs.",
     "license": "MIT",
     "authors": [{
         "name": "Richard Browne",
