@@ -9,7 +9,6 @@
  * @author    DummyAuthorPlaceholder
  * @copyright DummyCopyrightPlaceholder
  * @license   DummyLicensePlaceholder
- *
  */
 
 namespace DummyNamespace;
@@ -18,5 +17,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class DummyClass extends Model
 {
-    //
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $table = 'DummySnakeCaseClass';
 }
