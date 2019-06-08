@@ -1,9 +1,15 @@
 <?php
 
-/*
- * This file is part of Sticky Fox.
- * (c) Richard Browne <enquiries@my-sauce.co.uk>
- * This source file is Copyright (c) my-sauce.co.uk.
+/**
+ * DummyFullModelClass GraphQL Type
+ *
+ * Standard GraphQL Type for the DummyModelClass Model.
+ *
+ * @package   DummyPackagePlaceholder
+ * @author    DummyAuthorPlaceholder
+ * @copyright DummyCopyrightPlaceholder
+ * @license   DummyLicensePlaceholder
+ *
  */
 
 namespace DummyNamespace;
