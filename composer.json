@@ -1,14 +1,12 @@
 {
     "name": "pwweb/artomator",
-    "description": ":description",
+    "description": "A simple extension of the Artisan Make commands with custom stubs.",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Richard Browne",
-            "email": "richard@pw-websolutions.com",
-            "homepage": "www.pw-websolutions.com"
-        }
-    ],
+    "authors": [{
+        "name": "Richard Browne",
+        "email": "richard@pw-websolutions.com",
+        "homepage": "https://www.pw-websolutions.com"
+    }],
     "homepage": "https://github.com/pwweb/artomator",
     "keywords": ["Laravel", "Artomator"],
     "require": {
