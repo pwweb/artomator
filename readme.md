@@ -51,6 +51,35 @@ This will create the following files:
 7. Database Seeder: `NamespaceNameTableSeeder::class`
 8. Database Factory: `NamespaceNameFactory::class`
 
+### Config
+
+To publish the `config` file from the command line
+
+``` bash
+$ php artisan vendor:publish --tag=artomator.config
+```
+
+This will put the config file into the `app\config` folder.
+
+| Option | Description |
+| ------ | ----------- |
+| `stubPath` | The custom location for the template stubs. If left blank this will default to the package stub files. |
+| `authors` | The array of authors in the format `Forename Surname <email@domain.com>`. |
+| `copyright` | The copyright text to be displayed in the file docBlock at the top of each created file. |
+| `license` | The license text to be displayed in the file docBlock at the top of each created file. |
+
+### Extending
+
+To alter the default stub files provided with the package, you can publish them from the command line
+
+``` bash
+$ php artisan vendor:publish --tag=artomator.stubs
+```
+
+This will put the stub files into the `public\vendor\PWWEB` folder. These can be edited and the when the commands are run, these templates will be used.
+
+**Note:** Remember to update the config file to point to the location of the template files.
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
