@@ -13,7 +13,7 @@
 Via Composer run the following:
 
 ``` bash
-$ composer require pwweb/artomator
+$ composer require pwweb/artomator --dev
 ```
 
 ## Usage
