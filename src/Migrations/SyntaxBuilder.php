@@ -14,28 +14,13 @@ class SyntaxBuilder
     private $template;
 
     /**
-     * Create the PHP syntax for the given schema.
-     *
-     * @param  array $schema
-     * @return string
-     * @throws GeneratorException
-     */
-    public function create($schema)
-    {
-        return [
-            '{{schema_args}}' => $this->createArgsSchema($schema),
-            '{{schema_resolves}}' => $this->createResolvesSchema($schema),
-        ];
-    }
-
-    /**
-     * Create the schema for the "up" method.
+     * Create the schema for the arguments method.
      *
      * @param  string $schema
      * @return string
      * @throws GeneratorException
      */
-    private function createArgsSchema($schema)
+    public function createArgsSchema($schema)
     {
         $fields = $this->constructArgs($schema);
 
@@ -43,15 +28,29 @@ class SyntaxBuilder
     }
 
     /**
-     * Construct the syntax for a down field.
+     * Construct the syntax for the resolves method.
      *
      * @param  array $schema
      * @return string
      * @throws GeneratorException
      */
-    private function createResolvesSchema($schema)
+    public function createResolvesSchema($schema)
     {
         $fields = $this->constructResolves($schema);
+
+        return $fields;
+    }
+
+    /**
+     * Construct the syntax for the fields method.
+     *
+     * @param  array $schema
+     * @return string
+     * @throws GeneratorException
+     */
+    public function createFieldsSchema($schema)
+    {
+        $fields = $this->constructFields($schema);
 
         return $fields;
     }

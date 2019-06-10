@@ -104,9 +104,12 @@ class ArtomatorQueryCommand extends GeneratorCommand
             $schema = (new SchemaParser)->parse($schema);
         }
 
-        $schema = (new SyntaxBuilder)->create($schema);
-        // dd($schema);
-        return array_merge($replace, $schema);
+        $syntax = new SyntaxBuilder();
+
+        return array_merge($replace, [
+            '{{schema_args}}' => $syntax->createArgsSchema($schema),
+            '{{schema_resolves}}' => $syntax->createResolvesSchema($schema),
+        ]);
     }
 
     /**
