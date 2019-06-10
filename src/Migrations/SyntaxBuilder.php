@@ -3,6 +3,7 @@
 namespace PWWEB\Artomator\Migrations;
 
 use Laracasts\Generators\GeneratorException;
+use Illuminate\Support\Pluralizer;
 
 class SyntaxBuilder
 {
@@ -119,6 +120,46 @@ class SyntaxBuilder
         $syntax = sprintf("if(isset(\$args['%s']) === true) {\n\t\t\treturn DummyModelClass::where('%s', \$args['%s'])->get();\n\t\t}", $field['name'], $field['name'], $field['name']);
 
         return $syntax .= "\n";
+    }
+
+    /**
+     * Construct the schema resolvers.
+     *
+     * @param  array $schema
+     * @return array
+     */
+    private function constructFields($schema)
+    {
+        if (!$schema) {
+            return '';
+        }
+
+        $fields = array_map(function ($field) {
+            return $this->addField($field);
+        }, $schema);
+
+        return implode("\n\t\t\t", $fields);
+    }
+
+
+    /**
+     * Construct the syntax to add a resolve.
+     *
+     * @param  string $field
+     * @return string
+     */
+    private function addField($field)
+    {
+        if (($name = strstr($field['name'], '_id', true)) !== false) {
+            // Then we have a foreign key?
+            $field['name'] = substr(strrchr($name, '_'), 1);
+            $format = "'%1\$s' => [\n\t\t\t\t'type' => Type::listOf(GraphQL::type('%3\$s')),\n\t\t\t\t'description' => 'The %1\$s of the model',\n\t\t\t]";
+        } else {
+            $format = "'%1\$s' => [\n\t\t\t\t'type' => Type::%2\$s(),\n\t\t\t\t'description' => 'The %1\$s of the model',\n\t\t\t]";
+        }
+        $syntax = sprintf($format, $field['name'], $this->normaliseType($field['type']), Pluralizer::singular($field['name']));
+
+        return $syntax .= ",";
     }
 
     /**

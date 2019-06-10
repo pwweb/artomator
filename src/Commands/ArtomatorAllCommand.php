@@ -270,6 +270,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:type', [
             'name' => "{$type}Type",
             '--model' => $modelName,
+            '--schema' => $this->option('schema'),
         ]);
     }
 

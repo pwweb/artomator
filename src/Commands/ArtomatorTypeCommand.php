@@ -5,6 +5,8 @@ namespace PWWEB\Artomator\Commands;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
+use Laracasts\Generators\Migrations\SchemaParser;
+use PWWEB\Artomator\Migrations\SyntaxBuilder;
 use Symfony\Component\Console\Input\InputOption;
 
 class ArtomatorTypeCommand extends GeneratorCommand
@@ -79,6 +81,7 @@ class ArtomatorTypeCommand extends GeneratorCommand
         $typeNamespace = $this->getNamespace($name);
 
         $replace = [];
+        $replace = $this->buildSchemaReplacements($replace);
         $replace = $this->buildModelReplacements($replace);
 
         return str_replace(
@@ -86,6 +89,26 @@ class ArtomatorTypeCommand extends GeneratorCommand
             array_values($replace),
             parent::buildClass($name)
         );
+    }
+
+    /**
+     * Build the schema replacement values.
+     *
+     * @param array $replace
+     * @return array
+     */
+
+    protected function buildSchemaReplacements(array $replace)
+    {
+        if ($schema = $this->option('schema')) {
+            $schema = (new SchemaParser)->parse($schema);
+        }
+
+        $syntax = new SyntaxBuilder();
+
+        return array_merge($replace, [
+            '{{schema_fields}}' => $syntax->createFieldsSchema($schema),
+        ]);
     }
 
     /**
@@ -178,6 +201,7 @@ class ArtomatorTypeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource type for the given model.'],
+            ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
         ];
     }
 }

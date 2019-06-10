@@ -43,7 +43,7 @@ class DummyModelClassType extends GraphQLType
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the DummyModelVariable',
             ],
-            // TODO: Complete other fields.
+            {{schema_fields}}
         ];
     }
 }
