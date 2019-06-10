@@ -34,6 +34,77 @@ This will create the following files:
 7. Database Seeder: `NamespaceNameTableSeeder::class`
 8. Database Factory: `NamespaceNameFactory::class`
 
+### Including schema
+
+You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial creation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
+
+
+```bash
+php artisan artomator:all Users --schema="username:string, email:string:unique"
+```
+
+Notice the format that we use, when declaring any applicable schema: a comma-separate list...
+
+```bash
+COLUMN_NAME:COLUMN_TYPE
+```
+
+So any of these will do:
+
+```bash
+username:string
+body:text
+age:integer
+published_at:date
+excerpt:text:nullable
+email:string:unique:default('foo@example.com')
+```
+
+Using the schema from earlier...
+
+```bash
+--schema="username:string, email:string:unique"
+```
+
+...this will give you a migration file like this:
+
+```php
+<?php
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateUsersTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('users', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('username');
+			$table->string('email')->unique();
+			$table->timestamps();
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('users');
+	}
+
+}
+```
+
+This also means that you can use the [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended) as per their instructions separately in order to add/delete/update migrations following the initial generation.
+
 ### Config
 
 To publish the `config` file from the command line

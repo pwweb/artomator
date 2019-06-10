@@ -189,10 +189,17 @@ class ArtomatorAllCommand extends GeneratorCommand
             $table = Str::singular($table);
         }
 
-        $this->call('make:migration', [
-            'name' => "create_{$table}_table",
-            '--create' => $table,
-        ]);
+        if ($this->option('schema')) {
+            $this->call('make:migration:schema', [
+                'name' => "create_{$table}_table",
+                '--schema' => $this->option('schema'),
+            ]);
+        } else {
+            $this->call('make:migration', [
+                'name' => "create_{$table}_table",
+                '--create' => $table,
+            ]);
+        }
     }
 
     /**
@@ -244,6 +251,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:query', [
             'name' => "{$query}Query",
             '--model' => $modelName,
+            '--schema' => $this->option('schema'),
         ]);
     }
 
@@ -274,7 +282,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     {
         return [
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
-
+            ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
         ];
     }
