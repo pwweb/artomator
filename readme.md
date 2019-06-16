@@ -36,7 +36,9 @@ This will create the following files:
 
 ### Including schema
 
-You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial creation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
+You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial generation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
+
+It will also use the schema to populate the `arguments()` and `resolvers()` methods in the `GraphQL::Query`. It will also use the schema to populate the `fields()` method in the `GraphQL::Type`. Finally it will also use the schema to populate the `store()` and `update()` methods in the `controller`.
 
 
 ```bash
