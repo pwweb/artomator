@@ -5,6 +5,8 @@ namespace PWWEB\Artomator\Commands;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
+use Laracasts\Generators\Migrations\SchemaParser;
+use PWWEB\Artomator\Migrations\SyntaxBuilder;
 use Symfony\Component\Console\Input\InputOption;
 
 class ArtomatorControllerCommand extends GeneratorCommand
@@ -83,10 +85,8 @@ class ArtomatorControllerCommand extends GeneratorCommand
         // if ($this->option('parent')) {
         //     $replace = $this->buildParentReplacements();
         // }
-
-        if ($this->option('model')) {
-            $replace = $this->buildModelReplacements($replace);
-        }
+        $replace = $this->buildSchemaReplacements($replace);
+        $replace = $this->buildModelReplacements($replace);
 
         $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
@@ -95,6 +95,26 @@ class ArtomatorControllerCommand extends GeneratorCommand
             array_values($replace),
             parent::buildClass($name)
         );
+    }
+
+    /**
+     * Build the schema replacement values.
+     *
+     * @param array $replace
+     * @return array
+     */
+
+    protected function buildSchemaReplacements(array $replace)
+    {
+        if ($schema = $this->option('schema')) {
+            $schema = (new SchemaParser)->parse($schema);
+        }
+
+        $syntax = new SyntaxBuilder();
+
+        return array_merge($replace, [
+            '{{schema_data}}' => $syntax->createDataSchema($schema),
+        ]);
     }
 
     /**
@@ -214,11 +234,12 @@ class ArtomatorControllerCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+            ['model', 'm', InputOption::VALUE_REQUIRED, 'Generate a resource controller for the given model.'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
             ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
             ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+            ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
         ];
     }
 }
