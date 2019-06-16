@@ -57,6 +57,20 @@ class SyntaxBuilder
     }
 
     /**
+     * Construct the syntax for the data method.
+     *
+     * @param  array $schema
+     * @return string
+     * @throws GeneratorException
+     */
+    public function createDataSchema($schema)
+    {
+        $data = $this->constructData($schema);
+
+        return $data;
+    }
+
+    /**
      * Construct the schema arguments.
      *
      * @param  array $schema
@@ -160,6 +174,39 @@ class SyntaxBuilder
         $syntax = sprintf($format, $field['name'], $this->normaliseType($field['type']), Pluralizer::singular($field['name']));
 
         return $syntax .= ",";
+    }
+
+    /**
+     * Construct the schema data.
+     *
+     * @param  array $schema
+     * @return array
+     */
+    private function constructData($schema)
+    {
+        if (!$schema) {
+            return '';
+        }
+
+        $fields = array_map(function ($field) {
+            return $this->addData($field);
+        }, $schema);
+
+        return implode("\n\t\t\t", $fields);
+    }
+
+
+    /**
+     * Construct the syntax to add data.
+     *
+     * @param  string $field
+     * @return string
+     */
+    private function addData($field)
+    {
+        $syntax = sprintf("\$DummyModelVariable->%1\$s = \$request->%1\$s", $field['name']);
+
+        return $syntax .= ';';
     }
 
     /**

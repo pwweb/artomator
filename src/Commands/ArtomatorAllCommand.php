@@ -217,6 +217,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:controller', [
             'name' => "{$controller}Controller",
             '--model' => $modelName,
+            '--schema' => $this->option('schema'),
         ]);
     }
 
