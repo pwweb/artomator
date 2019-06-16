@@ -46,6 +46,8 @@ $ php artisan artmoator::all Namespace/Name -i "factory,seeder,migration"
 ```
 This will result in **only** the Factory, Seeder and Migration being generated.
 
+**Note:** Setting both the include and exclude option will result in the include taking the precedence and only doing the generators listed in the include option.
+
 ### Including schema
 
 You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial generation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
