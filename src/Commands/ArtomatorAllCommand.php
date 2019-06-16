@@ -78,29 +78,29 @@ class ArtomatorAllCommand extends GeneratorCommand
     {
         $this->parseIncludes();
 
-        if (isset($this->includes['model']) === true && parent::handle() === false && ! $this->option('force')) {
+        if (in_array('model', $this->includes) === true && parent::handle() === false && ! $this->option('force')) {
             return false;
         }
 
-        if (isset($this->includes['factory']) === true) {
+        if (in_array('factory', $this->includes) === true) {
             $this->createFactory();
         }
-        if (isset($this->includes['seeder']) === true) {
+        if (in_array('seeder', $this->includes) === true) {
             $this->createSeeder();
         }
-        if (isset($this->includes['migration']) === true) {
+        if (in_array('migration', $this->includes) === true) {
             $this->createMigration();
         }
-        if (isset($this->includes['controller']) === true) {
+        if (in_array('controller', $this->includes) === true) {
             $this->createController();
         }
-        if (isset($this->includes['request']) === true) {
+        if (in_array('request', $this->includes) === true) {
             $this->createRequest();
         }
-        if (isset($this->includes['query']) === true) {
+        if (in_array('query', $this->includes) === true) {
             $this->createQuery();
         }
-        if (isset($this->includes['type']) === true) {
+        if (in_array('type', $this->includes) === true) {
             $this->createType();
         }
     }
