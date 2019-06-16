@@ -34,6 +34,18 @@ This will create the following files:
 7. Database Seeder: `NamespaceNameTableSeeder::class`
 8. Database Factory: `NamespaceNameFactory::class`
 
+Optionally you can provide a comma separated list of generators to include or exclude:
+
+``` bash
+$ php artisan artmoator::all Namespace/Name -e "factory,seeder,migration"
+```
+This will exclude the Factory, Seeder and Migration from being generated.
+
+``` bash
+$ php artisan artmoator::all Namespace/Name -i "factory,seeder,migration"
+```
+This will result in **only** the Factory, Seeder and Migration being generated.
+
 ### Including schema
 
 You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial generation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).

@@ -29,6 +29,17 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected $type = 'Model';
 
+    protected $includes = [
+        'model',
+        'controller',
+        'request',
+        'query',
+        'type',
+        'migration',
+        'seeder',
+        'factory',
+    ];
+
     /**
      * Get the stub file for the generator.
      *
@@ -65,17 +76,54 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && ! $this->option('force')) {
+        $this->parseIncludes();
+
+        if (isset($this->includes['model']) === true && parent::handle() === false && ! $this->option('force')) {
             return false;
         }
 
-        $this->createFactory();
-        $this->createSeeder();
-        $this->createMigration();
-        $this->createController();
-        $this->createRequest();
-        $this->createQuery();
-        $this->createType();
+        if (isset($this->includes['factory']) === true) {
+            $this->createFactory();
+        }
+        if (isset($this->includes['seeder']) === true) {
+            $this->createSeeder();
+        }
+        if (isset($this->includes['migration']) === true) {
+            $this->createMigration();
+        }
+        if (isset($this->includes['controller']) === true) {
+            $this->createController();
+        }
+        if (isset($this->includes['request']) === true) {
+            $this->createRequest();
+        }
+        if (isset($this->includes['query']) === true) {
+            $this->createQuery();
+        }
+        if (isset($this->includes['type']) === true) {
+            $this->createType();
+        }
+    }
+
+    protected function parseIncludes()
+    {
+        if ($this->option('exclude')) {
+            $exclusions = $this->option('exclude');
+            $exclusions = explode(',', $exclusions);
+
+            foreach ($exclusions as $exclusion) {
+                unset($this->includes[array_search(trim($exclusion), $this->includes)]);
+            }
+        }
+        if ($this->option('include')) {
+            $inclusions = $this->option('include');
+            $inclusions = explode(',', $inclusions);
+
+            foreach ($inclusions as &$inclusion) {
+                $inclusion = trim($inclusion);
+            }
+            $this->includes = $inclusions;
+        }
     }
 
     /**
@@ -286,6 +334,8 @@ class ArtomatorAllCommand extends GeneratorCommand
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
             ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
+            ['include', 'i', InputOption::VALUE_OPTIONAL, 'Specify which "Generators" to run'],
+            ['exclude', 'e', InputOption::VALUE_OPTIONAL, 'Specify which "Genertors" to exclude'],
         ];
     }
 }
