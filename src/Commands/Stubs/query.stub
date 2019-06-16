@@ -47,7 +47,8 @@ class DummyPluralModelClassQuery extends Query
     public function args()
     {
         return [
-            // TODO: Define arguments.
+            'id' => ['name' => 'id', 'type' => Type::int()],
+            {{schema_args}}
         ];
     }
 
@@ -61,7 +62,11 @@ class DummyPluralModelClassQuery extends Query
      */
     public function resolve($root, $args)
     {
-        // TODO: Add any filters.
+        if (isset($args['id']) === true) {
+            return DummyModelClass::where('id', $args['id'])->get();
+        }
+
+        {{schema_resolves}}
         return DummyModelClass::all();
     }
 }
