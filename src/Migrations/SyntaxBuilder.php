@@ -8,16 +8,9 @@ use Illuminate\Support\Pluralizer;
 class SyntaxBuilder
 {
     /**
-     * A template to be inserted.
-     *
-     * @var string
-     */
-    private $template;
-
-    /**
      * Create the schema for the arguments method.
      *
-     * @param  string $schema
+     * @param  array $schema
      * @return string
      * @throws GeneratorException
      */
@@ -74,11 +67,11 @@ class SyntaxBuilder
      * Construct the schema arguments.
      *
      * @param  array $schema
-     * @return array
+     * @return string
      */
     private function constructArgs($schema)
     {
-        if (!$schema) {
+        if (empty($schema) === true) {
             return '';
         }
 
@@ -93,7 +86,7 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add an argument.
      *
-     * @param  string $field
+     * @param  array $field
      * @return string
      */
     private function addArg($field)
@@ -107,11 +100,11 @@ class SyntaxBuilder
      * Construct the schema resolvers.
      *
      * @param  array $schema
-     * @return array
+     * @return string
      */
     private function constructResolves($schema)
     {
-        if (!$schema) {
+        if (empty($schema) === true) {
             return '';
         }
 
@@ -126,7 +119,7 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param  string $field
+     * @param  array $field
      * @return string
      */
     private function addResolve($field)
@@ -140,11 +133,11 @@ class SyntaxBuilder
      * Construct the schema resolvers.
      *
      * @param  array $schema
-     * @return array
+     * @return string
      */
     private function constructFields($schema)
     {
-        if (!$schema) {
+        if (empty($schema) === true) {
             return '';
         }
 
@@ -159,7 +152,7 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param  string $field
+     * @param  array $field
      * @return string
      */
     private function addField($field)
@@ -180,11 +173,11 @@ class SyntaxBuilder
      * Construct the schema data.
      *
      * @param  array $schema
-     * @return array
+     * @return string
      */
     private function constructData($schema)
     {
-        if (!$schema) {
+        if (empty($schema) === true) {
             return '';
         }
 
@@ -199,7 +192,7 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add data.
      *
-     * @param  string $field
+     * @param  array $field
      * @return string
      */
     private function addData($field)

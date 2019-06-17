@@ -34,7 +34,7 @@ class ArtomatorServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/artomator.php', 'artomator');
 
         // Register the service the package provides.
-        $this->app->singleton('artomator', function ($app) {
+        $this->app->singleton('artomator', function () {
             return new Artomator;
         });
     }

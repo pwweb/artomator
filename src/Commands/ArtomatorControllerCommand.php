@@ -147,7 +147,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $modelClass = $this->parseModel($this->option('model'));
+        $modelClass = $this->parseModel((string) $this->option('model'));
 
         if (! class_exists($modelClass)) {
             if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
@@ -170,7 +170,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  array[string] $authors Authors array.
+     * @param  string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
