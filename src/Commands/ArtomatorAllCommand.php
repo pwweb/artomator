@@ -3,6 +3,7 @@
 namespace PWWEB\Artomator\Commands;
 
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -72,7 +73,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return boolean
      */
     public function handle()
     {
@@ -103,21 +104,20 @@ class ArtomatorAllCommand extends GeneratorCommand
         if (in_array('type', $this->includes) === true) {
             $this->createType();
         }
+        return true;
     }
 
     protected function parseIncludes()
     {
         if ($this->option('exclude')) {
-            $exclusions = $this->option('exclude');
-            $exclusions = explode(',', $exclusions);
+            $exclusions = explode(',', $this->option('exclude'));
 
             foreach ($exclusions as $exclusion) {
                 unset($this->includes[array_search(trim($exclusion), $this->includes)]);
             }
         }
         if ($this->option('include')) {
-            $inclusions = $this->option('include');
-            $inclusions = explode(',', $inclusions);
+            $inclusions = explode(',', $this->option('include'));
 
             foreach ($inclusions as &$inclusion) {
                 $inclusion = trim($inclusion);
@@ -136,8 +136,6 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $modelNamespace = $this->getNamespace($name);
-
         $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
 
         $replace = [];
@@ -161,7 +159,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  array[string] $authors Authors array.
+     * @param  string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -277,7 +275,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createRequest()
     {
         $this->info('Creating Request');
-        $validator = Str::studly(class_basename($this->argument('name')));
+        $validator = Str::studly(class_basename((string) $this->argument('name')));
 
         $this->call('artomator:request', [
             'name' => "Validate{$validator}",
@@ -293,7 +291,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createQuery()
     {
         $this->info('Creating Query');
-        $query = Str::pluralStudly($this->argument('name'));
+        $query = Str::pluralStudly((string) $this->argument('name'));
 
         $modelName = $this->getNameInput();
 

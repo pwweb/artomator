@@ -78,8 +78,6 @@ class ArtomatorQueryCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $queryNamespace = $this->getNamespace($name);
-
         $replace = [];
         $replace = $this->buildSchemaReplacements($replace);
         $replace = $this->buildModelReplacements($replace);
@@ -120,7 +118,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $modelClass = $this->parseModel($this->option('model'));
+        $modelClass = $this->parseModel((string) $this->option('model'));
 
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
@@ -138,7 +136,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  array[string] $authors Authors array.
+     * @param  string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */

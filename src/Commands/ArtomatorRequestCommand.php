@@ -79,7 +79,7 @@ class ArtomatorRequestCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  array[string] $authors Authors array.
+     * @param  string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -123,8 +123,6 @@ class ArtomatorRequestCommand extends GeneratorCommand
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
-
-        $this->package = trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null;
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
