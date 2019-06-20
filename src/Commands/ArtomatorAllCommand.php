@@ -41,6 +41,8 @@ class ArtomatorAllCommand extends GeneratorCommand
         'factory',
     ];
 
+    protected $schema;
+
     /**
      * Get the stub file for the generator.
      *
@@ -79,6 +81,12 @@ class ArtomatorAllCommand extends GeneratorCommand
     {
         $this->parseIncludes();
 
+        $this->schema = $this->option('schema');
+
+        if ($this->option('table')) {
+            $this->insepctTable($this->option('table'));
+        }
+
         if (in_array('model', $this->includes) === true && parent::handle() === false && ! $this->option('force')) {
             return false;
         }
@@ -105,6 +113,19 @@ class ArtomatorAllCommand extends GeneratorCommand
             $this->createType();
         }
         return true;
+    }
+
+    protected function insepctTable($table)
+    {
+        $results = [];
+        $columns = \Schema::getColumnListing($table);
+        foreach ($columns as $key => $column) {
+            $results[] = [
+                'type' => \Schema::getColumnType($table, $column),
+                'name' => $column,
+            ];
+        }
+        dd($results);
     }
 
     protected function parseIncludes()
@@ -235,10 +256,10 @@ class ArtomatorAllCommand extends GeneratorCommand
             $table = Str::singular($table);
         }
 
-        if ($this->option('schema')) {
+        if ($this->schema) {
             $this->call('make:migration:schema', [
                 'name' => "create_{$table}_table",
-                '--schema' => $this->option('schema'),
+                '--schema' => $this->schema,
             ]);
         } else {
             $this->call('make:migration', [
@@ -263,7 +284,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:controller', [
             'name' => "{$controller}Controller",
             '--model' => $modelName,
-            '--schema' => $this->option('schema'),
+            '--schema' => $this->schema,
         ]);
     }
 
@@ -298,7 +319,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:query', [
             'name' => "{$query}Query",
             '--model' => $modelName,
-            '--schema' => $this->option('schema'),
+            '--schema' => $this->schema,
         ]);
     }
 
@@ -317,7 +338,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call('artomator:type', [
             'name' => "{$type}Type",
             '--model' => $modelName,
-            '--schema' => $this->option('schema'),
+            '--schema' => $this->schema,
         ]);
     }
 
@@ -334,6 +355,7 @@ class ArtomatorAllCommand extends GeneratorCommand
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
             ['include', 'i', InputOption::VALUE_OPTIONAL, 'Specify which "Generators" to run'],
             ['exclude', 'e', InputOption::VALUE_OPTIONAL, 'Specify which "Genertors" to exclude'],
+            ['table', 't', InputOption::VALUE_OPTIONAL, 'Specify which table to inspect'],
         ];
     }
 }
