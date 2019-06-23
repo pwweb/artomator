@@ -1,7 +1,7 @@
 # Artomator
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pwweb/artomator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pwweb/artomator/?branch=master)
-                                            
+
 <!-- [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Build Status][ico-travis]][link-travis] -->
@@ -122,6 +122,21 @@ class CreateUsersTable extends Migration {
 ```
 
 This also means that you can use the [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended) as per their instructions separately in order to add/delete/update migrations following the initial generation.
+
+### Build From Table
+In a similar fashion to the schema method, it's also possible to provide a table name of an existing table and then the generator will inspect the table and reverse engineer the schema from this.
+
+It's important to keep in mind that this only determines the schema of the table, not the table name and the primary key etc. In fact this will ignore the primary key field and replace with a standard `id` field.
+
+That being said, it's a shortcut for creating a number of files with ease by providing a table in the database to use.
+
+From the command line:
+``` bash
+$ php artisan artomator:all Namespace/Name -t TableName
+```
+
+This will populate the `schema` from the table and pass this to the generators called. Other options can be used as detailed elsewhere, but this will supersede any `schema` passed through the command line.
+
 
 ### Config
 

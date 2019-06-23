@@ -50,7 +50,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
         $path = base_path() . config('artomator.stubPath');
         $path = $path . $stub;
 
-        if (file_exists($path)) {
+        if (file_exists($path) === true) {
             return $path;
         } else {
             return __DIR__ . '/Stubs/' . $stub;
@@ -60,12 +60,13 @@ class ArtomatorQueryCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace The class to return the namespace for.
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\GraphQL\Query';
+        return $rootNamespace . '\GraphQL\Query';
     }
 
     /**
@@ -73,7 +74,8 @@ class ArtomatorQueryCommand extends GeneratorCommand
      *
      * Remove the base query import if we are already in base namespace.
      *
-     * @param  string  $name
+     * @param string $name The name of the Query to build.
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -92,35 +94,45 @@ class ArtomatorQueryCommand extends GeneratorCommand
     /**
      * Build the schema replacement values.
      *
-     * @param array $replace
+     * @param array $replace The existing replacements to append to.
+     *
      * @return array
      */
-
     protected function buildSchemaReplacements(array $replace)
     {
-        if ($schema = $this->option('schema')) {
-            $schema = (new SchemaParser)->parse($schema);
+        if ($this->option('schema') !== false) {
+            $schema = $this->option('schema');
+            $schema = (new SchemaParser())->parse($schema);
+        }
+        else {
+            return null;
         }
 
         $syntax = new SyntaxBuilder();
 
-        return array_merge($replace, [
+        return array_merge(
+            $replace,
+            [
             '{{schema_args}}' => $syntax->createArgsSchema($schema),
             '{{schema_resolves}}' => $syntax->createResolvesSchema($schema),
-        ]);
+            ]
+        );
     }
 
     /**
      * Build the model replacement values.
      *
-     * @param  array  $replace
+     * @param array $replace The existing replacement to append to.
+     *
      * @return array
      */
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel((string) $this->option('model'));
 
-        return array_merge($replace, [
+        return array_merge(
+            $replace,
+            [
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
             'DummyPluralModelClass' => Str::pluralStudly(class_basename($modelClass)),
@@ -130,13 +142,14 @@ class ArtomatorQueryCommand extends GeneratorCommand
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
             'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-        ]);
+            ]
+        );
     }
 
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  string[] $authors Authors array.
+     * @param string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -170,23 +183,24 @@ class ArtomatorQueryCommand extends GeneratorCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string  $model
+     * @param string $model The name of the model to get the FQN for.
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     protected function parseModel($model)
     {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = strstr($model, '/', true) ?? null;
+        $this->package = (strstr($model, '/', true) ?? null);
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.'Models\\'.$model;
+        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
+            $model = $rootNamespace . 'Models\\' . $model;
         }
 
         return $model;
