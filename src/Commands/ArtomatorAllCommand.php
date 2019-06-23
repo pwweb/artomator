@@ -84,7 +84,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->schema = $this->option('schema');
 
         if ($this->option('table')) {
-            $this->insepctTable($this->option('table'));
+            $this->schema = $this->insepctTable($this->option('table'));
         }
 
         if (in_array('model', $this->includes) === true && parent::handle() === false && ! $this->option('force')) {
@@ -117,15 +117,52 @@ class ArtomatorAllCommand extends GeneratorCommand
 
     protected function insepctTable($table)
     {
+        if (\Schema::hasTable($table) !== true) {
+            return false;
+        }
         $results = [];
-        $columns = \Schema::getColumnListing($table);
-        foreach ($columns as $key => $column) {
+        $columns = \DB::connection()->select(DB::raw('describe ' . $table));
+        foreach ($columns as $column) {
+            if ($column->Key === 'PRI') {
+                $primary = [
+                    'type' => $column->Type,
+                    'name' => $column->Field,
+                ];
+                continue;
+            }
             $results[] = [
-                'type' => \Schema::getColumnType($table, $column),
-                'name' => $column,
+                'type' => $column->Type,
+                'name' => $column->Field,
+                'key' => $column->Key === 'UNI' ? 'unique' : '',
             ];
         }
-        dd($results);
+
+        $results = array_map(
+            function ($field) {
+                return $this->addArg($field);
+            },
+            $results
+        );
+
+        $results = implode(",", $results);
+
+        return $results;
+    }
+
+    private function addArg($field)
+    {
+        if ($field['key'] !== '') {
+            $format = "%s:%s:%s";
+        } else {
+            $format = "%s:%s";
+        }
+        $syntax = sprintf($format, $field['name'], $this->normaliseType($field['type']), $field['key']);
+        return $syntax;
+    }
+
+    private function normaliseType($type)
+    {
+        return preg_replace("/(\\(.*\\))/is", '', $type);
     }
 
     protected function parseIncludes()
