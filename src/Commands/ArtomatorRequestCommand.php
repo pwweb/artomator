@@ -40,7 +40,7 @@ class ArtomatorRequestCommand extends GeneratorCommand
         $path = base_path() . config('artomator.stubPath');
         $path = $path . $stub;
 
-        if (file_exists($path)) {
+        if (file_exists($path) === true) {
             return $path;
         } else {
             return __DIR__ . '/Stubs/' . $stub;
@@ -52,7 +52,8 @@ class ArtomatorRequestCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param  string  $name
+     * @param string $name Name of Request to build.
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -60,13 +61,16 @@ class ArtomatorRequestCommand extends GeneratorCommand
         $modelClass = $this->parseModel($this->option('model'));
 
         $replace = [];
-        $replace = array_merge($replace, [
+        $replace = array_merge(
+            $replace,
+            [
             'DummyFullModelClass' => $modelClass,
             'DummyPackagePlaceholder' => config('app.name'),
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
             'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-        ]);
+            ]
+        );
 
         return str_replace(
             array_keys($replace),
@@ -78,7 +82,7 @@ class ArtomatorRequestCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  string[] $authors Authors array.
+     * @param string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -112,21 +116,22 @@ class ArtomatorRequestCommand extends GeneratorCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string  $model
+     * @param string $model The model name to parse.
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     protected function parseModel($model)
     {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.'Models\\'.$model;
+        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
+            $model = $rootNamespace . 'Models\\' . $model;
         }
 
         return $model;
@@ -135,12 +140,13 @@ class ArtomatorRequestCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace The class to return the namespace for.
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Http\Requests';
+        return $rootNamespace . '\Http\Requests';
     }
 
     /**

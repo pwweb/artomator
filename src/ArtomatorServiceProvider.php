@@ -19,7 +19,7 @@ class ArtomatorServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         // Publishing is only necessary when using the CLI.
-        if ($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole() === true) {
             $this->bootForConsole();
         }
     }
@@ -31,12 +31,15 @@ class ArtomatorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/artomator.php', 'artomator');
+        $this->mergeConfigFrom(__DIR__ . '/../config/artomator.php', 'artomator');
 
         // Register the service the package provides.
-        $this->app->singleton('artomator', function () {
-            return new Artomator;
-        });
+        $this->app->singleton(
+            'artomator',
+            function () {
+                return new Artomator();
+            }
+        );
     }
 
     /**
@@ -57,9 +60,12 @@ class ArtomatorServiceProvider extends ServiceProvider
     protected function bootForConsole()
     {
         // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/artomator.php' => config_path('artomator.php'),
-        ], 'artomator.config');
+        $this->publishes(
+            [
+            __DIR__ . '/../config/artomator.php' => config_path('artomator.php'),
+            ],
+            'artomator.config'
+        );
 
         // Publishing the views.
         /*$this->publishes([
@@ -67,9 +73,12 @@ class ArtomatorServiceProvider extends ServiceProvider
         ], 'artomator.views');*/
 
         // Publishing stubs.
-        $this->publishes([
-            __DIR__.'/Commands/stubs' => public_path('vendor/pwweb'),
-        ], 'artomator.stubs');
+        $this->publishes(
+            [
+            __DIR__ . '/Commands/stubs' => public_path('vendor/pwweb'),
+            ],
+            'artomator.stubs'
+        );
 
         // Publishing assets.
         /*$this->publishes([
@@ -82,12 +91,14 @@ class ArtomatorServiceProvider extends ServiceProvider
         ], 'artomator.views');*/
 
         // Registering package commands.
-        $this->commands([
+        $this->commands(
+            [
             Commands\ArtomatorAllCommand::class,
             Commands\ArtomatorControllerCommand::class,
             Commands\ArtomatorQueryCommand::class,
             Commands\ArtomatorRequestCommand::class,
             Commands\ArtomatorTypeCommand::class,
-        ]);
+            ]
+        );
     }
 }

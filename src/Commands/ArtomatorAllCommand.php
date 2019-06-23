@@ -30,6 +30,11 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected $type = 'Model';
 
+    /**
+     * The array of standard included generators.
+     *
+     * @var string[]
+     */
     protected $includes = [
         'model',
         'controller',
@@ -41,6 +46,11 @@ class ArtomatorAllCommand extends GeneratorCommand
         'factory',
     ];
 
+    /**
+     * The schema variable.
+     *
+     * @var string
+     */
     protected $schema;
 
     /**
@@ -54,7 +64,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $path = base_path() . config('artomator.stubPath');
         $path = $path . $stub;
 
-        if (file_exists($path)) {
+        if (file_exists($path) === true) {
             return $path;
         } else {
             return __DIR__ . '/Stubs/' . $stub;
@@ -64,12 +74,13 @@ class ArtomatorAllCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace The class name to return FQN for.
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Models';
+        return $rootNamespace . '\Models';
     }
 
     /**
@@ -83,11 +94,11 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $this->schema = $this->option('schema');
 
-        if ($this->option('table')) {
+        if ($this->option('table') !== false) {
             $this->schema = $this->insepctTable($this->option('table'));
         }
 
-        if (in_array('model', $this->includes) === true && parent::handle() === false && ! $this->option('force')) {
+        if (in_array('model', $this->includes) === true && parent::handle() === false && $this->option('force') === false) {
             return false;
         }
 
@@ -115,10 +126,17 @@ class ArtomatorAllCommand extends GeneratorCommand
         return true;
     }
 
+    /**
+     * Inspect table with the database for schema.
+     *
+     * @param string $table The name of the table to insepct.
+     *
+     * @return string
+     */
     protected function insepctTable($table)
     {
         if (\Schema::hasTable($table) !== true) {
-            return false;
+            return '';
         }
         $results = [];
         $columns = \DB::connection()->select(DB::raw('describe ' . $table));
@@ -149,6 +167,13 @@ class ArtomatorAllCommand extends GeneratorCommand
         return $results;
     }
 
+    /**
+     * Format the schema for passing to subsequent generators.
+     *
+     * @param array $field The field definition.
+     *
+     * @return string
+     */
     private function addArg($field)
     {
         if ($field['key'] !== '') {
@@ -160,21 +185,33 @@ class ArtomatorAllCommand extends GeneratorCommand
         return $syntax;
     }
 
+    /**
+     * Normalise the type from the inspection to remove the additional information.
+     *
+     * @param string $type The field type definition.
+     *
+     * @return string
+     */
     private function normaliseType($type)
     {
         return preg_replace("/(\\(.*\\))/is", '', $type);
     }
 
+    /**
+     * Parse the includes and excludes arguments.
+     *
+     * @return string[]
+     */
     protected function parseIncludes()
     {
-        if ($this->option('exclude')) {
+        if ($this->option('exclude') !== false) {
             $exclusions = explode(',', $this->option('exclude'));
 
             foreach ($exclusions as $exclusion) {
                 unset($this->includes[array_search(trim($exclusion), $this->includes)]);
             }
         }
-        if ($this->option('include')) {
+        if ($this->option('include') !== false) {
             $inclusions = explode(',', $this->option('include'));
 
             foreach ($inclusions as &$inclusion) {
@@ -189,7 +226,8 @@ class ArtomatorAllCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param  string  $name
+     * @param string $name The name of the model to build.
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -198,14 +236,17 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $replace = [];
 
-        $replace = array_merge($replace, [
+        $replace = array_merge(
+            $replace,
+            [
             'DummyFullModelClass' => $this->qualifyClass($name),
             'DummyPackagePlaceholder' => config('app.name'),
             'DummySnakeCaseClass' => $table,
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
             'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-        ]);
+            ]
+        );
 
         return str_replace(
             array_keys($replace),
@@ -217,7 +258,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  string[] $authors Authors array.
+     * @param string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -258,10 +299,13 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Factory');
         $factory = $this->argument('name');
 
-        $this->call('make:factory', [
+        $this->call(
+            'make:factory',
+            [
             'name' => "{$factory}Factory",
             '--model' => $this->qualifyClass($this->getNameInput()),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -274,9 +318,12 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Seeder');
         $seeder = str_replace('/', '', $this->argument('name'));
 
-        $this->call('make:seeder', [
+        $this->call(
+            'make:seeder',
+            [
             'name' => "{$seeder}TableSeeder",
-        ]);
+            ]
+        );
     }
 
     /**
@@ -289,20 +336,26 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Migration');
         $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
 
-        if ($this->option('pivot')) {
+        if ($this->option('pivot') !== false) {
             $table = Str::singular($table);
         }
 
-        if ($this->schema) {
-            $this->call('make:migration:schema', [
+        if ($this->schema !== '') {
+            $this->call(
+                'make:migration:schema',
+                [
                 'name' => "create_{$table}_table",
                 '--schema' => $this->schema,
-            ]);
+                ]
+            );
         } else {
-            $this->call('make:migration', [
+            $this->call(
+                'make:migration',
+                [
                 'name' => "create_{$table}_table",
                 '--create' => $table,
-            ]);
+                ]
+            );
         }
     }
 
@@ -318,11 +371,14 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('artomator:controller', [
+        $this->call(
+            'artomator:controller',
+            [
             'name' => "{$controller}Controller",
             '--model' => $modelName,
             '--schema' => $this->schema,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -334,10 +390,13 @@ class ArtomatorAllCommand extends GeneratorCommand
     {
         $this->info('Creating Request');
 
-        $this->call('artomator:request', [
+        $this->call(
+            'artomator:request',
+            [
             'name' => $this->getNameInput(),
             '--model' => $this->qualifyClass($this->getNameInput()),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -352,11 +411,14 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('artomator:query', [
+        $this->call(
+            'artomator:query',
+            [
             'name' => "{$query}Query",
             '--model' => $modelName,
             '--schema' => $this->schema,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -371,11 +433,14 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $modelName = $this->getNameInput();
 
-        $this->call('artomator:type', [
+        $this->call(
+            'artomator:type',
+            [
             'name' => "{$type}Type",
             '--model' => $modelName,
             '--schema' => $this->schema,
-        ]);
+            ]
+        );
     }
 
     /**
