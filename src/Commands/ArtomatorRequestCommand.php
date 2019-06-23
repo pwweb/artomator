@@ -62,7 +62,6 @@ class ArtomatorRequestCommand extends GeneratorCommand
         $replace = [];
         $replace = array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
-            'DummyModelClass' => class_basename($modelClass),
             'DummyPackagePlaceholder' => config('app.name'),
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),

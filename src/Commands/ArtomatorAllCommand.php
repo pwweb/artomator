@@ -275,10 +275,9 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createRequest()
     {
         $this->info('Creating Request');
-        $validator = Str::studly(class_basename((string) $this->argument('name')));
 
         $this->call('artomator:request', [
-            'name' => "Validate{$validator}",
+            'name' => $this->getNameInput(),
             '--model' => $this->qualifyClass($this->getNameInput()),
         ]);
     }
