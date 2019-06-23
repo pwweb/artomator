@@ -142,10 +142,10 @@ class ArtomatorAllCommand extends GeneratorCommand
         $columns = \DB::connection()->select(\DB::raw('describe ' . $table));
         foreach ($columns as $column) {
             if ($column->Key === 'PRI') {
-                $primary = [
-                    'type' => $column->Type,
-                    'name' => $column->Field,
-                ];
+                // $primary = [
+                //     'type' => $column->Type,
+                //     'name' => $column->Field,
+                // ];
                 continue;
             }
             $results[] = [
