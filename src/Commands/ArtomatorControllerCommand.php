@@ -148,6 +148,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel((string) $this->option('model'));
+        $requestClass = $this->parseRequest((string) $this->option('model'));
 
         if (! class_exists($modelClass)) {
             if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
@@ -157,6 +158,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
 
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
+            'DummyRequestClass' => $requestClass,
             'DummyModelClass' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             'DummyPackageVariable' => strtolower($this->package) . ".",
@@ -221,6 +223,31 @@ class ArtomatorControllerCommand extends GeneratorCommand
 
         if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
             $model = $rootNamespace.'Models\\'.$model;
+        }
+
+        return $model;
+    }
+
+    /**
+     * Get the fully-qualified request class name.
+     *
+     * @param  string  $model
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseRequest($model)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
+        }
+
+        $this->package = trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null;
+
+        $model = trim(str_replace('/', '\\', $model), '\\');
+
+        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+            $model = $rootNamespace.'Http\\Requests\\'.$model;
         }
 
         return $model;
