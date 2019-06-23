@@ -95,7 +95,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->schema = $this->option('schema');
 
         if ($this->option('table') !== false) {
-            $this->schema = $this->insepctTable($this->option('table'));
+            $this->schema = $this->insepctTable((string) $this->option('table'));
         }
 
         if (in_array('model', $this->includes) === true && parent::handle() === false && $this->option('force') === false) {

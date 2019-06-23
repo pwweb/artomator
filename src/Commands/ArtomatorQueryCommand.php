@@ -104,6 +104,9 @@ class ArtomatorQueryCommand extends GeneratorCommand
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
         }
+        else {
+            return null;
+        }
 
         $syntax = new SyntaxBuilder();
 
