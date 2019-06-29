@@ -103,8 +103,7 @@ class ArtomatorQueryCommand extends GeneratorCommand
         if ($this->option('schema') !== false) {
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
-        }
-        else {
+        } else {
             return null;
         }
 

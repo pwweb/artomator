@@ -41,6 +41,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
 
     /**
      * The default stub file to be used.
+     *
      * @var string
      */
     protected $stub = 'controller.model.stub';
@@ -116,9 +117,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
         if ($this->option('schema') !== false) {
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
-        }
-        else
-        {
+        } else {
             return null;
         }
 
@@ -141,8 +140,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        if (is_null($this->option('model')) === true)
-        {
+        if (is_null($this->option('model')) === true) {
             $modelClass = $this->parseModel((string) $this->getNameInput());
             $requestClass = $this->parseRequest((string) $this->getNameInput());
         } else {
@@ -224,7 +222,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
         }
 
         $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
-        $this->package = (empty($this->package) ? $this->package : (strtolower($this->package) . "."));
+        $this->package = (empty($this->package) === true ? $this->package : (strtolower($this->package) . "."));
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
