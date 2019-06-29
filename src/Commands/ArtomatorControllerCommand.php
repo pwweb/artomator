@@ -50,7 +50,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
         $path = base_path() . config('artomator.stubPath');
         $path = $path . $stub;
 
-        if (file_exists($path)) {
+        if (file_exists($path) === true) {
             return $path;
         } else {
             return __DIR__ . '/Stubs/' . $stub;
@@ -60,12 +60,13 @@ class ArtomatorControllerCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace The class name to return the namespace for.
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Http\Controllers';
+        return $rootNamespace . '\Http\Controllers';
     }
 
     /**
@@ -73,7 +74,8 @@ class ArtomatorControllerCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param  string  $name
+     * @param string $name The model name to build.
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -100,49 +102,36 @@ class ArtomatorControllerCommand extends GeneratorCommand
     /**
      * Build the schema replacement values.
      *
-     * @param array $replace
+     * @param array $replace The existing replacements to append to.
+     *
      * @return array
      */
-
     protected function buildSchemaReplacements(array $replace)
     {
-        if ($schema = $this->option('schema')) {
-            $schema = (new SchemaParser)->parse($schema);
+        if ($this->option('schema') !== false) {
+            $schema = $this->option('schema');
+            $schema = (new SchemaParser())->parse($schema);
+        }
+        else
+        {
+            return null;
         }
 
         $syntax = new SyntaxBuilder();
 
-        return array_merge($replace, [
+        return array_merge(
+            $replace,
+            [
             '{{schema_data}}' => $syntax->createDataSchema($schema),
-        ]);
+            ]
+        );
     }
-
-    /**
-     * Build the replacements for a parent controller.
-     *
-     * @return array
-     */
-    // protected function buildParentReplacements()
-    // {
-    //     $parentModelClass = $this->parseModel($this->option('parent'));
-    //
-    //     if (! class_exists($parentModelClass)) {
-    //         if ($this->confirm("A {$parentModelClass} model does not exist. Do you want to generate it?", true)) {
-    //             $this->call('make:model', ['name' => $parentModelClass]);
-    //         }
-    //     }
-    //
-    //     return [
-    //         'ParentDummyFullModelClass' => $parentModelClass,
-    //         'ParentDummyModelClass' => class_basename($parentModelClass),
-    //         'ParentDummyModelVariable' => lcfirst(class_basename($parentModelClass)),
-    //     ];
-    // }
 
     /**
      * Build the model replacement values.
      *
-     * @param  array  $replace
+     * @param array $replace The existing replacements to append to.
+     *
      * @return array
      */
     protected function buildModelReplacements(array $replace)
@@ -150,13 +139,15 @@ class ArtomatorControllerCommand extends GeneratorCommand
         $modelClass = $this->parseModel((string) $this->option('model'));
         $requestClass = $this->parseRequest((string) $this->option('model'));
 
-        if (! class_exists($modelClass)) {
-            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
+        if (class_exists($modelClass) === false) {
+            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true) === true) {
                 $this->call('make:model', ['name' => $modelClass]);
             }
         }
 
-        return array_merge($replace, [
+        return array_merge(
+            $replace,
+            [
             'DummyFullModelClass' => $modelClass,
             'DummyRequestClass' => $requestClass,
             'DummyModelClass' => class_basename($modelClass),
@@ -166,13 +157,14 @@ class ArtomatorControllerCommand extends GeneratorCommand
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
             'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-        ]);
+            ]
+        );
     }
 
     /**
      * Get the formatted author(s) from the config file.
      *
-     * @param  string[] $authors Authors array.
+     * @param string[] $authors Authors array.
      *
      * @return string Formmated string of authors.
      */
@@ -206,23 +198,24 @@ class ArtomatorControllerCommand extends GeneratorCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string  $model
+     * @param string $model The model to return the FQN for.
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     protected function parseModel($model)
     {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null;
+        $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.'Models\\'.$model;
+        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
+            $model = $rootNamespace . 'Models\\' . $model;
         }
 
         return $model;
@@ -231,23 +224,24 @@ class ArtomatorControllerCommand extends GeneratorCommand
     /**
      * Get the fully-qualified request class name.
      *
-     * @param  string  $model
+     * @param string $model The model to return the FQN for.
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     protected function parseRequest($model)
     {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $this->package = trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null;
+        $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.'Http\\Requests\\'.$model;
+        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
+            $model = $rootNamespace . 'Http\\Requests\\' . $model;
         }
 
         return $model;

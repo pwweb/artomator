@@ -10,8 +10,10 @@ class SyntaxBuilder
     /**
      * Create the schema for the arguments method.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
+     *
      * @throws GeneratorException
      */
     public function createArgsSchema($schema)
@@ -24,8 +26,10 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the resolves method.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
+     *
      * @throws GeneratorException
      */
     public function createResolvesSchema($schema)
@@ -38,8 +42,10 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the fields method.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
+     *
      * @throws GeneratorException
      */
     public function createFieldsSchema($schema)
@@ -52,8 +58,10 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the data method.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
+     *
      * @throws GeneratorException
      */
     public function createDataSchema($schema)
@@ -66,7 +74,8 @@ class SyntaxBuilder
     /**
      * Construct the schema arguments.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
      */
     private function constructArgs($schema)
@@ -75,9 +84,12 @@ class SyntaxBuilder
             return '';
         }
 
-        $fields = array_map(function ($field) {
-            return $this->addArg($field);
-        }, $schema);
+        $fields = array_map(
+            function ($field) {
+                return $this->addArg($field);
+            },
+            $schema
+        );
 
         return implode("\n\t\t\t", $fields);
     }
@@ -86,7 +98,8 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add an argument.
      *
-     * @param  array $field
+     * @param array $field The field to build the syntax.
+     *
      * @return string
      */
     private function addArg($field)
@@ -99,7 +112,8 @@ class SyntaxBuilder
     /**
      * Construct the schema resolvers.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
      */
     private function constructResolves($schema)
@@ -108,9 +122,12 @@ class SyntaxBuilder
             return '';
         }
 
-        $fields = array_map(function ($field) {
-            return $this->addResolve($field);
-        }, $schema);
+        $fields = array_map(
+            function ($field) {
+                return $this->addResolve($field);
+            },
+            $schema
+        );
 
         return implode("\n\t\t", $fields);
     }
@@ -119,7 +136,8 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param  array $field
+     * @param array $field The field to build the syntax.
+     *
      * @return string
      */
     private function addResolve($field)
@@ -132,7 +150,8 @@ class SyntaxBuilder
     /**
      * Construct the schema resolvers.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
      */
     private function constructFields($schema)
@@ -141,9 +160,12 @@ class SyntaxBuilder
             return '';
         }
 
-        $fields = array_map(function ($field) {
-            return $this->addField($field);
-        }, $schema);
+        $fields = array_map(
+            function ($field) {
+                return $this->addField($field);
+            },
+            $schema
+        );
 
         return implode("\n\t\t\t", $fields);
     }
@@ -152,7 +174,8 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param  array $field
+     * @param array $field The field to build the syntax.
+     *
      * @return string
      */
     private function addField($field)
@@ -172,7 +195,8 @@ class SyntaxBuilder
     /**
      * Construct the schema data.
      *
-     * @param  array $schema
+     * @param array $schema The schema to parse.
+     *
      * @return string
      */
     private function constructData($schema)
@@ -181,9 +205,12 @@ class SyntaxBuilder
             return '';
         }
 
-        $fields = array_map(function ($field) {
-            return $this->addData($field);
-        }, $schema);
+        $fields = array_map(
+            function ($field) {
+                return $this->addData($field);
+            },
+            $schema
+        );
 
         return implode("\n\t\t\t", $fields);
     }
@@ -192,7 +219,8 @@ class SyntaxBuilder
     /**
      * Construct the syntax to add data.
      *
-     * @param  array $field
+     * @param array $field The field to build the syntax.
+     *
      * @return string
      */
     private function addData($field)
@@ -205,7 +233,7 @@ class SyntaxBuilder
     /**
      * Normalise the types.
      *
-     * @param string $type
+     * @param string $type Type name to normalise.
      *
      * @return string
      */
@@ -213,10 +241,12 @@ class SyntaxBuilder
     {
         switch ($type) {
             case 'text':
+            case 'varchar':
             case 'date':
                 $type = 'string';
                 break;
             case 'integer':
+            case 'int':
                 $type = 'int';
                 break;
             default:
