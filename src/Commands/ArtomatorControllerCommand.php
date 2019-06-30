@@ -40,20 +40,26 @@ class ArtomatorControllerCommand extends GeneratorCommand
     protected $package = null;
 
     /**
+     * The default stub file to be used.
+     *
+     * @var string
+     */
+    protected $stub = 'controller.model.stub';
+
+    /**
      * Get the stub file for the generator.
      *
      * @return string
      */
     protected function getStub()
     {
-        $stub = 'controller.model.stub';
         $path = base_path() . config('artomator.stubPath');
-        $path = $path . $stub;
+        $path = $path . $this->stub;
 
         if (file_exists($path) === true) {
             return $path;
         } else {
-            return __DIR__ . '/Stubs/' . $stub;
+            return __DIR__ . '/Stubs/' . $this->stub;
         }
     }
 
@@ -108,13 +114,11 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function buildSchemaReplacements(array $replace)
     {
-        if ($this->option('schema') !== false) {
+        if ($this->option('schema') !== null) {
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
-        }
-        else
-        {
-            return null;
+        } else {
+            return $replace;
         }
 
         $syntax = new SyntaxBuilder();
@@ -136,12 +140,19 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $modelClass = $this->parseModel((string) $this->option('model'));
-        $requestClass = $this->parseRequest((string) $this->option('model'));
+        if (is_null($this->option('model')) === true) {
+            $modelClass = $this->parseModel((string) $this->getNameInput());
+            $requestClass = $this->parseRequest((string) $this->getNameInput());
+        } else {
+            $modelClass = $this->parseModel((string) $this->option('model'));
+            $requestClass = $this->parseRequest((string) $this->option('model'));
+        }
 
         if (class_exists($modelClass) === false) {
             if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true) === true) {
-                $this->call('make:model', ['name' => $modelClass]);
+                $this->call('artomator:all', ['name' => $modelClass, 'include' => 'model']);
+            } else {
+                $this->stub = 'controller.stub';
             }
         }
 
@@ -152,7 +163,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
             'DummyRequestClass' => $requestClass,
             'DummyModelClass' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
-            'DummyPackageVariable' => strtolower($this->package) . ".",
+            'DummyPackageVariable' => $this->package,
             'DummyPackagePlaceholder' => config('app.name'),
             'DummyCopyrightPlaceholder' => config('artomator.copyright'),
             'DummyLicensePlaceholder' => config('artomator.license'),
@@ -211,6 +222,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
         }
 
         $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
+        $this->package = (empty($this->package) === true ? $this->package : (strtolower($this->package) . "."));
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
@@ -235,8 +247,6 @@ class ArtomatorControllerCommand extends GeneratorCommand
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
-
-        $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 

@@ -94,7 +94,7 @@ class ArtomatorAllCommand extends GeneratorCommand
 
         $this->schema = $this->option('schema');
 
-        if ($this->option('table') !== false) {
+        if ($this->option('table') !== null) {
             $this->schema = $this->insepctTable((string) $this->option('table'));
         }
 
@@ -204,14 +204,14 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     protected function parseIncludes()
     {
-        if ($this->option('exclude') !== false) {
+        if ($this->option('exclude') !== null) {
             $exclusions = explode(',', $this->option('exclude'));
 
             foreach ($exclusions as $exclusion) {
                 unset($this->includes[array_search(trim($exclusion), $this->includes)]);
             }
         }
-        if ($this->option('include') !== false) {
+        if ($this->option('include') !== null) {
             $inclusions = explode(',', $this->option('include'));
 
             foreach ($inclusions as &$inclusion) {
@@ -336,7 +336,7 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Migration');
         $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
 
-        if ($this->option('pivot') !== false) {
+        if ($this->option('pivot') !== null) {
             $table = Str::singular($table);
         }
 
