@@ -114,7 +114,7 @@ class ArtomatorControllerCommand extends GeneratorCommand
      */
     protected function buildSchemaReplacements(array $replace)
     {
-        if ($this->option('schema') !== false) {
+        if ($this->option('schema') !== null) {
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
         } else {
