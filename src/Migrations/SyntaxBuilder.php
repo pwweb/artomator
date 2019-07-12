@@ -247,8 +247,11 @@ class SyntaxBuilder
                 break;
             case 'integer':
             case 'int':
+            case 'int unsigned':
                 $type = 'int';
                 break;
+            case 'tinyint':
+                $type = 'boolean';
             default:
                 break;
         }

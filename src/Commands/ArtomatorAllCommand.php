@@ -98,7 +98,7 @@ class ArtomatorAllCommand extends GeneratorCommand
             $this->schema = $this->insepctTable((string) $this->option('table'));
         }
 
-        if (in_array('model', $this->includes) === true && parent::handle() === false && $this->option('force') === false) {
+        if (in_array('model', $this->includes) === true && parent::handle() === false) {
             return false;
         }
 
@@ -194,7 +194,25 @@ class ArtomatorAllCommand extends GeneratorCommand
      */
     private function normaliseType($type)
     {
-        return preg_replace("/(\\(.*\\))/is", '', $type);
+        $type = preg_replace("/(\\(.*\\))/is", '', $type);
+        switch ($type) {
+            case 'int':
+            case 'int unsigned':
+                $type = 'integer';
+                break;
+            case 'tinyint':
+            case 'bool':
+            case 'boolean':
+                $type = 'boolean';
+                break;
+            case 'varchar':
+            case 'string':
+            default:
+                $type = 'string';
+                break;
+        }
+
+        return $type;
     }
 
     /**
@@ -336,10 +354,6 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->info('Creating Migration');
         $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
 
-        if ($this->option('pivot') !== null) {
-            $table = Str::singular($table);
-        }
-
         if ($this->schema !== '') {
             $this->call(
                 'make:migration:schema',
@@ -451,9 +465,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
             ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
-            ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
             ['include', 'i', InputOption::VALUE_OPTIONAL, 'Specify which "Generators" to run'],
             ['exclude', 'e', InputOption::VALUE_OPTIONAL, 'Specify which "Genertors" to exclude'],
             ['table', 't', InputOption::VALUE_OPTIONAL, 'Specify which table to inspect'],
