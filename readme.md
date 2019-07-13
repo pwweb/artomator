@@ -23,8 +23,10 @@ $ composer require pwweb/artomator --dev
 From the command line
 
 ``` bash
-$ php artisan artomator Namespace/Name
+$ php artisan artomator
 ```
+
+You will be prompted to provide the name to be used for all the classes. This is generally namespaced and plural. i.e. `Namespace\Names`.
 
 This will create the following files:
 1. Model: `Namespace\Name::class`
@@ -39,7 +41,7 @@ This will create the following files:
 Optionally you can provide a comma separated list of generators to include or exclude:
 
 ``` bash
-$ php artisan artomator Namespace/Name -e "factory,seeder,migration"
+$ php artisan artomator -e "factory,seeder,migration"
 ```
 This will exclude the Factory, Seeder and Migration from being generated.
 
@@ -51,7 +53,7 @@ It will also use the schema to populate the `arguments()` and `resolvers()` meth
 
 
 ```bash
-php artisan artomator Users --schema="username:string, email:string:unique"
+php artisan artomator --schema="username:string, email:string:unique"
 ```
 
 Notice the format that we use, when declaring any applicable schema: a comma-separate list...
@@ -126,7 +128,7 @@ That being said, it's a shortcut for creating a number of files with ease by pro
 
 From the command line:
 ``` bash
-$ php artisan artomator Namespace/Name -t TableName
+$ php artisan artomator -t "TableName"
 ```
 
 This will populate the `schema` from the table and pass this to the generators called. Other options can be used as detailed elsewhere, but this will supersede any `schema` passed through the command line.
