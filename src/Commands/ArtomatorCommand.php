@@ -62,7 +62,7 @@ _/    _/  _/          _/      _/    _/  _/    _/    _/  _/    _/    _/      _/  
 
 ______________________________________________________________________________________________/');
         $this->name = $this->ask('What is the name of the model you want to build?
- Use the form: Primary/Secondary/Tertiary/Names');
+ Use the form: Primary/Secondary/Tertiary/Name');
         $this->name = $this->normaliseName($this->name);
 
         $this->parseExcludes();
@@ -120,6 +120,7 @@ ________________________________________________________________________________
         foreach ($name as &$part) {
             $part = ucfirst($part);
         }
+        
         $name = implode('/', $name);
         return $name;
     }

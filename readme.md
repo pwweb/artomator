@@ -26,7 +26,7 @@ From the command line
 $ php artisan artomator
 ```
 
-You will be prompted to provide the name to be used for all the classes. This is generally namespaced and plural. i.e. `Namespace\Names`.
+You will be prompted to provide the name to be used for all the classes. This is generally namespaced and singular. i.e. `Namespace\Name`.
 
 This will create the following files:
 1. Model: `Namespace\Name::class`
