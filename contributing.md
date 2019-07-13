@@ -6,8 +6,7 @@ Contributions are accepted via Pull Requests on [Github](https://github.com/pwwe
 
 # Things you could do
 If you want to contribute but do not know where to start, this list provides some starting points.
-- Add license text
-- Remove rewriteRules.php
+- Write unit tests
 - Set up TravisCI, StyleCI, ScrutinizerCI
 - Write a comprehensive ReadMe
 
@@ -24,4 +23,4 @@ If you want to contribute but do not know where to start, this list provides som
 - **Send coherent history** - Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please [squash them](http://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages) before submitting.
 
 
-**Happy coding**!
+**Happy coding!**
