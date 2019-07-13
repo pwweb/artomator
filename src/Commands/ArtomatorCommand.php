@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArtomatorAllCommand extends Command
+class ArtomatorCommand extends Command
 {
     /**
      * The console command name.
@@ -64,9 +64,8 @@ ________________________________________________________________________________
         $this->name = $this->ask('What is the name of the model you want to build?
  Use the form: Primary/Secondary/Tertiary/Names');
         $this->name = $this->normaliseName($this->name);
-        die(Str::pluralStudly(str_replace('/', '', $this->name)));
 
-        $this->parseIncludes();
+        $this->parseExcludes();
 
         $this->schema = $this->option('schema');
 
@@ -81,21 +80,27 @@ ________________________________________________________________________________
         if (in_array('factory', $this->includes) === true) {
             $this->createFactory();
         }
+
         if (in_array('seeder', $this->includes) === true) {
             $this->createSeeder();
         }
+
         if (in_array('migration', $this->includes) === true) {
             $this->createMigration();
         }
+
         if (in_array('controller', $this->includes) === true) {
             $this->createController();
         }
+
         if (in_array('request', $this->includes) === true) {
             $this->createRequest();
         }
+
         if (in_array('query', $this->includes) === true) {
             $this->createQuery();
         }
+
         if (in_array('type', $this->includes) === true) {
             $this->createType();
         }
@@ -213,7 +218,7 @@ ________________________________________________________________________________
      *
      * @return string[]
      */
-    protected function parseIncludes()
+    protected function parseExcludes()
     {
         if ($this->option('exclude') !== null) {
             $exclusions = explode(',', $this->option('exclude'));
@@ -221,14 +226,6 @@ ________________________________________________________________________________
             foreach ($exclusions as $exclusion) {
                 unset($this->includes[array_search(trim($exclusion), $this->includes)]);
             }
-        }
-        if ($this->option('include') !== null) {
-            $inclusions = explode(',', $this->option('include'));
-
-            foreach ($inclusions as &$inclusion) {
-                $inclusion = trim($inclusion);
-            }
-            $this->includes = $inclusions;
         }
     }
 
@@ -246,7 +243,7 @@ ________________________________________________________________________________
             'make:factory',
             [
             'name' => "{$factory}Factory",
-            '--model' => $this->qualifyClass($this->name),
+            '--model' => "Models/" . $this->name,
             ]
         );
     }
@@ -259,13 +256,13 @@ ________________________________________________________________________________
     protected function createModel()
     {
         $this->info('Creating Model');
-        $factory = $this->name;
+        $model = $this->name;
 
         $this->call(
             'artomator:model',
             [
-            'name' => "{$factory}",
-            '--model' => $this->qualifyClass($this->name),
+            'name' => "{$model}",
+            '--schema' => $this->schema,
             ]
         );
     }
@@ -300,7 +297,7 @@ ________________________________________________________________________________
 
         if ($this->schema !== '') {
             $this->call(
-                'make:migration:schema',
+                'artomator:migration',
                 [
                 'name' => "create_{$table}_table",
                 '--schema' => $this->schema,
@@ -352,7 +349,7 @@ ________________________________________________________________________________
             'artomator:request',
             [
             'name' => $this->name,
-            '--model' => $this->qualifyClass($this->name),
+            '--model' => $this->name,
             ]
         );
     }
@@ -372,7 +369,7 @@ ________________________________________________________________________________
         $this->call(
             'artomator:query',
             [
-            'name' => "{$query}Query",
+            'name' => "{$query}",
             '--model' => $modelName,
             '--schema' => $this->schema,
             ]
@@ -394,7 +391,7 @@ ________________________________________________________________________________
         $this->call(
             'artomator:type',
             [
-            'name' => "{$type}Type",
+            'name' => "{$type}",
             '--model' => $modelName,
             '--schema' => $this->schema,
             ]
@@ -410,7 +407,6 @@ ________________________________________________________________________________
     {
         return [
             ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
-            ['include', 'i', InputOption::VALUE_OPTIONAL, 'Specify which "Generators" to run'],
             ['exclude', 'e', InputOption::VALUE_OPTIONAL, 'Specify which "Genertors" to exclude'],
             ['table', 't', InputOption::VALUE_OPTIONAL, 'Specify which table to inspect'],
         ];
