@@ -2,12 +2,12 @@
 
 namespace PWWEB\Artomator\Commands;
 
-use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
+use PWWEB\Artomator\Artomator;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArtomatorModelCommand extends GeneratorCommand
+class ArtomatorModelCommand extends Artomator
 {
     /**
      * The console command name.
@@ -95,61 +95,16 @@ class ArtomatorModelCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+
         $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
 
-        $replace = [];
-
-        $replace = array_merge(
-            $replace,
-            [
-            'DummyFullModelClass' => $this->qualifyClass($name),
-            'DummyPackagePlaceholder' => config('app.name'),
-            'DummySnakeCaseClass' => $table,
-            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
-            'DummyLicensePlaceholder' => config('artomator.license'),
-            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-            ]
-        );
+        $replace = parent::buildModelReplacements();
 
         return str_replace(
             array_keys($replace),
             array_values($replace),
             parent::buildClass($name)
         );
-    }
-
-    /**
-     * Get the formatted author(s) from the config file.
-     *
-     * @param string[] $authors Authors array.
-     *
-     * @return string Formmated string of authors.
-     */
-    protected function parseAuthors($authors)
-    {
-        if (is_array($authors) === false and is_string($authors) === false) {
-            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
-        }
-
-        $formatted = '';
-
-        if (is_array($authors) === true) {
-            if (is_string($authors[0]) === false) {
-                throw new InvalidArgumentException('The array of authors must be strings.');
-            }
-            $formatted .= array_shift($authors);
-
-            foreach ($authors as $author) {
-                if (is_string($author) === false) {
-                    throw new InvalidArgumentException('The array of authors must be strings.');
-                }
-                $formatted .= "\n * @author    " . $author;
-            }
-        } else {
-            $formatted .= $authors;
-        }
-
-        return $formatted;
     }
 
     /**

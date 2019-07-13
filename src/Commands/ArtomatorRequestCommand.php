@@ -2,11 +2,10 @@
 
 namespace PWWEB\Artomator\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Console\GeneratorCommand;
+use PWWEB\Artomator\Artomator;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArtomatorRequestCommand extends GeneratorCommand
+class ArtomatorRequestCommand extends Artomator
 {
     /**
      * The console command name.
@@ -58,83 +57,13 @@ class ArtomatorRequestCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $modelClass = $this->parseModel($this->option('model'));
-
-        $replace = [];
-        $replace = array_merge(
-            $replace,
-            [
-            'DummyFullModelClass' => $modelClass,
-            'DummyPackagePlaceholder' => config('app.name'),
-            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
-            'DummyLicensePlaceholder' => config('artomator.license'),
-            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-            ]
-        );
+        $replace = parent::buildModelReplacements();
 
         return str_replace(
             array_keys($replace),
             array_values($replace),
             parent::buildClass($name)
         );
-    }
-
-    /**
-     * Get the formatted author(s) from the config file.
-     *
-     * @param string[] $authors Authors array.
-     *
-     * @return string Formmated string of authors.
-     */
-    protected function parseAuthors($authors)
-    {
-        if (is_array($authors) === false and is_string($authors) === false) {
-            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
-        }
-
-        $formatted = '';
-
-        if (is_array($authors) === true) {
-            if (is_string($authors[0]) === false) {
-                throw new InvalidArgumentException('The array of authors must be strings.');
-            }
-            $formatted .= array_shift($authors);
-
-            foreach ($authors as $author) {
-                if (is_string($author) === false) {
-                    throw new InvalidArgumentException('The array of authors must be strings.');
-                }
-                $formatted .= "\n * @author    " . $author;
-            }
-        } else {
-            $formatted .= $authors;
-        }
-
-        return $formatted;
-    }
-
-    /**
-     * Get the fully-qualified model class name.
-     *
-     * @param string $model The model name to parse.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function parseModel($model)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
-
-        $model = trim(str_replace('/', '\\', $model), '\\');
-
-        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
-            $model = $rootNamespace . 'Models\\' . $model;
-        }
-
-        return $model;
     }
 
     /**
