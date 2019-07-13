@@ -4,17 +4,17 @@ namespace PWWEB\Artomator\Commands;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArtomatorAllCommand extends GeneratorCommand
+class ArtomatorAllCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator:all';
+    protected $name = 'artomator';
 
     /**
      * The console command description.
@@ -22,13 +22,6 @@ class ArtomatorAllCommand extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create a new Eloquent model, factory, migration, controller and resource class';
-
-    /**
-     * The type of class being generated.
-     *
-     * @var string
-     */
-    protected $type = 'Model';
 
     /**
      * The array of standard included generators.
@@ -54,42 +47,25 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected $schema;
 
     /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        $stub = 'model.stub';
-        $path = base_path() . config('artomator.stubPath');
-        $path = $path . $stub;
-
-        if (file_exists($path) === true) {
-            return $path;
-        } else {
-            return __DIR__ . '/Stubs/' . $stub;
-        }
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param string $rootNamespace The class name to return FQN for.
-     *
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace . '\Models';
-    }
-
-    /**
      * Execute the console command.
      *
      * @return boolean
      */
     public function handle()
     {
+        $this->info('
+                         _/                                            _/
+    _/_/_/  _/  _/_/  _/_/_/_/    _/_/    _/_/_/  _/_/      _/_/_/  _/_/_/_/    _/_/    _/  _/_/
+ _/    _/  _/_/        _/      _/    _/  _/    _/    _/  _/    _/    _/      _/    _/  _/_/
+_/    _/  _/          _/      _/    _/  _/    _/    _/  _/    _/    _/      _/    _/  _/
+ _/_/_/  _/            _/_/    _/_/    _/    _/    _/    _/_/_/      _/_/    _/_/    _/
+
+______________________________________________________________________________________________/');
+        $this->name = $this->ask('What is the name of the model you want to build?
+ Use the form: Primary/Secondary/Tertiary/Names');
+        $this->name = $this->normaliseName($this->name);
+        die(Str::pluralStudly(str_replace('/', '', $this->name)));
+
         $this->parseIncludes();
 
         $this->schema = $this->option('schema');
@@ -98,8 +74,8 @@ class ArtomatorAllCommand extends GeneratorCommand
             $this->schema = $this->insepctTable((string) $this->option('table'));
         }
 
-        if (in_array('model', $this->includes) === true && parent::handle() === false) {
-            return false;
+        if (in_array('model', $this->includes) === true ) {
+            $this->createModel();
         }
 
         if (in_array('factory', $this->includes) === true) {
@@ -124,6 +100,23 @@ class ArtomatorAllCommand extends GeneratorCommand
             $this->createType();
         }
         return true;
+    }
+
+    /**
+     * Normalise the name input to capitalise each.
+     *
+     * @param  string $name Input given by user.
+     *
+     * @return string Normalised name input.
+     */
+    protected function normaliseName($name)
+    {
+        $name = explode('/', $name);
+        foreach ($name as &$part) {
+            $part = ucfirst($part);
+        }
+        $name = implode('/', $name);
+        return $name;
     }
 
     /**
@@ -240,74 +233,6 @@ class ArtomatorAllCommand extends GeneratorCommand
     }
 
     /**
-     * Build the class with the given name.
-     *
-     * Remove the base controller import if we are already in base namespace.
-     *
-     * @param string $name The name of the model to build.
-     *
-     * @return string
-     */
-    protected function buildClass($name)
-    {
-        $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
-
-        $replace = [];
-
-        $replace = array_merge(
-            $replace,
-            [
-            'DummyFullModelClass' => $this->qualifyClass($name),
-            'DummyPackagePlaceholder' => config('app.name'),
-            'DummySnakeCaseClass' => $table,
-            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
-            'DummyLicensePlaceholder' => config('artomator.license'),
-            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-            ]
-        );
-
-        return str_replace(
-            array_keys($replace),
-            array_values($replace),
-            parent::buildClass($name)
-        );
-    }
-
-    /**
-     * Get the formatted author(s) from the config file.
-     *
-     * @param string[] $authors Authors array.
-     *
-     * @return string Formmated string of authors.
-     */
-    protected function parseAuthors($authors)
-    {
-        if (is_array($authors) === false and is_string($authors) === false) {
-            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
-        }
-
-        $formatted = '';
-
-        if (is_array($authors) === true) {
-            if (is_string($authors[0]) === false) {
-                throw new InvalidArgumentException('The array of authors must be strings.');
-            }
-            $formatted .= array_shift($authors);
-
-            foreach ($authors as $author) {
-                if (is_string($author) === false) {
-                    throw new InvalidArgumentException('The array of authors must be strings.');
-                }
-                $formatted .= "\n * @author    " . $author;
-            }
-        } else {
-            $formatted .= $authors;
-        }
-
-        return $formatted;
-    }
-
-    /**
      * Create a model factory for the model.
      *
      * @return void
@@ -315,13 +240,32 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createFactory()
     {
         $this->info('Creating Factory');
-        $factory = $this->argument('name');
+        $factory = $this->name;
 
         $this->call(
             'make:factory',
             [
             'name' => "{$factory}Factory",
-            '--model' => $this->qualifyClass($this->getNameInput()),
+            '--model' => $this->qualifyClass($this->name),
+            ]
+        );
+    }
+
+    /**
+     * Create a model.
+     *
+     * @return void
+     */
+    protected function createModel()
+    {
+        $this->info('Creating Model');
+        $factory = $this->name;
+
+        $this->call(
+            'artomator:model',
+            [
+            'name' => "{$factory}",
+            '--model' => $this->qualifyClass($this->name),
             ]
         );
     }
@@ -334,7 +278,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createSeeder()
     {
         $this->info('Creating Seeder');
-        $seeder = str_replace('/', '', $this->argument('name'));
+        $seeder = str_replace('/', '', $this->name);
 
         $this->call(
             'make:seeder',
@@ -352,7 +296,7 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createMigration()
     {
         $this->info('Creating Migration');
-        $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->argument('name'))));
+        $table = Str::snake(Str::pluralStudly(str_replace('/', '', $this->name)));
 
         if ($this->schema !== '') {
             $this->call(
@@ -381,9 +325,9 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createController()
     {
         $this->info('Creating Controller');
-        $controller = $this->argument('name');
+        $controller = $this->name;
 
-        $modelName = $this->getNameInput();
+        $modelName = $this->name;
 
         $this->call(
             'artomator:controller',
@@ -407,8 +351,8 @@ class ArtomatorAllCommand extends GeneratorCommand
         $this->call(
             'artomator:request',
             [
-            'name' => $this->getNameInput(),
-            '--model' => $this->qualifyClass($this->getNameInput()),
+            'name' => $this->name,
+            '--model' => $this->qualifyClass($this->name),
             ]
         );
     }
@@ -421,9 +365,9 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createQuery()
     {
         $this->info('Creating Query');
-        $query = Str::pluralStudly((string) $this->argument('name'));
+        $query = Str::pluralStudly((string) $this->name);
 
-        $modelName = $this->getNameInput();
+        $modelName = $this->name;
 
         $this->call(
             'artomator:query',
@@ -443,9 +387,9 @@ class ArtomatorAllCommand extends GeneratorCommand
     protected function createType()
     {
         $this->info('Creating Type');
-        $type = $this->argument('name');
+        $type = $this->name;
 
-        $modelName = $this->getNameInput();
+        $modelName = $this->name;
 
         $this->call(
             'artomator:type',
