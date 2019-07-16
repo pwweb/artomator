@@ -36,7 +36,7 @@ class ArtomatorServiceProvider extends ServiceProvider
         // Register the service the package provides.
         $this->app->singleton(
             'artomator',
-            function () {
+            function() {
                 return new Artomator();
             }
         );
