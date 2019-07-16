@@ -37,7 +37,7 @@ abstract class Artomator extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace = [])
     {
-        if($this->modelClass == '') {
+        if ($this->modelClass == '') {
             $this->modelClass = $this->parseModel((string) $this->getNameInput());
         }
 

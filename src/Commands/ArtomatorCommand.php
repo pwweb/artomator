@@ -73,7 +73,7 @@ ________________________________________________________________________________
             $this->schema = $this->insepctTable((string) $this->option('table'));
         }
 
-        if (in_array('model', $this->includes) === true ) {
+        if (in_array('model', $this->includes) === true) {
             $this->createModel();
         }
 
@@ -155,7 +155,7 @@ ________________________________________________________________________________
         }
 
         $results = array_map(
-            function ($field) {
+            function($field) {
                 return $this->addArg($field);
             },
             $results

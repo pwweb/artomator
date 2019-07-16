@@ -77,10 +77,10 @@ class ArtomatorControllerCommand extends Artomator
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') ||
-             ! $this->option('force')) &&
+        if ((!$this->hasOption('force') ||
+             !$this->option('force')) &&
              $this->alreadyExists($name)) {
-            $this->error($this->type.' already exists!');
+            $this->error($this->type . ' already exists!');
             return false;
         }
         // Next, we will generate the path to the location where this class' file should get
@@ -88,7 +88,7 @@ class ArtomatorControllerCommand extends Artomator
         // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
         $this->files->put($path, $this->buildClass($className));
-        $this->info($this->type.' created successfully.');
+        $this->info($this->type . ' created successfully.');
     }
 
     /**
