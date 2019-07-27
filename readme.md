@@ -191,6 +191,7 @@ If you discover any security related issues, please email richard@pw-websolution
 
 - [Richard Browne][link-author]
 - [All Contributors][link-contributors]
+- Robot icon made by [Roundicons][link-robot] from [www.flaticon.com](https://www.flaticon.com)
 
 ## License
 
@@ -206,3 +207,4 @@ Copyright &copy; pw-websolutions.com. Please see the [license file](license.md) 
 [link-styleci]: https://styleci.io/repos/12345678 -->
 [link-author]: https://github.com/pwweb
 [link-contributors]: ../../contributors
+[link-robot]: https://www.flaticon.com/authors/roundicons
