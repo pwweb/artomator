@@ -85,7 +85,7 @@ class SyntaxBuilder
         }
 
         $fields = array_map(
-            function ($field) {
+            function($field) {
                 return $this->addArg($field);
             },
             $schema
@@ -123,7 +123,7 @@ class SyntaxBuilder
         }
 
         $fields = array_map(
-            function ($field) {
+            function($field) {
                 return $this->addResolve($field);
             },
             $schema
@@ -161,7 +161,7 @@ class SyntaxBuilder
         }
 
         $fields = array_map(
-            function ($field) {
+            function($field) {
                 return $this->addField($field);
             },
             $schema
@@ -206,7 +206,7 @@ class SyntaxBuilder
         }
 
         $fields = array_map(
-            function ($field) {
+            function($field) {
                 return $this->addData($field);
             },
             $schema
@@ -247,8 +247,11 @@ class SyntaxBuilder
                 break;
             case 'integer':
             case 'int':
+            case 'int unsigned':
                 $type = 'int';
                 break;
+            case 'tinyint':
+                $type = 'boolean';
             default:
                 break;
         }

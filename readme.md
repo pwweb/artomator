@@ -23,8 +23,10 @@ $ composer require pwweb/artomator --dev
 From the command line
 
 ``` bash
-$ php artisan artomator:all Namespace/Name
+$ php artisan artomator
 ```
+
+You will be prompted to provide the name to be used for all the classes. This is generally namespaced and singular. i.e. `Namespace\Name`.
 
 This will create the following files:
 1. Model: `Namespace\Name::class`
@@ -39,26 +41,19 @@ This will create the following files:
 Optionally you can provide a comma separated list of generators to include or exclude:
 
 ``` bash
-$ php artisan artmoator::all Namespace/Name -e "factory,seeder,migration"
+$ php artisan artomator -e "factory,seeder,migration"
 ```
 This will exclude the Factory, Seeder and Migration from being generated.
 
-``` bash
-$ php artisan artmoator::all Namespace/Name -i "factory,seeder,migration"
-```
-This will result in **only** the Factory, Seeder and Migration being generated.
-
-**Note:** Setting both the include and exclude option will result in the include taking the precedence and only doing the generators listed in the include option.
-
 ### Including schema
 
-You can optionally provide a `schama` option to the command `artomator:all` that will allow you to specify the fields for the `migration` during the initial generation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
+You can optionally provide the `schama` option to the command `artomator` that will allow you to specify the fields for the `migration` during the initial generation. This utilises the package [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended).
 
 It will also use the schema to populate the `arguments()` and `resolvers()` methods in the `GraphQL::Query`. It will also use the schema to populate the `fields()` method in the `GraphQL::Type`. Finally it will also use the schema to populate the `store()` and `update()` methods in the `controller`.
 
 
 ```bash
-php artisan artomator:all Users --schema="username:string, email:string:unique"
+php artisan artomator --schema="username:string, email:string:unique"
 ```
 
 Notice the format that we use, when declaring any applicable schema: a comma-separate list...
@@ -91,7 +86,8 @@ Using the schema from earlier...
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateUsersTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -124,7 +120,7 @@ class CreateUsersTable extends Migration {
 This also means that you can use the [laracasts/generators](https://github.com/laracasts/Laravel-5-Generators-Extended) as per their instructions separately in order to add/delete/update migrations following the initial generation.
 
 ### Build From Table
-In a similar fashion to the schema method, it's also possible to provide a table name of an existing table and then the generator will inspect the table and reverse engineer the schema from this.
+In a similar fashion to the `schema` option, it's also possible to provide a table name of an existing table and then the generator will inspect the table and reverse engineer the schema from this.
 
 It's important to keep in mind that this only determines the schema of the table, not the table name and the primary key etc. In fact this will ignore the primary key field and replace with a standard `id` field.
 
@@ -132,7 +128,7 @@ That being said, it's a shortcut for creating a number of files with ease by pro
 
 From the command line:
 ``` bash
-$ php artisan artomator:all Namespace/Name -t TableName
+$ php artisan artomator -t "TableName"
 ```
 
 This will populate the `schema` from the table and pass this to the generators called. Other options can be used as detailed elsewhere, but this will supersede any `schema` passed through the command line.
