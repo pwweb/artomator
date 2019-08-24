@@ -3,103 +3,177 @@
 namespace PWWEB\Artomator;
 
 use Illuminate\Support\ServiceProvider;
+use PWWEB\Artomator\Commands\API\APIControllerGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APIGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APIRequestsGeneratorCommand;
+use PWWEB\Artomator\Commands\API\TestsGeneratorCommand;
+use PWWEB\Artomator\Commands\APIScaffoldGeneratorCommand;
+use PWWEB\Artomator\Commands\Common\MigrationGeneratorCommand;
+use PWWEB\Artomator\Commands\Common\ModelGeneratorCommand;
+use PWWEB\Artomator\Commands\Common\RepositoryGeneratorCommand;
+use PWWEB\Artomator\Commands\Publish\GeneratorPublishCommand;
+use PWWEB\Artomator\Commands\Publish\LayoutPublishCommand;
+use PWWEB\Artomator\Commands\Publish\PublishTemplateCommand;
+use PWWEB\Artomator\Commands\Publish\VueJsLayoutPublishCommand;
+use PWWEB\Artomator\Commands\RollbackGeneratorCommand;
+use PWWEB\Artomator\Commands\Scaffold\ControllerGeneratorCommand;
+use PWWEB\Artomator\Commands\Scaffold\RequestsGeneratorCommand;
+use PWWEB\Artomator\Commands\Scaffold\ScaffoldGeneratorCommand;
+use PWWEB\Artomator\Commands\Scaffold\ViewsGeneratorCommand;
+use PWWEB\Artomator\Commands\VueJs\VueJsGeneratorCommand;
 
 class ArtomatorServiceProvider extends ServiceProvider
 {
     /**
-     * Perform post-registration booting of services.
+     * Bootstrap the application services.
      *
      * @return void
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'pwweb');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'pwweb');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $configPath = __DIR__.'/../config/artomator.php';
 
-        // Publishing is only necessary when using the CLI.
-        if ($this->app->runningInConsole() === true) {
-            $this->bootForConsole();
-        }
+        $this->publishes(
+            [
+            $configPath => config_path('pwweb/artomator.php'),
+            ]
+        );
     }
 
     /**
-     * Register any package services.
+     * Register the application services.
      *
      * @return void
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/artomator.php', 'artomator');
-
-        // Register the service the package provides.
         $this->app->singleton(
-            'artomator',
-            function() {
-                return new Artomator();
+            'artomator.publish', function ($app) {
+                return new GeneratorPublishCommand();
             }
         );
-    }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['artomator'];
-    }
-
-    /**
-     * Console-specific booting.
-     *
-     * @return void
-     */
-    protected function bootForConsole()
-    {
-        // Publishing the configuration file.
-        $this->publishes(
-            [
-            __DIR__ . '/../config/artomator.php' => config_path('artomator.php'),
-            ],
-            'artomator.config'
+        $this->app->singleton(
+            'artomator.api', function ($app) {
+                return new APIGeneratorCommand();
+            }
         );
 
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/pwweb'),
-        ], 'artomator.views');*/
-
-        // Publishing stubs.
-        $this->publishes(
-            [
-            __DIR__ . '/Commands/stubs' => public_path('vendor/pwweb'),
-            ],
-            'artomator.stubs'
+        $this->app->singleton(
+            'artomator.scaffold', function ($app) {
+                return new ScaffoldGeneratorCommand();
+            }
         );
 
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/pwweb'),
-        ], 'artomator.views');*/
+        $this->app->singleton(
+            'artomator.publish.layout', function ($app) {
+                return new LayoutPublishCommand();
+            }
+        );
 
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/pwweb'),
-        ], 'artomator.views');*/
+        $this->app->singleton(
+            'artomator.publish.templates', function ($app) {
+                return new PublishTemplateCommand();
+            }
+        );
 
-        // Registering package commands.
+        $this->app->singleton(
+            'artomator.api_scaffold', function ($app) {
+                return new APIScaffoldGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.migration', function ($app) {
+                return new MigrationGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.model', function ($app) {
+                return new ModelGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.repository', function ($app) {
+                return new RepositoryGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.api.controller', function ($app) {
+                return new APIControllerGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.api.requests', function ($app) {
+                return new APIRequestsGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.api.tests', function ($app) {
+                return new TestsGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.scaffold.controller', function ($app) {
+                return new ControllerGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.scaffold.requests', function ($app) {
+                return new RequestsGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.scaffold.views', function ($app) {
+                return new ViewsGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.rollback', function ($app) {
+                return new RollbackGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
+            'artomator.vuejs', function ($app) {
+                return new VueJsGeneratorCommand();
+            }
+        );
+        $this->app->singleton(
+            'artomator.publish.vuejs', function ($app) {
+                return new VueJsLayoutPublishCommand();
+            }
+        );
+
         $this->commands(
             [
-            Commands\ArtomatorCommand::class,
-            Commands\ArtomatorModelCommand::class,
-            Commands\ArtomatorControllerCommand::class,
-            Commands\ArtomatorMigrationCommand::class,
-            Commands\ArtomatorQueryCommand::class,
-            Commands\ArtomatorRequestCommand::class,
-            Commands\ArtomatorTypeCommand::class,
+            'artomator.publish',
+            'artomator.api',
+            'artomator.scaffold',
+            'artomator.api_scaffold',
+            'artomator.publish.layout',
+            'artomator.publish.templates',
+            'artomator.migration',
+            'artomator.model',
+            'artomator.repository',
+            'artomator.api.controller',
+            'artomator.api.requests',
+            'artomator.api.tests',
+            'artomator.scaffold.controller',
+            'artomator.scaffold.requests',
+            'artomator.scaffold.views',
+            'artomator.rollback',
+            'artomator.vuejs',
+            'artomator.publish.vuejs',
             ]
         );
     }
