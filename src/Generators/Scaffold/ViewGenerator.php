@@ -26,7 +26,7 @@ class ViewGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathViews;
-        $this->templateType = config('pwweb.artomator.templates', 'adminlte-templates');
+        $this->templateType = config('pwweb.artomator.templates', 'coreui-templates');
     }
 
     public function generate()

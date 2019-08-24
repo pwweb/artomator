@@ -35,7 +35,7 @@ class LayoutPublishCommand extends PublishBaseCommand
     private function copyView()
     {
         $viewsPath = config('pwweb.artomator.path.views', resource_path('views/'));
-        $templateType = config('pwweb.artomator.templates', 'adminlte-templates');
+        $templateType = config('pwweb.artomator.templates', 'coreui-templates');
 
         $this->createDirectories($viewsPath);
 

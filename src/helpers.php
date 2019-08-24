@@ -91,11 +91,11 @@ if (!function_exists('get_template_file_path')) {
 
         $templatesPath = config(
             'pwweb.artomator.path.templates_dir',
-            resource_path('infyom/infyom-generator-templates/')
+            resource_path('pwweb/artomator-templates/')
         );
 
         $path = $templatesPath.$templateName.'.stub';
-
+        
         if (file_exists($path)) {
             return $path;
         }
