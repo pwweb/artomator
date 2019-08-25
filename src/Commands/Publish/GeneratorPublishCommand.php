@@ -60,7 +60,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $createdAtField = config('pwweb.artomator.timestamps.created_at', 'created_at');
         $updatedAtField = config('pwweb.artomator.timestamps.updated_at', 'updated_at');
 
-        $templateData = get_template('test.api_test_trait', 'laravel-generator');
+        $templateData = get_template('test.api_test_trait', 'artomator');
 
         $templateData = str_replace('$NAMESPACE_TESTS$', $testsNameSpace, $templateData);
         $templateData = str_replace('$TIMESTAMPS$', "['$createdAtField', '$updatedAtField']", $templateData);
