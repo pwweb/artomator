@@ -95,7 +95,7 @@ if (!function_exists('get_template_file_path')) {
         );
 
         $path = $templatesPath.$templateName.'.stub';
-        
+
         if (file_exists($path)) {
             return $path;
         }
