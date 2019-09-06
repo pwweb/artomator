@@ -2,14 +2,13 @@
 
 namespace PWWEB\Artomator\Commands;
 
-use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
+use PWWEB\Artomator\Artomator;
 use Laracasts\Generators\Migrations\SchemaParser;
 use PWWEB\Artomator\Migrations\SyntaxBuilder;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArtomatorControllerCommand extends GeneratorCommand
+class ArtomatorControllerCommand extends Artomator
 {
     /**
      * The console command name.
@@ -31,13 +30,6 @@ class ArtomatorControllerCommand extends GeneratorCommand
      * @var string
      */
     protected $type = 'Controller';
-
-    /**
-     * The package of class being generated.
-     *
-     * @var string
-     */
-    protected $package = null;
 
     /**
      * The default stub file to be used.
@@ -73,6 +65,30 @@ class ArtomatorControllerCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Http\Controllers';
+    }
+
+    public function handle()
+    {
+        $name = $this->getNameInput();
+        $name .= preg_match('/Controller$/', $name) ? "" : "Controller";
+
+        $className = $this->qualifyClass($name);
+        $path = $this->getPath($className);
+        // First we will check to see if the class already exists. If it does, we don't want
+        // to create the class and overwrite the user's code. So, we will bail out so the
+        // code is untouched. Otherwise, we will continue generating this class' files.
+        if ((!$this->hasOption('force') ||
+             !$this->option('force')) &&
+             $this->alreadyExists($name)) {
+            $this->error($this->type . ' already exists!');
+            return false;
+        }
+        // Next, we will generate the path to the location where this class' file should get
+        // written. Then, we will build the class and make the proper replacements on the
+        // stub files so that it gets the correctly formatted namespace and class name.
+        $this->makeDirectory($path);
+        $this->files->put($path, $this->buildClass($className));
+        $this->info($this->type . ' created successfully.');
     }
 
     /**
@@ -117,16 +133,16 @@ class ArtomatorControllerCommand extends GeneratorCommand
         if ($this->option('schema') !== null) {
             $schema = $this->option('schema');
             $schema = (new SchemaParser())->parse($schema);
+            $syntax = new SyntaxBuilder();
+            $data = $syntax->createDataSchema($schema);
         } else {
-            return $replace;
+            $data = "";
         }
-
-        $syntax = new SyntaxBuilder();
 
         return array_merge(
             $replace,
             [
-            '{{schema_data}}' => $syntax->createDataSchema($schema),
+            '{{schema_data}}' => $data,
             ]
         );
     }
@@ -138,123 +154,29 @@ class ArtomatorControllerCommand extends GeneratorCommand
      *
      * @return array
      */
-    protected function buildModelReplacements(array $replace)
+    protected function buildModelReplacements(array $replace = [])
     {
         if (is_null($this->option('model')) === true) {
-            $modelClass = $this->parseModel((string) $this->getNameInput());
-            $requestClass = $this->parseRequest((string) $this->getNameInput());
+            $this->modelClass = $this->parseModel((string) $this->getNameInput());
+            $modelName = $this->getNameInput();
+            $this->requestClass = $this->parseRequest((string) $this->getNameInput());
         } else {
-            $modelClass = $this->parseModel((string) $this->option('model'));
-            $requestClass = $this->parseRequest((string) $this->option('model'));
+            $this->modelClass = $this->parseModel((string) $this->option('model'));
+            $modelName = $this->option('model');
+            $this->requestClass = $this->parseRequest((string) $this->option('model'));
         }
 
-        if (class_exists($modelClass) === false) {
-            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true) === true) {
-                $this->call('artomator:all', ['name' => $modelClass, 'include' => 'model']);
+        if (class_exists($this->modelClass) === false) {
+            if ($this->confirm("A {$this->modelClass} model does not exist. Do you want to generate it?", true) === true) {
+                $this->call('artomator:model', [
+                    'name' => $modelName,
+                ]);
             } else {
                 $this->stub = 'controller.stub';
             }
         }
 
-        return array_merge(
-            $replace,
-            [
-            'DummyFullModelClass' => $modelClass,
-            'DummyRequestClass' => $requestClass,
-            'DummyModelClass' => class_basename($modelClass),
-            'DummyModelVariable' => lcfirst(class_basename($modelClass)),
-            'DummyPackageVariable' => $this->package,
-            'DummyPackagePlaceholder' => config('app.name'),
-            'DummyCopyrightPlaceholder' => config('artomator.copyright'),
-            'DummyLicensePlaceholder' => config('artomator.license'),
-            'DummyAuthorPlaceholder' => $this->parseAuthors(config('artomator.authors')),
-            ]
-        );
-    }
-
-    /**
-     * Get the formatted author(s) from the config file.
-     *
-     * @param string[] $authors Authors array.
-     *
-     * @return string Formmated string of authors.
-     */
-    protected function parseAuthors($authors)
-    {
-        if (is_array($authors) === false and is_string($authors) === false) {
-            throw new InvalidArgumentException('Authors must be an array of strings or a string.');
-        }
-
-        $formatted = '';
-
-        if (is_array($authors) === true) {
-            if (is_string($authors[0]) === false) {
-                throw new InvalidArgumentException('The array of authors must be strings.');
-            }
-            $formatted .= array_shift($authors);
-
-            foreach ($authors as $author) {
-                if (is_string($author) === false) {
-                    throw new InvalidArgumentException('The array of authors must be strings.');
-                }
-                $formatted .= "\n * @author    " . $author;
-            }
-        } else {
-            $formatted .= $authors;
-        }
-
-        return $formatted;
-    }
-
-    /**
-     * Get the fully-qualified model class name.
-     *
-     * @param string $model The model to return the FQN for.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function parseModel($model)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
-
-        $this->package = (trim(str_replace('/', '.', substr($model, 0, strrpos($model, '/')))) ?? null);
-        $this->package = (empty($this->package) === true ? $this->package : (strtolower($this->package) . "."));
-
-        $model = trim(str_replace('/', '\\', $model), '\\');
-
-        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
-            $model = $rootNamespace . 'Models\\' . $model;
-        }
-
-        return $model;
-    }
-
-    /**
-     * Get the fully-qualified request class name.
-     *
-     * @param string $model The model to return the FQN for.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function parseRequest($model)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $model) === true) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
-        }
-
-        $model = trim(str_replace('/', '\\', $model), '\\');
-
-        if (Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace()) === false) {
-            $model = $rootNamespace . 'Http\\Requests\\' . $model;
-        }
-
-        return $model;
+        return parent::buildModelReplacements($replace);
     }
 
     /**
