@@ -6,51 +6,57 @@ use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Generators\BaseGenerator;
 use PWWEB\Artomator\Utils\FileUtil;
 
-class APIControllerGenerator extends BaseGenerator
+class APIQueryGenerator extends BaseGenerator
 {
-    /** @var CommandData */
+    /**
+     * @var CommandData
+     */
     private $commandData;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $path;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $fileName;
 
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiController;
-        $this->fileName = $this->commandData->modelName.'APIController.php';
+        $this->path = $commandData->config->pathApiQuery;
+        $this->fileName = $this->commandData->modelName.'Query.php';
     }
 
     public function generate()
     {
         if ($this->commandData->getOption('repositoryPattern')) {
-            $templateName = 'api_controller';
+            $templateName = 'api_query';
         } else {
-            $templateName = 'model_api_controller';
+            $templateName = 'model_api_query';
         }
 
-        $templateData = get_template("api.controller.$templateName", 'artomator');
+        $templateData = get_template("api.query.$templateName", 'artomator');
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = $this->fillDocs($templateData);
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
-        $this->commandData->commandComment("\nAPI Controller created: ");
+        $this->commandData->commandComment("\nAPI Query created: ");
         $this->commandData->commandInfo($this->fileName);
     }
 
     private function fillDocs($templateData)
     {
-        $methods = ['controller', 'index', 'store', 'show', 'update', 'destroy'];
+        $methods = ['query', 'index', 'store', 'show', 'update', 'destroy'];
 
         if ($this->commandData->getAddOn('swagger')) {
-            $templatePrefix = 'controller_docs';
+            $templatePrefix = 'query_docs';
             $templateType = 'swagger-generator';
         } else {
-            $templatePrefix = 'api.docs.controller';
+            $templatePrefix = 'api.docs.query';
             $templateType = 'artomator';
         }
 
@@ -67,7 +73,7 @@ class APIControllerGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('API Controller file deleted: '.$this->fileName);
+            $this->commandData->commandComment('API Query file deleted: '.$this->fileName);
         }
     }
 }

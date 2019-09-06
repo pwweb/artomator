@@ -4,23 +4,23 @@ namespace PWWEB\Artomator\Commands\API;
 
 use PWWEB\Artomator\Commands\BaseCommand;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\API\APIRequestGenerator;
+use PWWEB\Artomator\Generators\API\APIMutationGenerator;
 
-class APIRequestsGeneratorCommand extends BaseCommand
+class APIMutationsGeneratorCommand extends BaseCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator.api:requests';
+    protected $name = 'artomator.api:mutations';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create an api request command';
+    protected $description = 'Create an api mutation command';
 
     /**
      * Create a new command instance.
@@ -41,7 +41,7 @@ class APIRequestsGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $controllerGenerator = new APIRequestGenerator($this->commandData);
+        $controllerGenerator = new APIMutationGenerator($this->commandData);
         $controllerGenerator->generate();
 
         $this->performPostActions();

@@ -4,24 +4,23 @@ namespace PWWEB\Artomator\Commands\API;
 
 use PWWEB\Artomator\Commands\BaseCommand;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\API\APITestGenerator;
-use PWWEB\Artomator\Generators\RepositoryTestGenerator;
+use PWWEB\Artomator\Generators\API\APITypeGenerator;
 
-class TestsGeneratorCommand extends BaseCommand
+class APITypeGeneratorCommand extends BaseCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator.api:tests';
+    protected $name = 'artomator.api:type';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create tests command';
+    protected $description = 'Create type command';
 
     /**
      * Create a new command instance.
@@ -42,11 +41,8 @@ class TestsGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $repositoryTestGenerator = new RepositoryTestGenerator($this->commandData);
-        $repositoryTestGenerator->generate();
-
-        $apiTestGenerator = new APITestGenerator($this->commandData);
-        $apiTestGenerator->generate();
+        $apiTypeGenerator = new APITypeGenerator($this->commandData);
+        $apiTypeGenerator->generate();
 
         $this->performPostActions();
     }

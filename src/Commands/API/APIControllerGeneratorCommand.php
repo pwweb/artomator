@@ -4,23 +4,23 @@ namespace PWWEB\Artomator\Commands\API;
 
 use PWWEB\Artomator\Commands\BaseCommand;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\API\APIControllerGenerator;
+use PWWEB\Artomator\Generators\API\APIQueryGenerator;
 
-class APIControllerGeneratorCommand extends BaseCommand
+class APIQueryGeneratorCommand extends BaseCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator.api:controller';
+    protected $name = 'artomator.api:query';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create an api controller command';
+    protected $description = 'Create an api query command';
 
     /**
      * Create a new command instance.
@@ -41,8 +41,8 @@ class APIControllerGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $controllerGenerator = new APIControllerGenerator($this->commandData);
-        $controllerGenerator->generate();
+        $queryGenerator = new APIQueryGenerator($this->commandData);
+        $queryGenerator->generate();
 
         $this->performPostActions();
     }

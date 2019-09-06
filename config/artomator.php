@@ -25,11 +25,13 @@ return [
 
         'request'           => app_path('Http/Requests/'),
 
-        'api_request'       => app_path('Http/Requests/API/'),
+        'api_mutation'       => app_path('Http/GraphQL/Mutation/'),
 
         'controller'        => app_path('Http/Controllers/'),
 
-        'api_controller'    => app_path('Http/Controllers/API/'),
+        'api_query'         => app_path('Http/GraphQL/Query/'),
+
+        'api_type'         => app_path('Http/GraphQL/Type/'),
 
         'repository_test'   => base_path('tests/Repositories/'),
 
