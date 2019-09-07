@@ -34,10 +34,10 @@ class GeneratorConfig
     public $pathSeeder;
     public $pathDatabaseSeeder;
 
-    public $pathApiController;
-    public $pathApiRequest;
+    public $pathApiQuery;
+    public $pathApiMutation;
     public $pathApiRoutes;
-    public $pathApiTests;
+    public $pathApiType;
 
     public $pathController;
     public $pathRequest;
