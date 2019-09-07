@@ -32,11 +32,7 @@ class APIQueryGenerator extends BaseGenerator
 
     public function generate()
     {
-        if ($this->commandData->getOption('repositoryPattern')) {
-            $templateName = 'api_query';
-        } else {
-            $templateName = 'model_api_query';
-        }
+        $templateName = 'api_query';
 
         $templateData = get_template("api.query.$templateName", 'artomator');
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
@@ -50,7 +46,7 @@ class APIQueryGenerator extends BaseGenerator
 
     private function fillDocs($templateData)
     {
-        $methods = ['query', 'index', 'store', 'show', 'update', 'destroy'];
+        $methods = ['query'];
 
         if ($this->commandData->getAddOn('swagger')) {
             $templatePrefix = 'query_docs';

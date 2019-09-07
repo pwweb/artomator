@@ -1,6 +1,6 @@
 <?php
 
-namespace $NAMESPACE_API_REQUEST$;
+namespace $NAMESPACE_API_MUTATION$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use PWWEB\Artomator\Request\APIRequest;

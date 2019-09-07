@@ -229,15 +229,15 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$NAMESPACE_DATATABLES$', $this->nsDataTables);
         $commandData->addDynamicVariable('$NAMESPACE_MODEL_EXTEND$', $this->nsModelExtend);
 
-        $commandData->addDynamicVariable('$NAMESPACE_API_CONTROLLER$', $this->nsApiController);
-        $commandData->addDynamicVariable('$NAMESPACE_API_REQUEST$', $this->nsApiRequest);
+        $commandData->addDynamicVariable('$NAMESPACE_API_QUERY$', $this->nsApiController);
+        $commandData->addDynamicVariable('$NAMESPACE_API_MUTATION$', $this->nsApiRequest);
 
         $commandData->addDynamicVariable('$NAMESPACE_BASE_CONTROLLER$', $this->nsBaseController);
         $commandData->addDynamicVariable('$NAMESPACE_CONTROLLER$', $this->nsController);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST$', $this->nsRequest);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST_BASE$', $this->nsRequestBase);
 
-        $commandData->addDynamicVariable('$NAMESPACE_API_TESTS$', $this->nsApiTests);
+        $commandData->addDynamicVariable('$NAMESPACE_API_TYPE$', $this->nsApiTests);
         $commandData->addDynamicVariable('$NAMESPACE_REPOSITORIES_TESTS$', $this->nsRepositoryTests);
         $commandData->addDynamicVariable('$NAMESPACE_TESTS$', $this->nsTests);
 

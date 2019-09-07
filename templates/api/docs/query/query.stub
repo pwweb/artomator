@@ -1,4 +1,4 @@
 /**
- * Class $MODEL_NAME$Controller
- * @package $NAMESPACE_API_CONTROLLER$
+ * Class $MODEL_NAME$Query
+ * @package $NAMESPACE_API_QUERY$
  */
