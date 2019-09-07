@@ -9,14 +9,6 @@ use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
-// use $NAMESPACE_API_MUTATION$\Create$MODEL_NAME$APIRequest;
-// use $NAMESPACE_API_MUTATION$\Update$MODEL_NAME$APIRequest;
-// use $NAMESPACE_MODEL$\$MODEL_NAME$;
-// use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
-// use Illuminate\Http\Request;
-// use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
-// use Response;
-
 class $MODEL_NAME_PLURAL$Query extends Query
 {
     /**
@@ -39,7 +31,7 @@ class $MODEL_NAME_PLURAL$Query extends Query
     }
 
     /**
-     * Defin the available arguments.
+     * Define the available arguments.
      *
      * @return array Available arguments.
      */
