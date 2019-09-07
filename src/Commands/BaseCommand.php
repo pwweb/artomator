@@ -5,10 +5,10 @@ namespace PWWEB\Artomator\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\API\APIControllerGenerator;
-use PWWEB\Artomator\Generators\API\APIRequestGenerator;
+use PWWEB\Artomator\Generators\API\APIQueryGenerator;
+use PWWEB\Artomator\Generators\API\APIMutationGenerator;
 use PWWEB\Artomator\Generators\API\APIRoutesGenerator;
-use PWWEB\Artomator\Generators\API\APITestGenerator;
+use PWWEB\Artomator\Generators\API\APITypeGenerator;
 use PWWEB\Artomator\Generators\FactoryGenerator;
 use PWWEB\Artomator\Generators\MigrationGenerator;
 use PWWEB\Artomator\Generators\ModelGenerator;
@@ -88,14 +88,14 @@ class BaseCommand extends Command
 
     public function generateAPIItems()
     {
-        if (!$this->isSkip('requests') and !$this->isSkip('api_requests')) {
-            $requestGenerator = new APIRequestGenerator($this->commandData);
-            $requestGenerator->generate();
+        if (!$this->isSkip('mutations') and !$this->isSkip('api_mutations')) {
+            $mutationGenerator = new APIMutationGenerator($this->commandData);
+            $mutationGenerator->generate();
         }
 
-        if (!$this->isSkip('controllers') and !$this->isSkip('api_controller')) {
-            $controllerGenerator = new APIControllerGenerator($this->commandData);
-            $controllerGenerator->generate();
+        if (!$this->isSkip('queries') and !$this->isSkip('api_query')) {
+            $queryGenerator = new APIQueryGenerator($this->commandData);
+            $queryGenerator->generate();
         }
 
         if (!$this->isSkip('routes') and !$this->isSkip('api_routes')) {
@@ -103,14 +103,9 @@ class BaseCommand extends Command
             $routesGenerator->generate();
         }
 
-        if (!$this->isSkip('tests') and $this->commandData->getAddOn('tests')) {
-            if ($this->commandData->getOption('repositoryPattern')) {
-                $repositoryTestGenerator = new RepositoryTestGenerator($this->commandData);
-                $repositoryTestGenerator->generate();
-            }
-
-            $apiTestGenerator = new APITestGenerator($this->commandData);
-            $apiTestGenerator->generate();
+        if (!$this->isSkip('types') and !$this->isSkip('api_types')) {
+            $typeGenerator = new APITypeGenerator($this->commandData);
+            $typeGenerator->generate();
         }
     }
 
@@ -259,7 +254,7 @@ class BaseCommand extends Command
             ['primary', null, InputOption::VALUE_REQUIRED, 'Custom primary key'],
             ['prefix', null, InputOption::VALUE_REQUIRED, 'Prefix for all files'],
             ['paginate', null, InputOption::VALUE_REQUIRED, 'Pagination for index.blade.php'],
-            ['skip', null, InputOption::VALUE_REQUIRED, 'Skip Specific Items to Generate (migration,model,controllers,api_controller,scaffold_controller,repository,requests,api_requests,scaffold_requests,routes,api_routes,scaffold_routes,views,tests,menu,dump-autoload,seeders)'],
+            ['skip', null, InputOption::VALUE_REQUIRED, 'Skip Specific Items to Generate (migration,model,controllers,api_query,scaffold_controller,repository,requests,api_mutations,scaffold_requests,routes,api_routes,scaffold_routes,views,api_types,menu,dump-autoload,seeders)'],
             ['datatables', null, InputOption::VALUE_REQUIRED, 'Override datatables settings'],
             ['views', null, InputOption::VALUE_REQUIRED, 'Specify only the views you want generated: index,create,edit,show'],
             ['relations', null, InputOption::VALUE_NONE, 'Specify if you want to pass relationships for fields'],

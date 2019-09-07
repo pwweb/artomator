@@ -3,10 +3,10 @@
 namespace PWWEB\Artomator;
 
 use Illuminate\Support\ServiceProvider;
-use PWWEB\Artomator\Commands\API\APIControllerGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APIQueryGeneratorCommand;
 use PWWEB\Artomator\Commands\API\APIGeneratorCommand;
-use PWWEB\Artomator\Commands\API\APIRequestsGeneratorCommand;
-use PWWEB\Artomator\Commands\API\TestsGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APIMutationsGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APITypeGeneratorCommand;
 use PWWEB\Artomator\Commands\APIScaffoldGeneratorCommand;
 use PWWEB\Artomator\Commands\Common\MigrationGeneratorCommand;
 use PWWEB\Artomator\Commands\Common\ModelGeneratorCommand;
@@ -102,20 +102,20 @@ class ArtomatorServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            'artomator.api.controller', function ($app) {
-                return new APIControllerGeneratorCommand();
+            'artomator.api.query', function ($app) {
+                return new APIQueryGeneratorCommand();
             }
         );
 
         $this->app->singleton(
-            'artomator.api.requests', function ($app) {
-                return new APIRequestsGeneratorCommand();
+            'artomator.api.mutations', function ($app) {
+                return new APIMutationsGeneratorCommand();
             }
         );
 
         $this->app->singleton(
-            'artomator.api.tests', function ($app) {
-                return new TestsGeneratorCommand();
+            'artomator.api.type', function ($app) {
+                return new APITypeGeneratorCommand();
             }
         );
 
@@ -165,9 +165,9 @@ class ArtomatorServiceProvider extends ServiceProvider
             'artomator.migration',
             'artomator.model',
             'artomator.repository',
-            'artomator.api.controller',
-            'artomator.api.requests',
-            'artomator.api.tests',
+            'artomator.api.query',
+            'artomator.api.mutations',
+            'artomator.api.type',
             'artomator.scaffold.controller',
             'artomator.scaffold.requests',
             'artomator.scaffold.views',
