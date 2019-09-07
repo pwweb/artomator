@@ -183,19 +183,19 @@ class GeneratorConfig
 
         $this->pathDataTables = config('pwweb.artomator.path.datatables', app_path('DataTables/')).$prefix;
 
-        $this->pathApiController = config(
-            'pwweb.artomator.path.api_controller',
-            app_path('Http/Controllers/API/')
+        $this->pathApiQuery = config(
+            'pwweb.artomator.path.api_query',
+            app_path('Http/GraphQL/Query')
         ).$prefix;
 
-        $this->pathApiRequest = config(
-            'pwweb.artomator.path.api_request',
-            app_path('Http/Requests/API/')
+        $this->pathApiMutation = config(
+            'pwweb.artomator.path.api_mutation',
+            app_path('Http/GraphQL/Mutation')
         ).$prefix;
 
         $this->pathApiRoutes = config('pwweb.artomator.path.api_routes', base_path('routes/api.php'));
 
-        $this->pathApiTests = config('pwweb.artomator.path.api_test', base_path('tests/APIs/'));
+        $this->pathApiType = config('pwweb.artomator.path.api_type', base_path('Http/GraphQL/Type'));
 
         $this->pathController = config(
             'pwweb.artomator.path.controller',

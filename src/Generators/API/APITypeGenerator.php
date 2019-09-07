@@ -9,24 +9,24 @@ use PWWEB\Artomator\Utils\FileUtil;
 class APITypeGenerator extends BaseGenerator
 {
     /**
-     * @var CommandData 
+     * @var CommandData
      */
     private $commandData;
 
     /**
-     * @var string 
+     * @var string
      */
     private $path;
 
     /**
-     * @var string 
+     * @var string
      */
     private $fileName;
 
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiTypes;
+        $this->path = $commandData->config->pathApiType;
         $this->fileName = $this->commandData->modelName.'ApiType.php';
     }
 
