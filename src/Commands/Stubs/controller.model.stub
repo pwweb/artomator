@@ -55,7 +55,7 @@ class DummyClass extends Controller
             {{schema_data}}
             $DummyModelVariable->save();
 
-            return redirect('DummyPackageVariableDummyModelVariable.index');
+            return redirect()->route('DummyPackageVariableDummyModelVariable.index');
         }
     }
 
@@ -98,7 +98,7 @@ class DummyClass extends Controller
             {{schema_data}}
             $DummyModelVariable->save();
 
-            return redirect('DummyPackageVariableDummyModelVariable.index');
+            return redirect()->route('DummyPackageVariableDummyModelVariable.index');
         }
     }
 
