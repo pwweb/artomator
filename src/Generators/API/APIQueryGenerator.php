@@ -35,13 +35,44 @@ class APIQueryGenerator extends BaseGenerator
         $templateName = 'api_query';
 
         $templateData = get_template("api.query.$templateName", 'artomator');
+        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
+        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = $this->fillDocs($templateData);
+
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
         $this->commandData->commandComment("\nAPI Query created: ");
         $this->commandData->commandInfo($this->fileName);
+    }
+
+    private function generateArguments()
+    {
+        $arguments = [];
+        foreach ($this->commandData->fields as $field) {
+            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+                continue;
+            }
+
+            $arguments[] = "'" . $field->name . "' => ['name' => '" . $field->name . "', 'type' => Type::" . $field->fieldType . "()],";
+        }
+
+        return implode(arty_nl_tab(1, 3), $arguments);
+    }
+
+    private function generateResolves()
+    {
+        $resolves = [];
+        foreach ($this->commandData->fields as $field) {
+            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+                continue;
+            }
+
+            $resolves[] = "if (isset(\$args['" . $field->name . "']) === true)\n\t\t{\n\t\t\treturn \$MODEL_NAME\$::where('" . $field->name . "', \$args['" . $field->name . "'])->get();\n\t\t}\n";
+        }
+
+        return implode(arty_nl_tab(1, 2), $resolves);
     }
 
     private function fillDocs($templateData)

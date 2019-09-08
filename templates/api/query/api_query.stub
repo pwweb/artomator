@@ -27,7 +27,7 @@ class $MODEL_NAME_PLURAL$Query extends Query
     */
     public function type()
     {
-        return Type::listOf(GraphQL::type('$MODEL_NAME'));
+        return Type::listOf(GraphQL::type('$MODEL_NAME$'));
     }
 
     /**
@@ -38,8 +38,8 @@ class $MODEL_NAME_PLURAL$Query extends Query
      public function args()
      {
          return [
-             'id' => ['name' => 'id', 'type' => Type::int()],
-             // TODO: Add Schema Arguments.
+            'id' => ['name' => 'id', 'type' => Type::int()],
+            $ARGUMENTS$
          ]
      }
      /**
@@ -57,7 +57,7 @@ class $MODEL_NAME_PLURAL$Query extends Query
              return $MODEL_NAME$::where('id', $args['id'])->get();
          }
 
-         // TODO: Add Schema Resolves
-         return $MODEL_NAME$::al();
+         $RESOLVES$
+         return $MODEL_NAME$::all();
      }
 }
