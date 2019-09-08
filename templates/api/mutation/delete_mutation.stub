@@ -1,29 +1,68 @@
 <?php
 
+$DOC_MUTATION$
+
 namespace $NAMESPACE_API_MUTATION$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
-use PWWEB\Artomator\Request\APIRequest;
 
-class Update$MODEL_NAME$APIRequest extends APIRequest
+use CLosure;
+use GraphQL;
+use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\ResolveInfo;
+use Rebing\GraphQL\Support\Mutation;
+
+class Create$MODEL_NAME$Mutation extends Mutation
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Mutation Attributes.
      *
-     * @return bool
+     * @var array
      */
-    public function authorize()
+    protected $attributes = [
+        'name' => 'Create$MODEL_NAME$Type'
+    ];
+
+    /**
+     * Return the GraphQL Type.
+     *
+     * @return $MODEL_NAME$ $MODEL_NAME$
+     */
+    public function type()
     {
-        return true;
+        return GraphQL::type('$MODEL_NAME_CAMEL$');
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Mutation arguments.
      *
-     * @return array
+     * @return array Argument array.
      */
-    public function rules()
+    public function args()
     {
-        return $MODEL_NAME$::$rules;
+        return [
+            'id' => [
+                'name' => 'id',
+                'type' => Type::nonNull(Type::int()),
+            ],
+        ];
+    }
+
+    /**
+     * Resolve the mutation.
+     *
+     * @param  string $root Root node.
+     * @param  array $args Arugments rom request.
+     *
+     * @return $MODEL_NAME$ $MODE_NAME$
+     */
+    public function resolve($root, $args)
+    {
+        $response = $MODEL_NAME$::find($args['id']);
+        if  ($response === false)
+        {
+            return null;
+        }
+        return $response->delete();
     }
 }

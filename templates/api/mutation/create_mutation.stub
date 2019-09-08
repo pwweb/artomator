@@ -6,8 +6,10 @@ namespace $NAMESPACE_API_MUTATION$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 
+use CLosure;
+use GraphQL;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
+use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\Mutation;
 
 class Create$MODEL_NAME$Mutation extends Mutation
@@ -39,11 +41,7 @@ class Create$MODEL_NAME$Mutation extends Mutation
     public function args()
     {
         return [
-            // 'title' => [
-            //     'name' => 'title',
-            //     'type' => Type::nonNull(Type::string())
-            // ],
-            // TODO: Add Mutation Arguments.
+            $ARGUMENTS$
         ];
     }
 
@@ -58,8 +56,7 @@ class Create$MODEL_NAME$Mutation extends Mutation
     public function resolve($root, $args)
     {
         $response = $MODEL_NAME$::create([
-            // 'title'       => $args['title'],
-            // TODO: Add Arguments to Mutation.
+            $RESOLVES$
         ]);
 
         return $response;

@@ -48,6 +48,8 @@ class APIMutationGenerator extends BaseGenerator
     {
         $templateData = get_template('api.mutation.create_mutation', 'artomator');
 
+        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
+        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         FileUtil::createFile($this->path, $this->createFileName, $templateData);
@@ -60,6 +62,8 @@ class APIMutationGenerator extends BaseGenerator
     {
         $templateData = get_template('api.mutation.update_mutation', 'artomator');
 
+        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
+        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         FileUtil::createFile($this->path, $this->updateFileName, $templateData);
@@ -72,12 +76,47 @@ class APIMutationGenerator extends BaseGenerator
     {
         $templateData = get_template('api.mutation.delete_mutation', 'artomator');
 
+        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
+        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         FileUtil::createFile($this->path, $this->deleteFileName, $templateData);
 
         $this->commandData->commandComment("\nDelete Mutation created: ");
         $this->commandData->commandInfo($this->deleteFileName);
+    }
+
+    private function generateArguments()
+    {
+        $arguments = [];
+        foreach ($this->commandData->fields as $field) {
+            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+                continue;
+            }
+            if ($field->isNotNull === true) {
+                $field_type = "Type::nonNull(Type::" . $field->fieldType . "())";
+            } else {
+                $field_type = "Type::" . $field->fieldType . "()";
+            }
+
+            $arguments[] = "'" . $field->name . "' => [" . arty_nl_tab(1, 4) . "'name' => '" . $field->name . "'," . arty_nl_tab(1,4) . "'type' => " . $field_type . "," . arty_nl_tab(1, 3) . "],";
+        }
+
+        return implode(arty_nl_tab(1, 3), $arguments);
+    }
+
+    private function generateResolves()
+    {
+        $resolves = [];
+        foreach ($this->commandData->fields as $field) {
+            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+                continue;
+            }
+
+            $resolves[] = "'" . $field->name . "' => \$args['" . $field->name . "'],";
+        }
+
+        return implode(arty_nl_tab(1, 3), $resolves);
     }
 
     public function rollback()
