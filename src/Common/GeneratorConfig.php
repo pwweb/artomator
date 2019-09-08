@@ -375,7 +375,7 @@ class GeneratorConfig
         $this->prefixes['public'] = explode('/', config('pwweb.artomator.prefixes.public', ''));
 
         if ($this->getOption('prefix')) {
-            $multiplePrefixes = explode(',', $this->getOption('prefix'));
+            $multiplePrefixes = explode('/', $this->getOption('prefix'));
 
             $this->prefixes['route'] = array_merge($this->prefixes['route'], $multiplePrefixes);
             $this->prefixes['path'] = array_merge($this->prefixes['path'], $multiplePrefixes);
