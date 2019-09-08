@@ -25,13 +25,13 @@ return [
 
         'request'           => app_path('Http/Requests/'),
 
-        'api_mutation'       => app_path('Http/GraphQL/Mutation/'),
+        'api_mutation'       => app_path('Http/GraphQL/Mutations/'),
 
         'controller'        => app_path('Http/Controllers/'),
 
-        'api_query'         => app_path('Http/GraphQL/Query/'),
+        'api_query'         => app_path('Http/GraphQL/Queries/'),
 
-        'api_type'         => app_path('Http/GraphQL/Type/'),
+        'api_type'         => app_path('Http/GraphQL/Types/'),
 
         'repository_test'   => base_path('tests/Repositories/'),
 
@@ -75,21 +75,17 @@ return [
 
         'controller'        => 'App\Http\Controllers',
 
-        'api_controller'    => 'App\Http\Controllers\API',
+        'api_query'         => 'App\Http\GraphQL\Queries',
 
         'request'           => 'App\Http\Requests',
 
-        'api_request'       => 'App\Http\Requests\API',
+        'api_mutation'      => 'App\Http\GraphQL\Mutations',
 
         'repository_test'   => 'Tests\Repositories',
 
-        'api_test'          => 'Tests\APIs',
+        'api_type'          => 'App\Http\GraphQL\Types',
 
         'tests'             => 'Tests',
-
-        'query'             => 'App\GraphQL\Query',
-
-        'type'              => 'App\GraphQL\Type',
     ],
 
     /*

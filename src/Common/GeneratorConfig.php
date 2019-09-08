@@ -141,18 +141,18 @@ class GeneratorConfig
             'Illuminate\Database\Eloquent\Model'
         );
 
-        $this->nsApiController = config(
-            'pwweb.artomator.namespace.api_controller',
-            'App\Http\Controllers\API'
+        $this->nsApiQuery = config(
+            'pwweb.artomator.namespace.api_query',
+            'App\Http\GraphQL\Queries'
         ).$prefix;
-        $this->nsApiRequest = config('pwweb.artomator.namespace.api_request', 'App\Http\Requests\API').$prefix;
+        $this->nsApiMutation = config('pwweb.artomator.namespace.api_mutation', 'App\Http\GraphQL\Mutations').$prefix;
 
         $this->nsRequest = config('pwweb.artomator.namespace.request', 'App\Http\Requests').$prefix;
         $this->nsRequestBase = config('pwweb.artomator.namespace.request', 'App\Http\Requests');
         $this->nsBaseController = config('pwweb.artomator.namespace.controller', 'App\Http\Controllers');
         $this->nsController = config('pwweb.artomator.namespace.controller', 'App\Http\Controllers').$prefix;
 
-        $this->nsApiTests = config('pwweb.artomator.namespace.api_test', 'Tests\APIs');
+        $this->nsApiType = config('pwweb.artomator.namespace.api_type', 'App\Http\GraphQL\Types').$prefix;
         $this->nsRepositoryTests = config('pwweb.artomator.namespace.repository_test', 'Tests\Repositories');
         $this->nsTests = config('pwweb.artomator.namespace.tests', 'Tests');
     }
@@ -185,17 +185,17 @@ class GeneratorConfig
 
         $this->pathApiQuery = config(
             'pwweb.artomator.path.api_query',
-            app_path('Http/GraphQL/Query')
+            app_path('Http/GraphQL/Queries/')
         ).$prefix;
 
         $this->pathApiMutation = config(
             'pwweb.artomator.path.api_mutation',
-            app_path('Http/GraphQL/Mutation')
+            app_path('Http/GraphQL/Mutations/')
         ).$prefix;
 
         $this->pathApiRoutes = config('pwweb.artomator.path.api_routes', base_path('routes/api.php'));
 
-        $this->pathApiType = config('pwweb.artomator.path.api_type', base_path('Http/GraphQL/Type'));
+        $this->pathApiType = config('pwweb.artomator.path.api_type', app_path('Http/GraphQL/Types/')).$prefix;
 
         $this->pathController = config(
             'pwweb.artomator.path.controller',
@@ -229,15 +229,15 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$NAMESPACE_DATATABLES$', $this->nsDataTables);
         $commandData->addDynamicVariable('$NAMESPACE_MODEL_EXTEND$', $this->nsModelExtend);
 
-        $commandData->addDynamicVariable('$NAMESPACE_API_QUERY$', $this->nsApiController);
-        $commandData->addDynamicVariable('$NAMESPACE_API_MUTATION$', $this->nsApiRequest);
+        $commandData->addDynamicVariable('$NAMESPACE_API_QUERY$', $this->nsApiQuery);
+        $commandData->addDynamicVariable('$NAMESPACE_API_MUTATION$', $this->nsApiMutation);
 
         $commandData->addDynamicVariable('$NAMESPACE_BASE_CONTROLLER$', $this->nsBaseController);
         $commandData->addDynamicVariable('$NAMESPACE_CONTROLLER$', $this->nsController);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST$', $this->nsRequest);
         $commandData->addDynamicVariable('$NAMESPACE_REQUEST_BASE$', $this->nsRequestBase);
 
-        $commandData->addDynamicVariable('$NAMESPACE_API_TYPE$', $this->nsApiTests);
+        $commandData->addDynamicVariable('$NAMESPACE_API_TYPE$', $this->nsApiType);
         $commandData->addDynamicVariable('$NAMESPACE_REPOSITORIES_TESTS$', $this->nsRepositoryTests);
         $commandData->addDynamicVariable('$NAMESPACE_TESTS$', $this->nsTests);
 
