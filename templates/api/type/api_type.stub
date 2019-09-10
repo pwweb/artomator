@@ -6,7 +6,6 @@ namespace $NAMESPACE_API_TYPE$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class $MODEL_NAME$Type extends GraphQLType
@@ -27,7 +26,7 @@ class $MODEL_NAME$Type extends GraphQLType
      *
      * @return array Field descriptions.
      */
-    public function fields()
+    public function fields(): array
     {
         return [
             'id' => [

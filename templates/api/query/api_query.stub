@@ -5,11 +5,12 @@ $DOC_QUERY$
 namespace $NAMESPACE_API_QUERY$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
-use GraphQL;
+use Rebing\GraphQL\Support\Facades\GraphQL;
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 
-class $MODEL_NAME_PLURAL$Query extends Query
+class $MODEL_NAME$Query extends Query
 {
     /**
      * Query Attributes.
@@ -25,7 +26,7 @@ class $MODEL_NAME_PLURAL$Query extends Query
     *
     * @return type List of $MODEL_NAME$.
     */
-    public function type()
+    public function type(): Type
     {
         return Type::listOf(GraphQL::type('$MODEL_NAME$'));
     }
@@ -35,22 +36,24 @@ class $MODEL_NAME_PLURAL$Query extends Query
      *
      * @return array Available arguments.
      */
-     public function args()
+     public function args(): array
      {
          return [
             'id' => ['name' => 'id', 'type' => Type::int()],
             $ARGUMENTS$
-         ]
+        ];
      }
      /**
       * Resolve the request.
       *
       * @param string $root Root node.
       * @param array $args Arguments from request.
+      * @param string $context Context for the request.
+      * @param ResolveInfo $resolveInfo Resolve Info.
       *
       * @return $MODEL_NAME$ $MODEL_NAME$
       */
-     public function resolve($root, $args);
+     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
      {
          if (isset($args['id']) === true)
          {
