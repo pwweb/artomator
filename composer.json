@@ -29,7 +29,7 @@
         "laracasts/flash": "~3.0",
         "laravelcollective/html": "^6.0",
         "doctrine/dbal": "~2.3",
-        "infyomlabs/coreui-templates": "^6.0.x-dev",
+        "infyomlabs/coreui-templates": "6.0.x-dev",
         "rebing/graphql-laravel": "^2.0"
     },
     "require-dev": {
