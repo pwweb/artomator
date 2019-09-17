@@ -58,7 +58,7 @@ class BaseCommand extends Command
 
     public function generateCommonItems()
     {
-        if (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
+        if (!$this->isSkip('migration')) {
             $migrationGenerator = new MigrationGenerator($this->commandData);
             $migrationGenerator->generate();
         }
