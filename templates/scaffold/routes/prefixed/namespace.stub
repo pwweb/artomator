@@ -1,0 +1,6 @@
+$INDENT$Route::namespace('$ITERATION_NAMESPACE_CAMEL$')
+$INDENT$    ->prefix('$ITERATION_NAMESPACE_LOWER$')
+$INDENT$    ->name('$ITERATION_NAMESPACE_LOWER$.')
+$INDENT$    ->middleware('auth')
+$INDENT$    ->group(
+$INDENT$        function () {
