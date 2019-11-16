@@ -38,26 +38,6 @@ class RoutesGenerator
     public function prepareRoutes()
     {
         $fileName = $this->path.'.json';
-        if (empty($this->commandData->config->prefixes['route']))
-        {
-            // TODO: what to do when blank route prefix?
-            die("blank");
-        }
-        $prefixes = explode('.',$this->commandData->config->prefixes['route']);
-        $routes = [];
-        foreach (array_reverse($prefixes) as $key => $prefix) {
-            $new = [
-                'prefix' => $prefix,
-                'name' => strtolower($prefix)
-            ];
-            if ($key === 0)
-            {
-                $new['resources'] = array($this->commandData->modelName => $this->commandData->modelName);
-            } else {
-                $new['group'] = $routes;
-            }
-            $routes = [ucfirst($prefix) => $new];
-        }
 
         if (file_exists($fileName)) {
             // Routes json exists:
@@ -65,6 +45,32 @@ class RoutesGenerator
             $fileRoutes = json_decode($fileRoutes, true);
         } else {
             $fileRoutes = [];
+        }
+
+        if (empty($this->commandData->config->prefixes['route']))
+        {
+            // TODO: what to do when blank route prefix?
+            $new = [
+                'resources' => array($this->commandData->modelName => $this->commandData->modelName),
+                'name' => strtolower($this->commandData->modelName),
+            ];
+            $routes = [ucfirst($this->commandData->modelName) => $new];
+        } else {
+            $prefixes = explode('.',$this->commandData->config->prefixes['route']);
+            $routes = [];
+            foreach (array_reverse($prefixes) as $key => $prefix) {
+                $new = [
+                    'prefix' => $prefix,
+                    'name' => strtolower($prefix)
+                ];
+                if ($key === 0)
+                {
+                    $new['resources'] = array($this->commandData->modelName => $this->commandData->modelName);
+                } else {
+                    $new['group'] = $routes;
+                }
+                $routes = [ucfirst($prefix) => $new];
+            }
         }
         $fileRoutes = array_replace_recursive($fileRoutes, $routes);
         file_put_contents($fileName, json_encode($fileRoutes, JSON_PRETTY_PRINT));
@@ -92,25 +98,32 @@ class RoutesGenerator
     {
         $templateString = '';
         foreach ($routes as $key => $route) {
-            $vars = array(
-                '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($key),
-                '$ITERATION_NAMESPACE_LOWER$' => strtolower($key),
-                '$INDENT$' => arty_tabs($indent*3),
-            );
-            $templateString .= get_template('scaffold.routes.prefixed.namespace', 'artomator');
-            $templateString = fill_template($vars, $templateString);
+            if ((isset($route['group']) && is_array($route['group'])) || $indent != 0) {
+                $vars = array(
+                    '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($key),
+                    '$ITERATION_NAMESPACE_LOWER$' => strtolower($key),
+                    '$INDENT$' => arty_tabs($indent*3),
+                );
+                $templateString .= get_template('scaffold.routes.prefixed.namespace', 'artomator');
+                $templateString = fill_template($vars, $templateString);
+            }
             if (isset($route['resources'])) {
+                $tabs = ($indent > 0) ? (($indent * 3) + 3) : 0;
                 foreach ($route['resources'] as $key => $resource) {
                     $vars = array(
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($key)),
                         '$ITERATION_MODEL_NAME$' => $key,
-                        '$INDENT$' => arty_tabs(($indent*3)+3),
+                        '$INDENT$' => arty_tabs($tabs),
                     );
                     $templateString .= get_template('scaffold.routes.prefixed.route', 'artomator');
-                    $templateString = \fill_template($vars, $templateString);
+                    $templateString = fill_template($vars, $templateString);
+                }
+                if ($indent == 0)
+                {
+                    continue;
                 }
             }
-            if (isset($route['group']) && is_array($route['group'])) {
+            if ((isset($route['group']) && is_array($route['group']))) {
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
             $vars = array(
