@@ -38,6 +38,7 @@ class GeneratorConfig
     public $pathApiMutation;
     public $pathApiRoutes;
     public $pathApiType;
+    public $pathApiConfig;
 
     public $pathController;
     public $pathRequest;
@@ -196,6 +197,8 @@ class GeneratorConfig
         $this->pathApiRoutes = config('pwweb.artomator.path.api_routes', base_path('routes/api.php'));
 
         $this->pathApiType = config('pwweb.artomator.path.api_type', app_path('Http/GraphQL/Types/')).$prefix;
+
+        $this->pathApiConfig = config('pwweb.artomator.path.api_config', base_path('config/graphiql.php'));
 
         $this->pathController = config(
             'pwweb.artomator.path.controller',

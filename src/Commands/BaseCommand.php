@@ -9,6 +9,7 @@ use PWWEB\Artomator\Generators\API\APIQueryGenerator;
 use PWWEB\Artomator\Generators\API\APIMutationGenerator;
 use PWWEB\Artomator\Generators\API\APIRoutesGenerator;
 use PWWEB\Artomator\Generators\API\APITypeGenerator;
+use PWWEB\Artomator\Generators\API\APIConfigGenerator;
 use PWWEB\Artomator\Generators\FactoryGenerator;
 use PWWEB\Artomator\Generators\MigrationGenerator;
 use PWWEB\Artomator\Generators\ModelGenerator;
@@ -98,13 +99,18 @@ class BaseCommand extends Command
             $queryGenerator->generate();
         }
 
+        if (!$this->isSkip('types') and !$this->isSkip('api_types')) {
+            $typeGenerator = new APITypeGenerator($this->commandData);
+            $typeGenerator->generate();
+        }
+
         if (!$this->isSkip('routes') and !$this->isSkip('api_routes')) {
             $routesGenerator = new APIRoutesGenerator($this->commandData);
             $routesGenerator->generate();
         }
 
-        if (!$this->isSkip('types') and !$this->isSkip('api_types')) {
-            $typeGenerator = new APITypeGenerator($this->commandData);
+        if (!$this->isSkip('configs') and !$this->isSkip('api_configs')) {
+            $typeGenerator = new APIConfigGenerator($this->commandData);
             $typeGenerator->generate();
         }
     }

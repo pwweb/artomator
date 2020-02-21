@@ -7,6 +7,7 @@ use PWWEB\Artomator\Commands\API\APIQueryGeneratorCommand;
 use PWWEB\Artomator\Commands\API\APIGeneratorCommand;
 use PWWEB\Artomator\Commands\API\APIMutationsGeneratorCommand;
 use PWWEB\Artomator\Commands\API\APITypeGeneratorCommand;
+use PWWEB\Artomator\Commands\API\APIConfigGeneratorCommand;
 use PWWEB\Artomator\Commands\APIScaffoldGeneratorCommand;
 use PWWEB\Artomator\Commands\Common\MigrationGeneratorCommand;
 use PWWEB\Artomator\Commands\Common\ModelGeneratorCommand;
@@ -120,6 +121,12 @@ class ArtomatorServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
+            'artomator.api.config', function ($app) {
+                return new APIConfigGeneratorCommand();
+            }
+        );
+
+        $this->app->singleton(
             'artomator.scaffold.controller', function ($app) {
                 return new ControllerGeneratorCommand();
             }
@@ -168,6 +175,7 @@ class ArtomatorServiceProvider extends ServiceProvider
             'artomator.api.query',
             'artomator.api.mutations',
             'artomator.api.type',
+            'artomator.api.config',
             'artomator.scaffold.controller',
             'artomator.scaffold.requests',
             'artomator.scaffold.views',
