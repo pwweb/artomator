@@ -2,8 +2,8 @@
 
 namespace PWWEB\Artomator\Generators\GraphQL;
 
-use PWWEB\Artomator\Common\CommandData;
 use InfyOm\Generator\Generators\BaseGenerator;
+use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Utils\FileUtil;
 
 class GraphQLMutationGenerator extends BaseGenerator
@@ -90,16 +90,16 @@ class GraphQLMutationGenerator extends BaseGenerator
     {
         $arguments = [];
         foreach ($this->commandData->fields as $field) {
-            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
                 continue;
             }
-            if ($field->isNotNull === true) {
-                $field_type = "Type::nonNull(Type::" . $field->fieldType . "())";
+            if (true === $field->isNotNull) {
+                $field_type = 'Type::nonNull(Type::'.$field->fieldType.'())';
             } else {
-                $field_type = "Type::" . $field->fieldType . "()";
+                $field_type = 'Type::'.$field->fieldType.'()';
             }
 
-            $arguments[] = "'" . $field->name . "' => [" . arty_nl_tab(1, 4) . "'name' => '" . $field->name . "'," . arty_nl_tab(1,4) . "'type' => " . $field_type . "," . arty_nl_tab(1, 3) . "],";
+            $arguments[] = "'".$field->name."' => [".arty_nl_tab(1, 4)."'name' => '".$field->name."',".arty_nl_tab(1, 4)."'type' => ".$field_type.','.arty_nl_tab(1, 3).'],';
         }
 
         return implode(arty_nl_tab(1, 3), $arguments);
@@ -109,11 +109,11 @@ class GraphQLMutationGenerator extends BaseGenerator
     {
         $resolves = [];
         foreach ($this->commandData->fields as $field) {
-            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
                 continue;
             }
 
-            $resolves[] = "'" . $field->name . "' => \$args['" . $field->name . "'],";
+            $resolves[] = "'".$field->name."' => \$args['".$field->name."'],";
         }
 
         return implode(arty_nl_tab(1, 3), $resolves);

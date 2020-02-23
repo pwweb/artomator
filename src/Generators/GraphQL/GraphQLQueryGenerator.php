@@ -2,8 +2,8 @@
 
 namespace PWWEB\Artomator\Generators\GraphQL;
 
-use PWWEB\Artomator\Common\CommandData;
 use InfyOm\Generator\Generators\BaseGenerator;
+use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Utils\FileUtil;
 
 class GraphQLQueryGenerator extends BaseGenerator
@@ -27,7 +27,7 @@ class GraphQLQueryGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathGraphQLQuery;
-        $this->fileName = $this->commandData->modelName.'Query.php';
+        $this->fileName = $this->commandData->modelName . 'Query.php';
     }
 
     public function generate()
@@ -40,7 +40,6 @@ class GraphQLQueryGenerator extends BaseGenerator
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = $this->fillDocs($templateData);
 
-
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
         $this->commandData->commandComment("\nGraphQL Query created: ");
@@ -51,11 +50,11 @@ class GraphQLQueryGenerator extends BaseGenerator
     {
         $arguments = [];
         foreach ($this->commandData->fields as $field) {
-            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
                 continue;
             }
 
-            $arguments[] = "'" . $field->name . "' => ['name' => '" . $field->name . "', 'type' => Type::" . $field->fieldType . "()],";
+            $arguments[] = "'" . $field->name . "' => ['name' => '" . $field->name . "', 'type' => Type::" . $field->fieldType . '()],';
         }
 
         return implode(arty_nl_tab(1, 3), $arguments);
@@ -65,7 +64,7 @@ class GraphQLQueryGenerator extends BaseGenerator
     {
         $resolves = [];
         foreach ($this->commandData->fields as $field) {
-            if (in_array($field->name, ['created_at','updated_at','id']) === true) {
+            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
                 continue;
             }
 
@@ -88,8 +87,8 @@ class GraphQLQueryGenerator extends BaseGenerator
         }
 
         foreach ($methods as $method) {
-            $key = '$DOC_'.strtoupper($method).'$';
-            $docTemplate = get_template($templatePrefix.'.'.$method, $templateType);
+            $key = '$DOC_' . strtoupper($method) . '$';
+            $docTemplate = get_template($templatePrefix . '.' . $method, $templateType);
             $docTemplate = fill_template($this->commandData->dynamicVars, $docTemplate);
             $templateData = str_replace($key, $docTemplate, $templateData);
         }
@@ -100,7 +99,7 @@ class GraphQLQueryGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('GraphQL Query file deleted: '.$this->fileName);
+            $this->commandData->commandComment('GraphQL Query file deleted: ' . $this->fileName);
         }
     }
 }

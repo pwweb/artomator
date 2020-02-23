@@ -17,9 +17,9 @@ class GeneratorConfig extends Config
         $this->nsGraphQLQuery = config(
             'pwweb.artomator.namespace.graphql_query',
             'App\Http\GraphQL\Queries'
-        ).$prefix;
-        $this->nsGraphQLMutation = config('pwweb.artomator.namespace.graphql_mutation', 'App\Http\GraphQL\Mutations').$prefix;
-        $this->nsGraphQLType = config('pwweb.artomator.namespace.graphql_type', 'App\Http\GraphQL\Types').$prefix;
+        ) . $prefix;
+        $this->nsGraphQLMutation = config('pwweb.artomator.namespace.graphql_mutation', 'App\Http\GraphQL\Mutations') . $prefix;
+        $this->nsGraphQLType = config('pwweb.artomator.namespace.graphql_type', 'App\Http\GraphQL\Types') . $prefix;
     }
 
     public function loadPaths()
@@ -30,16 +30,16 @@ class GeneratorConfig extends Config
         $this->pathGraphQLQuery = config(
             'pwweb.artomator.path.graphql_query',
             app_path('Http/GraphQL/Queries/')
-        ).$prefix;
+        ) . $prefix;
 
         $this->pathGraphQLMutation = config(
             'pwweb.artomator.path.graphql_mutation',
             app_path('Http/GraphQL/Mutations/')
-        ).$prefix;
+        ) . $prefix;
 
         $this->pathGraphQLRoutes = config('pwweb.artomator.path.graphql_routes', base_path('routes/graphql.php'));
 
-        $this->pathGraphQLType = config('pwweb.artomator.path.graphql_type', app_path('Http/GraphQL/Types/')).$prefix;
+        $this->pathGraphQLType = config('pwweb.artomator.path.graphql_type', app_path('Http/GraphQL/Types/')) . $prefix;
 
         $this->pathGraphQLConfig = config('pwweb.artomator.path.graphql_config', base_path('config/graphiql.php'));
     }

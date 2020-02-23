@@ -18,16 +18,16 @@ if (! function_exists('get_template_file_path')) {
             resource_path('pwweb/artomator-templates/')
         );
 
-        $path = $templatesPath.$templateName.'.stub';
+        $path = $templatesPath . $templateName . '.stub';
 
         if (file_exists($path)) {
             return $path;
         }
 
-        if (file_exists(base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub'))) {
-            return base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub');
+        if (file_exists(base_path('vendor/pwweb/' . $templateType . '/templates/' . $templateName . '.stub'))) {
+            return base_path('vendor/pwweb/' . $templateType . '/templates/' . $templateName . '.stub');
         }
 
-        return base_path('vendor/infyomlabs/'.$templateType.'/templates/'.$templateName.'.stub');
+        return base_path('vendor/infyomlabs/' . $templateType . '/templates/' . $templateName . '.stub');
     }
-}
+}//end if
