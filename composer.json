@@ -6,6 +6,10 @@
         "name": "Richard Browne",
         "email": "richard@pw-websolutions.com",
         "homepage": "https://www.pw-websolutions.com"
+    }, {
+        "name": "Frank Pillukeit",
+        "email": "frank@pw-websolutions.com",
+        "homepage": "https://www.pw-websolutions.com"
     }],
     "homepage": "https://github.com/pwweb/artomator",
     "keywords": [
@@ -21,7 +25,8 @@
         "test",
         "generator",
         "swagger",
-        "artomator"
+        "artomator",
+        "graphql"
     ],
     "require": {
         "php": ">=7.2",
@@ -30,11 +35,13 @@
         "laravelcollective/html": "^6.0",
         "doctrine/dbal": "~2.3",
         "infyomlabs/coreui-templates": "6.0.x-dev",
-        "rebing/graphql-laravel": "^2.0"
+        "infyomlabs/laravel-generator": "6.0.x-dev",
+        "nuwave/lighthouse": "^4.9"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0",
-        "mockery/mockery": "~0.9"
+        "mockery/mockery": "~0.9",
+        "mll-lab/laravel-graphql-playground": "^2.0"
     },
     "autoload": {
         "psr-4": {
