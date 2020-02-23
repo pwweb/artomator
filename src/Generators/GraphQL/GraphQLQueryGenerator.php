@@ -4,7 +4,7 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Utils\FileUtil;
+use InfyOm\Generator\Utils\FileUtil;
 
 class GraphQLQueryGenerator extends BaseGenerator
 {
@@ -57,7 +57,7 @@ class GraphQLQueryGenerator extends BaseGenerator
             $arguments[] = "'" . $field->name . "' => ['name' => '" . $field->name . "', 'type' => Type::" . $field->fieldType . '()],';
         }
 
-        return implode(arty_nl_tab(1, 3), $arguments);
+        return implode(infy_nl_tab(1, 3), $arguments);
     }
 
     private function generateResolves()
@@ -71,7 +71,7 @@ class GraphQLQueryGenerator extends BaseGenerator
             $resolves[] = "if (isset(\$args['" . $field->name . "']) === true)\n\t\t{\n\t\t\treturn \$MODEL_NAME\$::where('" . $field->name . "', \$args['" . $field->name . "'])->get();\n\t\t}\n";
         }
 
-        return implode(arty_nl_tab(1, 2), $resolves);
+        return implode(infy_nl_tab(1, 2), $resolves);
     }
 
     private function fillDocs($templateData)

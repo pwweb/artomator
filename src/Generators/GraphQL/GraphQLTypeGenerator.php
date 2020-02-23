@@ -4,7 +4,7 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Utils\FileUtil;
+use InfyOm\Generator\Utils\FileUtil;
 
 class GraphQLTypeGenerator extends BaseGenerator
 {
@@ -56,10 +56,10 @@ class GraphQLTypeGenerator extends BaseGenerator
                 $field_type = 'Type::' . $field->fieldType . '()';
             }
 
-            $schema[] = "'" . $field->name . "' => [" . arty_nl_tab(1, 4) . "'type' => " . $field_type . ',' . arty_nl_tab(1, 4) . "'description' => 'The " . $field->name . " of the model'" . arty_nl_tab(1, 3) . '],';
+            $schema[] = "'" . $field->name . "' => [" . infy_nl_tab(1, 4) . "'type' => " . $field_type . ',' . infy_nl_tab(1, 4) . "'description' => 'The " . $field->name . " of the model'" . infy_nl_tab(1, 3) . '],';
         }
 
-        return implode(arty_nl_tab(1, 3), $schema);
+        return implode(infy_nl_tab(1, 3), $schema);
     }
 
     private function fillDocs($templateData)

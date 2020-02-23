@@ -110,7 +110,7 @@ class RoutesGenerator
                 $vars = [
                     '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($key),
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($key),
-                    '$INDENT$'                    => arty_tabs($indent * 3),
+                    '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
                 $templateString .= get_template('scaffold.routes.prefixed.namespace', 'artomator');
                 $templateString = fill_template($vars, $templateString);
@@ -121,7 +121,7 @@ class RoutesGenerator
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($key)),
                         '$ITERATION_MODEL_NAME$'              => $key,
-                        '$INDENT$'                            => arty_tabs($tabs),
+                        '$INDENT$'                            => infy_tabs($tabs),
                     ];
                     $templateString .= get_template('scaffold.routes.prefixed.route', 'artomator');
                     $templateString = fill_template($vars, $templateString);
@@ -134,7 +134,7 @@ class RoutesGenerator
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
             $vars = [
-                '$INDENT$' => arty_tabs(($indent * 3)),
+                '$INDENT$' => infy_tabs(($indent * 3)),
             ];
             $templateString .= get_template('scaffold.routes.prefixed.closure', 'artomator');
             $templateString = fill_template($vars, $templateString);

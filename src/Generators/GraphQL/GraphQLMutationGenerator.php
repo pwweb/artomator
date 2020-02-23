@@ -4,7 +4,7 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Utils\FileUtil;
+use InfyOm\Generator\Utils\FileUtil;
 
 class GraphQLMutationGenerator extends BaseGenerator
 {
@@ -99,10 +99,10 @@ class GraphQLMutationGenerator extends BaseGenerator
                 $field_type = 'Type::'.$field->fieldType.'()';
             }
 
-            $arguments[] = "'".$field->name."' => [".arty_nl_tab(1, 4)."'name' => '".$field->name."',".arty_nl_tab(1, 4)."'type' => ".$field_type.','.arty_nl_tab(1, 3).'],';
+            $arguments[] = "'".$field->name."' => [".infy_nl_tab(1, 4)."'name' => '".$field->name."',".infy_nl_tab(1, 4)."'type' => ".$field_type.','.infy_nl_tab(1, 3).'],';
         }
 
-        return implode(arty_nl_tab(1, 3), $arguments);
+        return implode(infy_nl_tab(1, 3), $arguments);
     }
 
     private function generateResolves()
@@ -116,7 +116,7 @@ class GraphQLMutationGenerator extends BaseGenerator
             $resolves[] = "'".$field->name."' => \$args['".$field->name."'],";
         }
 
-        return implode(arty_nl_tab(1, 3), $resolves);
+        return implode(infy_nl_tab(1, 3), $resolves);
     }
 
     public function rollback()
