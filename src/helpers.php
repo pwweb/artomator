@@ -11,8 +11,6 @@ if (! function_exists('get_template_file_path')) {
      */
     function get_template_file_path($templateName, $templateType)
     {
-        echo "PWWEB FILE\n";
-        die($templateName);
         $templateName = str_replace('.', '/', $templateName);
 
         $templatesPath = config(
