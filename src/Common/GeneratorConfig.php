@@ -49,6 +49,10 @@ class GeneratorConfig extends Config
         parent::loadDynamicVariables($commandData);
         $commandData->addDynamicVariable('$NAMESPACE_API_QUERY$', $this->nsGraphQLQuery);
         $commandData->addDynamicVariable('$NAMESPACE_API_MUTATION$', $this->nsGraphQLMutation);
+        $commandData->addDynamicVariable('$LICENSE_PACKAGE$', config('pwweb.artomator.license.package'));
+        $commandData->addDynamicVariable('$LICENSE_AUTHORS$', license_authors(config('pwweb.artomator.license.authors')));
+        $commandData->addDynamicVariable('$LICENSE_COPYRIGHT$', config('pwweb.artomator.license.copyright'));
+        $commandData->addDynamicVariable('$LICENSE$', config('pwweb.artomator.license.license'));
 
         return $commandData;
     }
