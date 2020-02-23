@@ -18,16 +18,34 @@ if (! function_exists('get_template_file_path')) {
             resource_path('pwweb/artomator-templates/')
         );
 
-        $path = $templatesPath . $templateName . '.stub';
+        $path = $templatesPath.$templateName.'.stub';
 
         if (file_exists($path)) {
             return $path;
         }
 
-        if (file_exists(base_path('vendor/pwweb/' . $templateType . '/templates/' . $templateName . '.stub'))) {
-            return base_path('vendor/pwweb/' . $templateType . '/templates/' . $templateName . '.stub');
+        if (file_exists(base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub'))) {
+            return base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub');
         }
 
-        return base_path('vendor/infyomlabs/' . $templateType . '/templates/' . $templateName . '.stub');
+        return base_path('vendor/infyomlabs/'.$templateType.'/templates/'.$templateName.'.stub');
     }
 }//end if
+
+if (! function_exists('license_authors')) {
+    /**
+     * format authors for codeblock.
+     *
+     * @param string|[string] $authors
+     *
+     * @return string
+     */
+    function license_authors($authors)
+    {
+        if (true === is_array($authors)) {
+            return implode("\n * @author    ", $authors);
+        } else {
+            return $authors;
+        }
+    }
+}
