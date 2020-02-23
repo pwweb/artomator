@@ -1,24 +1,26 @@
 <?php
 
-namespace PWWEB\Artomator\Commands;
+namespace PWWEB\Artomator\Commands\GraphQL;
 
+use PWWEB\Artomator\Commands\BaseCommand;
 use PWWEB\Artomator\Common\CommandData;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 
-class APIScaffoldGeneratorCommand extends BaseCommand
+class GraphQLQueryGeneratorCommand extends BaseCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator:api_scaffold';
+    protected $name = 'artomator.graphql:query';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a full CRUD API and Scaffold for given model';
+    protected $description = 'Create a GraphQL query command';
 
     /**
      * Create a new command instance.
@@ -27,7 +29,7 @@ class APIScaffoldGeneratorCommand extends BaseCommand
     {
         parent::__construct();
 
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_API_SCAFFOLD);
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_GRAPHQL);
     }
 
     /**
@@ -39,13 +41,10 @@ class APIScaffoldGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $this->generateCommonItems();
+        $queryGenerator = new GraphQLQueryGenerator($this->commandData);
+        $queryGenerator->generate();
 
-        $this->generateAPIItems();
-
-        $this->generateScaffoldItems();
-
-        $this->performPostActionsWithMigration();
+        $this->performPostActions();
     }
 
     /**

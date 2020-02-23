@@ -1,12 +1,12 @@
 <?php
 
-namespace PWWEB\Artomator\Generators\API;
+namespace PWWEB\Artomator\Generators\GraphQL;
 
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\BaseGenerator;
+use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Utils\FileUtil;
 
-class APIQueryGenerator extends BaseGenerator
+class GraphQLQueryGenerator extends BaseGenerator
 {
     /**
      * @var CommandData
@@ -26,15 +26,15 @@ class APIQueryGenerator extends BaseGenerator
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiQuery;
+        $this->path = $commandData->config->pathGraphQLQuery;
         $this->fileName = $this->commandData->modelName.'Query.php';
     }
 
     public function generate()
     {
-        $templateName = 'api_query';
+        $templateName = 'graphql_query';
 
-        $templateData = get_template("api.query.$templateName", 'artomator');
+        $templateData = get_template("graphql.query.$templateName", 'artomator');
         $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
         $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
@@ -43,7 +43,7 @@ class APIQueryGenerator extends BaseGenerator
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
-        $this->commandData->commandComment("\nAPI Query created: ");
+        $this->commandData->commandComment("\nGraphQL Query created: ");
         $this->commandData->commandInfo($this->fileName);
     }
 
@@ -83,7 +83,7 @@ class APIQueryGenerator extends BaseGenerator
             $templatePrefix = 'query_docs';
             $templateType = 'swagger-generator';
         } else {
-            $templatePrefix = 'api.docs.query';
+            $templatePrefix = 'graphql.docs.query';
             $templateType = 'artomator';
         }
 
@@ -100,7 +100,7 @@ class APIQueryGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('API Query file deleted: '.$this->fileName);
+            $this->commandData->commandComment('GraphQL Query file deleted: '.$this->fileName);
         }
     }
 }

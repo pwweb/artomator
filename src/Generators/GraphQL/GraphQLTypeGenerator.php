@@ -1,12 +1,12 @@
 <?php
 
-namespace PWWEB\Artomator\Generators\API;
+namespace PWWEB\Artomator\Generators\GraphQL;
 
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\BaseGenerator;
+use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Utils\FileUtil;
 
-class APITypeGenerator extends BaseGenerator
+class GraphQLTypeGenerator extends BaseGenerator
 {
     /**
      * @var CommandData
@@ -26,20 +26,20 @@ class APITypeGenerator extends BaseGenerator
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiType;
+        $this->path = $commandData->config->pathGraphQLType;
         $this->fileName = $this->commandData->modelName.'Type.php';
     }
 
     public function generate()
     {
-        $templateData = get_template('api.type.api_type', 'artomator');
+        $templateData = get_template('graphql.type.graphql_type', 'artomator');
         $templateData = str_replace('$SCHEMA$', $this->generateSchema(), $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = $this->fillDocs($templateData);
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
-        $this->commandData->commandObj->comment("\nApi Type created: ");
+        $this->commandData->commandObj->comment("\nGraphQL Type created: ");
         $this->commandData->commandObj->info($this->fileName);
     }
 
@@ -70,7 +70,7 @@ class APITypeGenerator extends BaseGenerator
             $templatePrefix = 'type_docs';
             $templateType = 'swagger-generator';
         } else {
-            $templatePrefix = 'api.docs.type';
+            $templatePrefix = 'graphql.docs.type';
             $templateType = 'artomator';
         }
 
@@ -87,7 +87,7 @@ class APITypeGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('API Type file deleted: '.$this->fileName);
+            $this->commandData->commandComment('GraphQL Type file deleted: '.$this->fileName);
         }
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace PWWEB\Artomator\Generators\API;
+namespace PWWEB\Artomator\Generators\GraphQL;
 
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\BaseGenerator;
+use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Utils\FileUtil;
 
-class APIMutationGenerator extends BaseGenerator
+class GraphQLMutationGenerator extends BaseGenerator
 {
     /**
      * @var CommandData
@@ -31,10 +31,10 @@ class APIMutationGenerator extends BaseGenerator
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathApiMutation;
-        $this->createFileName = 'Create'.$this->commandData->modelName.'Mutation.php';
-        $this->updateFileName = 'Update'.$this->commandData->modelName.'Mutation.php';
-        $this->deleteFileName = 'Delete'.$this->commandData->modelName.'Mutation.php';
+        $this->path = $commandData->config->pathGraphQLMutation;
+        $this->createFileName = 'create'.$this->commandData->modelName.'Mutation.php';
+        $this->updateFileName = 'update'.$this->commandData->modelName.'Mutation.php';
+        $this->deleteFileName = 'delete'.$this->commandData->modelName.'Mutation.php';
     }
 
     public function generate()
@@ -46,7 +46,7 @@ class APIMutationGenerator extends BaseGenerator
 
     private function generateCreateMutation()
     {
-        $templateData = get_template('api.mutation.create_mutation', 'artomator');
+        $templateData = get_template('graphql.mutation.create_mutation', 'artomator');
 
         $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
         $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
@@ -60,7 +60,7 @@ class APIMutationGenerator extends BaseGenerator
 
     private function generateUpdateMutation()
     {
-        $templateData = get_template('api.mutation.update_mutation', 'artomator');
+        $templateData = get_template('graphql.mutation.update_mutation', 'artomator');
 
         $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
         $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
@@ -74,7 +74,7 @@ class APIMutationGenerator extends BaseGenerator
 
     private function generateDeleteMutation()
     {
-        $templateData = get_template('api.mutation.delete_mutation', 'artomator');
+        $templateData = get_template('graphql.mutation.delete_mutation', 'artomator');
 
         $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
         $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
@@ -122,15 +122,15 @@ class APIMutationGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->createFileName)) {
-            $this->commandData->commandComment('Create API Mutation file deleted: '.$this->createFileName);
+            $this->commandData->commandComment('Create GraphQL Mutation file deleted: '.$this->createFileName);
         }
 
         if ($this->rollbackFile($this->path, $this->updateFileName)) {
-            $this->commandData->commandComment('Update API Mutation file deleted: '.$this->updateFileName);
+            $this->commandData->commandComment('Update GraphQL Mutation file deleted: '.$this->updateFileName);
         }
 
         if ($this->rollbackFile($this->path, $this->deleteFileName)) {
-            $this->commandData->commandComment('Delete API Mutation file deleted: '.$this->deleteFileName);
+            $this->commandData->commandComment('Delete GraphQL Mutation file deleted: '.$this->deleteFileName);
         }
     }
 }

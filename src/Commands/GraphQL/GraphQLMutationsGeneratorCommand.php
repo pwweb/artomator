@@ -1,26 +1,26 @@
 <?php
 
-namespace PWWEB\Artomator\Commands\API;
+namespace PWWEB\Artomator\Commands\GraphQL;
 
 use PWWEB\Artomator\Commands\BaseCommand;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\API\APIMutationGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 
-class APIMutationsGeneratorCommand extends BaseCommand
+class GraphQLMutationsGeneratorCommand extends BaseCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'artomator.api:mutations';
+    protected $name = 'artomator.graphql:mutations';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create an api mutation command';
+    protected $description = 'Create a GraphQL mutation command';
 
     /**
      * Create a new command instance.
@@ -29,7 +29,7 @@ class APIMutationsGeneratorCommand extends BaseCommand
     {
         parent::__construct();
 
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_API);
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_GRAPHQL);
     }
 
     /**
@@ -41,7 +41,7 @@ class APIMutationsGeneratorCommand extends BaseCommand
     {
         parent::handle();
 
-        $controllerGenerator = new APIMutationGenerator($this->commandData);
+        $controllerGenerator = new GraphQLMutationGenerator($this->commandData);
         $controllerGenerator->generate();
 
         $this->performPostActions();
