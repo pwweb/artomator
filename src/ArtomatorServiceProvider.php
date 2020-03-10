@@ -7,6 +7,7 @@ use PWWEB\Artomator\Commands\GraphQL\GraphQLGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLMutationsGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLQueryGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLTypeGeneratorCommand;
+use PWWEB\Artomator\Commands\Publish\PublishTemplateCommand;
 use PWWEB\Artomator\Commands\GraphQLScaffoldGeneratorCommand;
 
 class ArtomatorServiceProvider extends ServiceProvider
@@ -17,12 +18,15 @@ class ArtomatorServiceProvider extends ServiceProvider
     public function boot()
     {
         $configPath = __DIR__ . '/../config/artomator.php';
+        $configPathInfyom = __DIR__ . '/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
 
         $this->publishes(
             [
             $configPath => config_path('pwweb/artomator.php'),
+            $configPathInfyom => config_path('infyom/laravel_generator.php'),
             ]
-        );
+        , 'artomator.config');
+
         parent::boot();
     }
 
@@ -66,6 +70,10 @@ class ArtomatorServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->singleton('artomator.publish.templates', function ($app) {
+            return new PublishTemplateCommand();
+        });
+
         parent::register();
 
         $this->commands(
@@ -75,6 +83,7 @@ class ArtomatorServiceProvider extends ServiceProvider
             'artomator.graphql.query',
             'artomator.graphql.mutations',
             'artomator.graphql.type',
+            'artomator.publish.templates',
             ]
         );
     }
