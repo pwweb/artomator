@@ -24,8 +24,6 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Execute the command.
-     *
-     * @return void
      */
     public function handle()
     {
@@ -45,13 +43,13 @@ class PublishTemplateCommand extends PublishBaseCommand
      */
     public function publishGeneratorTemplates()
     {
+        $templatesPath = __DIR__.'/../../../../../infyomlabs/laravel-generator/templates';
+
+        $this->publishDirectory($templatesPath, $this->templatesDir, 'infyom-generator-templates');
+
         $templatesPath = __DIR__.'/../../../templates';
 
-        $this->publishDirectory($templatesPath, $this->templatesDir, 'pwweb-artomator-templates');
-
-        $templatesPath = __DIR__.'/../../../../../infyomlabs/templates';
-
-        return $this->publishDirectory($templatesPath, $this->templatesDir, 'infyom-generator-templates');
+        return $this->publishDirectory($templatesPath, $this->templatesDir, 'pwweb-artomator-templates');
     }
 
     /**
