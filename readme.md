@@ -1,10 +1,10 @@
 # Artomator
 
+[![Latest Stable Version](https://poser.pugx.org/pwweb/artomator/v/stable)](https://packagist.org/packages/pwweb/artomator)
+[![Total Downloads](https://poser.pugx.org/pwweb/artomator/downloads)](https://packagist.org/packages/pwweb/artomator)
+[![License](https://poser.pugx.org/pwweb/artomator/license)](https://packagist.org/packages/pwweb/artomator)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pwweb/artomator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pwweb/artomator/?branch=master)
 
-<!-- [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis] -->
 
 ![](robot.png)
 
@@ -37,22 +37,15 @@ To be completed...
 To alter the stub files provided with the package, you can publish them from the command line
 
 ``` bash
-$ php artisan vendor:publish --tag=artomator.stubs
+$ php artisan artomator.publish:templates
 ```
+This command will run the InfyOmLabs equivalent publish command and then overwrite with those within the Artomator package. Therefore you will be asked to confirm the overwrite of the files, type `yes` to confirm.
 
-This will put the stub files into the `public\vendor\PWWEB` folder. These can be edited and the when the commands are run, these templates will be used.
-
-**Note:** Remember to update the config file to point to the location of the template files.
+This will put the stub files into the `.\resources\infyom\infyom-generator-templates` folder. These can be edited and the when the commands are run, these templates will be used.
 
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-<!-- ## Testing
-
-``` bash
-$ composer test
-``` -->
 
 ## Contributing
 
