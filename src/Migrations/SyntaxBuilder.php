@@ -2,19 +2,19 @@
 
 namespace PWWEB\Artomator\Migrations;
 
-use Laracasts\Generators\GeneratorException;
 use Illuminate\Support\Pluralizer;
+use Laracasts\Generators\GeneratorException;
 
 class SyntaxBuilder
 {
     /**
      * Create the schema for the arguments method.
      *
-     * @param array $schema The schema to parse.
-     *
-     * @return string
+     * @param array $schema the schema to parse
      *
      * @throws GeneratorException
+     *
+     * @return string
      */
     public function createArgsSchema($schema)
     {
@@ -26,11 +26,11 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the resolves method.
      *
-     * @param array $schema The schema to parse.
-     *
-     * @return string
+     * @param array $schema the schema to parse
      *
      * @throws GeneratorException
+     *
+     * @return string
      */
     public function createResolvesSchema($schema)
     {
@@ -42,11 +42,11 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the fields method.
      *
-     * @param array $schema The schema to parse.
-     *
-     * @return string
+     * @param array $schema the schema to parse
      *
      * @throws GeneratorException
+     *
+     * @return string
      */
     public function createFieldsSchema($schema)
     {
@@ -58,11 +58,11 @@ class SyntaxBuilder
     /**
      * Construct the syntax for the data method.
      *
-     * @param array $schema The schema to parse.
-     *
-     * @return string
+     * @param array $schema the schema to parse
      *
      * @throws GeneratorException
+     *
+     * @return string
      */
     public function createDataSchema($schema)
     {
@@ -74,13 +74,13 @@ class SyntaxBuilder
     /**
      * Construct the schema arguments.
      *
-     * @param array $schema The schema to parse.
+     * @param array $schema the schema to parse
      *
      * @return string
      */
     private function constructArgs($schema)
     {
-        if (empty($schema) === true) {
+        if (true === empty($schema)) {
             return '';
         }
 
@@ -94,11 +94,10 @@ class SyntaxBuilder
         return implode("\n\t\t\t", $fields);
     }
 
-
     /**
      * Construct the syntax to add an argument.
      *
-     * @param array $field The field to build the syntax.
+     * @param array $field the field to build the syntax
      *
      * @return string
      */
@@ -112,13 +111,13 @@ class SyntaxBuilder
     /**
      * Construct the schema resolvers.
      *
-     * @param array $schema The schema to parse.
+     * @param array $schema the schema to parse
      *
      * @return string
      */
     private function constructResolves($schema)
     {
-        if (empty($schema) === true) {
+        if (true === empty($schema)) {
             return '';
         }
 
@@ -132,11 +131,10 @@ class SyntaxBuilder
         return implode("\n\t\t", $fields);
     }
 
-
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param array $field The field to build the syntax.
+     * @param array $field the field to build the syntax
      *
      * @return string
      */
@@ -150,13 +148,13 @@ class SyntaxBuilder
     /**
      * Construct the schema resolvers.
      *
-     * @param array $schema The schema to parse.
+     * @param array $schema the schema to parse
      *
      * @return string
      */
     private function constructFields($schema)
     {
-        if (empty($schema) === true) {
+        if (true === empty($schema)) {
             return '';
         }
 
@@ -170,17 +168,16 @@ class SyntaxBuilder
         return implode("\n\t\t\t", $fields);
     }
 
-
     /**
      * Construct the syntax to add a resolve.
      *
-     * @param array $field The field to build the syntax.
+     * @param array $field the field to build the syntax
      *
      * @return string
      */
     private function addField($field)
     {
-        if (($name = strstr($field['name'], '_id', true)) !== false) {
+        if (false !== ($name = strstr($field['name'], '_id', true))) {
             // Then we have a foreign key?
             $field['name'] = substr(strrchr($name, '_'), 1);
             $format = "'%1\$s' => [\n\t\t\t\t'type' => Type::listOf(GraphQL::type('%3\$s')),\n\t\t\t\t'description' => 'The %1\$s of the model',\n\t\t\t]";
@@ -189,19 +186,19 @@ class SyntaxBuilder
         }
         $syntax = sprintf($format, $field['name'], $this->normaliseType($field['type']), Pluralizer::singular($field['name']));
 
-        return $syntax .= ",";
+        return $syntax .= ',';
     }
 
     /**
      * Construct the schema data.
      *
-     * @param array $schema The schema to parse.
+     * @param array $schema the schema to parse
      *
      * @return string
      */
     private function constructData($schema)
     {
-        if (empty($schema) === true) {
+        if (true === empty($schema)) {
             return '';
         }
 
@@ -215,17 +212,16 @@ class SyntaxBuilder
         return implode("\n\t\t\t", $fields);
     }
 
-
     /**
      * Construct the syntax to add data.
      *
-     * @param array $field The field to build the syntax.
+     * @param array $field the field to build the syntax
      *
      * @return string
      */
     private function addData($field)
     {
-        $syntax = sprintf("\$DummyModelVariable->%1\$s = \$request->%1\$s", $field['name']);
+        $syntax = sprintf('$DummyModelVariable->%1$s = $request->%1$s', $field['name']);
 
         return $syntax .= ';';
     }
@@ -233,7 +229,7 @@ class SyntaxBuilder
     /**
      * Normalise the types.
      *
-     * @param string $type Type name to normalise.
+     * @param string $type type name to normalise
      *
      * @return string
      */
@@ -252,6 +248,7 @@ class SyntaxBuilder
                 break;
             case 'tinyint':
                 $type = 'boolean';
+                // no break
             default:
                 break;
         }

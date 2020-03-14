@@ -3,8 +3,8 @@
 namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
-use PWWEB\Artomator\Common\CommandData;
 use InfyOm\Generator\Utils\FileUtil;
+use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLQueryGenerator extends BaseGenerator
 {
@@ -27,7 +27,7 @@ class GraphQLQueryGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathGraphQLQuery;
-        $this->fileName = $this->commandData->modelName . 'Query.php';
+        $this->fileName = $this->commandData->modelName.'Query.php';
     }
 
     public function generate()
@@ -54,7 +54,7 @@ class GraphQLQueryGenerator extends BaseGenerator
                 continue;
             }
 
-            $arguments[] = "'" . $field->name . "' => ['name' => '" . $field->name . "', 'type' => Type::" . $field->fieldType . '()],';
+            $arguments[] = "'".$field->name."' => ['name' => '".$field->name."', 'type' => Type::".$field->fieldType.'()],';
         }
 
         return implode(infy_nl_tab(1, 3), $arguments);
@@ -68,7 +68,7 @@ class GraphQLQueryGenerator extends BaseGenerator
                 continue;
             }
 
-            $resolves[] = "if (isset(\$args['" . $field->name . "']) === true)\n\t\t{\n\t\t\treturn \$MODEL_NAME\$::where('" . $field->name . "', \$args['" . $field->name . "'])->get();\n\t\t}\n";
+            $resolves[] = "if (isset(\$args['".$field->name."']) === true)\n\t\t{\n\t\t\treturn \$MODEL_NAME\$::where('".$field->name."', \$args['".$field->name."'])->get();\n\t\t}\n";
         }
 
         return implode(infy_nl_tab(1, 2), $resolves);
@@ -87,8 +87,8 @@ class GraphQLQueryGenerator extends BaseGenerator
         }
 
         foreach ($methods as $method) {
-            $key = '$DOC_' . strtoupper($method) . '$';
-            $docTemplate = get_template($templatePrefix . '.' . $method, $templateType);
+            $key = '$DOC_'.strtoupper($method).'$';
+            $docTemplate = get_template($templatePrefix.'.'.$method, $templateType);
             $docTemplate = fill_template($this->commandData->dynamicVars, $docTemplate);
             $templateData = str_replace($key, $docTemplate, $templateData);
         }
@@ -99,7 +99,7 @@ class GraphQLQueryGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('GraphQL Query file deleted: ' . $this->fileName);
+            $this->commandData->commandComment('GraphQL Query file deleted: '.$this->fileName);
         }
     }
 }

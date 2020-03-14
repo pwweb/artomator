@@ -42,12 +42,12 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
     }
 
     public function prepareRoutes()
     {
-        $fileName = $this->path . '.json';
+        $fileName = $this->path.'.json';
 
         if (file_exists($fileName)) {
             // Routes json exists:
@@ -90,7 +90,7 @@ class RoutesGenerator
     public function generate()
     {
         file_put_contents($this->path, $this->routeContents);
-        $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' routes added.');
+        $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' routes added.');
     }
 
     public function rollback()

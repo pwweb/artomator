@@ -3,8 +3,8 @@
 namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
-use PWWEB\Artomator\Common\CommandData;
 use InfyOm\Generator\Utils\FileUtil;
+use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLMutationGenerator extends BaseGenerator
 {

@@ -3,8 +3,8 @@
 namespace PWWEB\Artomator\Generators\GraphQL;
 
 use InfyOm\Generator\Generators\BaseGenerator;
-use PWWEB\Artomator\Common\CommandData;
 use InfyOm\Generator\Utils\FileUtil;
+use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLTypeGenerator extends BaseGenerator
 {
@@ -27,7 +27,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathGraphQLType;
-        $this->fileName = $this->commandData->modelName . 'Type.php';
+        $this->fileName = $this->commandData->modelName.'Type.php';
     }
 
     public function generate()
@@ -51,12 +51,12 @@ class GraphQLTypeGenerator extends BaseGenerator
                 continue;
             }
             if (true === $field->isNotNull) {
-                $field_type = 'Type::nonNull(Type::' . $field->fieldType . '())';
+                $field_type = 'Type::nonNull(Type::'.$field->fieldType.'())';
             } else {
-                $field_type = 'Type::' . $field->fieldType . '()';
+                $field_type = 'Type::'.$field->fieldType.'()';
             }
 
-            $schema[] = "'" . $field->name . "' => [" . infy_nl_tab(1, 4) . "'type' => " . $field_type . ',' . infy_nl_tab(1, 4) . "'description' => 'The " . $field->name . " of the model'" . infy_nl_tab(1, 3) . '],';
+            $schema[] = "'".$field->name."' => [".infy_nl_tab(1, 4)."'type' => ".$field_type.','.infy_nl_tab(1, 4)."'description' => 'The ".$field->name." of the model'".infy_nl_tab(1, 3).'],';
         }
 
         return implode(infy_nl_tab(1, 3), $schema);
@@ -75,8 +75,8 @@ class GraphQLTypeGenerator extends BaseGenerator
         }
 
         foreach ($methods as $method) {
-            $key = '$DOC_' . strtoupper($method) . '$';
-            $docTemplate = get_template($templatePrefix . '.' . $method, $templateType);
+            $key = '$DOC_'.strtoupper($method).'$';
+            $docTemplate = get_template($templatePrefix.'.'.$method, $templateType);
             $docTemplate = fill_template($this->commandData->dynamicVars, $docTemplate);
             $templateData = str_replace($key, $docTemplate, $templateData);
         }
@@ -87,7 +87,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     public function rollback()
     {
         if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('GraphQL Type file deleted: ' . $this->fileName);
+            $this->commandData->commandComment('GraphQL Type file deleted: '.$this->fileName);
         }
     }
 }
