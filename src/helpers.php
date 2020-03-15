@@ -48,4 +48,4 @@ if (! function_exists('license_authors')) {
             return $authors;
         }
     }
-}
+}// end if
