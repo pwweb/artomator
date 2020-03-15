@@ -1,45 +1,4 @@
-<?php
-
-/**
- * $NAMESPACE_MODEL$\$MODEL_NAME$ GraphQL Type
- *
- * Standard GraphQL Type for the $MODEL_NAME$ Model.
- *
- * @package   $NAMESPACE_TYPE$
- * @author    $AUTHORS$
- * @copyright $COPYRIGHT$
- * @license   $LICENSE$
- */
-
-namespace $NAMESPACE_TYPE$;
-
-use $NAMESPACE_MODEL$\$MODEL_NAME$;
-use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
-use Rebing\GraphQL\Support\Type as GraphQLType;
-
-class $MODEL_NAME$Type extends GraphQLType
-{
-    /**
-     * Type Attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'name' => '$MODEL_NAME$',
-        'description' => 'An $MODEL_NAME$',
-        'model' => $MODEL_NAME$::class,
-    ];
-
-    /**
-     * Describe the available fields.
-     *
-     * @return array Field descriptions.
-     */
-    public function fields()
-    {
-        return [
-            $FIELDS$
-        ];
-    }
+type $MODEL_NAME$ {
+    id: ID!
+    $SCHEMA$
 }

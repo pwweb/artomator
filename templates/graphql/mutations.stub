@@ -1,0 +1,3 @@
+    create$MODEL_NAME$($SCHEMA$): $MODEL_NAME$
+    update$MODEL_NAME$(id: ID, $SCHEMA$): $MODEL_NAME$
+    delete$MODEL_NAME$(id: ID): $MODEL_NAME$
