@@ -22,9 +22,11 @@ class ArtomatorServiceProvider extends ServiceProvider
 
         $this->publishes(
             [
-            $configPath       => config_path('pwweb/artomator.php'),
-            $configPathInfyom => config_path('infyom/laravel_generator.php'),
-            ], 'artomator.config');
+                $configPath       => config_path('pwweb/artomator.php'),
+                $configPathInfyom => config_path('infyom/laravel_generator.php'),
+            ],
+            'artomator.config'
+        );
 
         parent::boot();
     }
@@ -77,12 +79,12 @@ class ArtomatorServiceProvider extends ServiceProvider
 
         $this->commands(
             [
-            'artomator.graphql',
-            'artomator.graphql_scaffold',
-            'artomator.graphql.query',
-            'artomator.graphql.mutations',
-            'artomator.graphql.type',
-            'artomator.publish.templates',
+                'artomator.graphql',
+                'artomator.graphql_scaffold',
+                'artomator.graphql.query',
+                'artomator.graphql.mutations',
+                'artomator.graphql.type',
+                'artomator.publish.templates',
             ]
         );
     }
