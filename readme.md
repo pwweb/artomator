@@ -1,14 +1,15 @@
 # Artomator
 
-[![Latest Stable Version](https://poser.pugx.org/pwweb/artomator/v/stable)](https://packagist.org/packages/pwweb/artomator)
-[![Total Downloads](https://poser.pugx.org/pwweb/artomator/downloads)](https://packagist.org/packages/pwweb/artomator)
-[![License](https://poser.pugx.org/pwweb/artomator/license)](https://packagist.org/packages/pwweb/artomator)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pwweb/artomator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pwweb/artomator/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/pwweb/artomator/v/stable?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
+[![Total Downloads](https://poser.pugx.org/pwweb/artomator/downloads?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
+[![License](https://poser.pugx.org/pwweb/artomator/license?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
+[![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/pwweb/artomator?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/pwweb/artomator/)
+[![StyleCI Status](https://github.styleci.io/repos/190910947/shield?branch=feature/lg)](https://github.styleci.io/repos/190910947)
 
 
 ![](robot.png)
 
-**Artomator**: Custom commands making life easier. Take a look at [contributing.md](contributing.md) to see a to do list.
+**Artomator**: Custom commands making life easier. Extending the package [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package to include GraphQL and extend the document blocks.
 
 ## Installation
 
@@ -18,6 +19,8 @@ Via Composer run the following:
 $ composer require pwweb/artomator --dev
 ```
 
+## Usage
+
 ### Config
 
 To publish the `config` file from the command line
@@ -26,13 +29,21 @@ To publish the `config` file from the command line
 $ php artisan vendor:publish --tag=artomator.config
 ```
 
-## Usage
+### Commands
 
-From the command line
+As this is an extension of the [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package the documentation for the base package can be found [here](https://labs.infyom.com/laravelgenerator/docs/6.0/introduction).
 
-To be completed...
+In addition to the base package commands there are the following:
+``` bash
+$ php artisan artomator.publish:templates
+$ php artisan artomator.graphql_scaffold $MODEL_NAME
+$ php artisan artomator.graphql $MODEL_NAME
+$ php artisan artomator.graphql:mutations $MODEL_NAME
+$ php artisan artomator.graphql.query $MODEL_NAME
+$ php artisan artomator.graphql:type $MODEL_NAME
+```
 
-### Extending
+### `artomator.publish:templates`
 
 To alter the stub files provided with the package, you can publish them from the command line
 
@@ -42,6 +53,26 @@ $ php artisan artomator.publish:templates
 This command will run the InfyOmLabs equivalent publish command and then overwrite with those within the Artomator package. Therefore you will be asked to confirm the overwrite of the files, type `yes` to confirm.
 
 This will put the stub files into the `.\resources\infyom\infyom-generator-templates` folder. These can be edited and the when the commands are run, these templates will be used.
+
+### `artomator.graphql_scaffold $MODEL_NAME`
+
+This function follows the same principal as the `php artisan infyom:api_scaffold $MODEL_NAME` function but generates the GraphQL files instead of the API files along with the laravel scaffold files.
+
+### `artomator.graphql $MODEL_NAME`
+
+This function follows the same principal as the `php artisan infyom:api $MODEL_NAME` function but generates the GraphQL files instead of the API files.
+
+#### `artomator.graphql:mutations $MODEL_NAME`
+
+This function generates the GraphQL Mutations files only.
+
+#### `artomator.graphql:query $MODEL_NAME`
+
+This function generates the GraphQL Query file only.
+
+#### `artomator.graphql:type $MODEL_NAME`
+
+This function generates the GraphQL Type file only.
 
 ## Change log
 
@@ -53,12 +84,15 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-If you discover any security related issues, please email richard@pw-websolutions.com instead of using the issue tracker.
+If you discover any security related issues, please email securtity@pw-websolutions.com instead of using the issue tracker.
 
 ## Credits
 
-- [Richard Browne][link-author]
+- [Richard Browne](https://github.com/orgs/pwweb/people/rabrowne85)
+- [Frank Pillukeit](https://github.com/orgs/pwweb/people/frankpde)
+- [PWWEB][link-author]
 - [All Contributors][link-contributors]
+- [InfyOmLabs](https://github.com/InfyOmLabs)
 
 ## License
 
@@ -73,4 +107,4 @@ Copyright &copy; pw-websolutions.com. Please see the [license file](license.md) 
 [link-travis]: https://travis-ci.org/pwweb/artomator
 [link-styleci]: https://styleci.io/repos/12345678 -->
 [link-author]: https://github.com/pwweb
-[link-contributors]: ../../contributors
+[link-contributors]: https://github.com/pwweb/artomator/graphs/contributors
