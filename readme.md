@@ -37,7 +37,7 @@ In addition to the base package commands there are the following:
 ``` bash
 $ php artisan artomator.publish:templates
 $ php artisan artomator.graphql_scaffold $MODEL_NAME
-$ php artisan artomator.graphql $MODEL_NAME
+$ php artisan artomator:graphql $MODEL_NAME
 $ php artisan artomator.graphql:mutations $MODEL_NAME
 $ php artisan artomator.graphql.query $MODEL_NAME
 $ php artisan artomator.graphql:type $MODEL_NAME
@@ -58,7 +58,7 @@ This will put the stub files into the `.\resources\infyom\infyom-generator-templ
 
 This function follows the same principal as the `php artisan infyom:api_scaffold $MODEL_NAME` function but generates the GraphQL files instead of the API files along with the laravel scaffold files.
 
-### `artomator.graphql $MODEL_NAME`
+### `artomator:graphql $MODEL_NAME`
 
 This function follows the same principal as the `php artisan infyom:api $MODEL_NAME` function but generates the GraphQL files instead of the API files.
 

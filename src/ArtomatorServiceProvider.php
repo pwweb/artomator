@@ -7,6 +7,7 @@ use PWWEB\Artomator\Commands\GraphQL\GraphQLGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLMutationsGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLQueryGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLTypeGeneratorCommand;
+use PWWEB\Artomator\Commands\GraphQL\GraphQLSubscriptionGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQLScaffoldGeneratorCommand;
 use PWWEB\Artomator\Commands\Publish\PublishTemplateCommand;
 
@@ -71,6 +72,13 @@ class ArtomatorServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->singleton(
+            'artomator.graphql.subscription',
+            function ($app) {
+                return new GraphQLSubscriptionGeneratorCommand();
+            }
+        );
+
         $this->app->singleton('artomator.publish.templates', function ($app) {
             return new PublishTemplateCommand();
         });
@@ -84,6 +92,7 @@ class ArtomatorServiceProvider extends ServiceProvider
                 'artomator.graphql.query',
                 'artomator.graphql.mutations',
                 'artomator.graphql.type',
+                'artomator.graphql.subscription',
                 'artomator.publish.templates',
             ]
         );

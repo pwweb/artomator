@@ -2,6 +2,7 @@
 
 namespace PWWEB\Artomator\Generators\GraphQL;
 
+use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
@@ -16,121 +17,63 @@ class GraphQLMutationGenerator extends BaseGenerator
     /**
      * @var string
      */
-    private $path;
+    private $fileName;
 
     /**
      * @var string
      */
-    private $createFileName;
+    private $fileContents;
 
     /**
      * @var string
      */
-    private $updateFileName;
+    private $templateData;
 
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathGraphQLMutation;
-        $this->createFileName = 'create'.$this->commandData->modelName.'Mutation.php';
-        $this->updateFileName = 'update'.$this->commandData->modelName.'Mutation.php';
-        $this->deleteFileName = 'delete'.$this->commandData->modelName.'Mutation.php';
+        $this->filename = $commandData->config->pathGraphQL;
+        $this->fileContents = file_get_contents($this->filename);
+        $this->templateData = get_artomator_template("graphql.mutations");
+        $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
+        $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
 
     public function generate()
     {
-        $this->generateCreateMutation();
-        $this->generateUpdateMutation();
-        $this->generateDeleteMutation();
-    }
+        if (Str::contains($this->fileContents, $this->templateData) === true) {
+            $this->commandData->commandObj->info('GraphQL Mutations '.$this->commandData->config->mHumanPlural.' already exist; Skipping');
 
-    private function generateCreateMutation()
-    {
-        $templateData = get_template('graphql.mutation.create_mutation', 'artomator');
-
-        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
-        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-
-        FileUtil::createFile($this->path, $this->createFileName, $templateData);
-
-        $this->commandData->commandComment("\nCreate Mutation created: ");
-        $this->commandData->commandInfo($this->createFileName);
-    }
-
-    private function generateUpdateMutation()
-    {
-        $templateData = get_template('graphql.mutation.update_mutation', 'artomator');
-
-        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
-        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-
-        FileUtil::createFile($this->path, $this->updateFileName, $templateData);
-
-        $this->commandData->commandComment("\nUpdate Mutation created: ");
-        $this->commandData->commandInfo($this->updateFileName);
-    }
-
-    private function generateDeleteMutation()
-    {
-        $templateData = get_template('graphql.mutation.delete_mutation', 'artomator');
-
-        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
-        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-
-        FileUtil::createFile($this->path, $this->deleteFileName, $templateData);
-
-        $this->commandData->commandComment("\nDelete Mutation created: ");
-        $this->commandData->commandInfo($this->deleteFileName);
-    }
-
-    private function generateArguments()
-    {
-        $arguments = [];
-        foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
-                continue;
-            }
-            if (true === $field->isNotNull) {
-                $field_type = 'Type::nonNull(Type::'.$field->fieldType.'())';
-            } else {
-                $field_type = 'Type::'.$field->fieldType.'()';
-            }
-
-            $arguments[] = "'".$field->name."' => [".infy_nl_tab(1, 4)."'name' => '".$field->name."',".infy_nl_tab(1, 4)."'type' => ".$field_type.','.infy_nl_tab(1, 3).'],';
+            return;
         }
 
-        return implode(infy_nl_tab(1, 3), $arguments);
-    }
+        $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', "$1$2".$this->templateData."$3", $this->fileContents);
 
-    private function generateResolves()
-    {
-        $resolves = [];
-        foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
-                continue;
-            }
+        file_put_contents($this->filename, $this->fileContents);
 
-            $resolves[] = "'".$field->name."' => \$args['".$field->name."'],";
-        }
-
-        return implode(infy_nl_tab(1, 3), $resolves);
+        $this->commandData->commandComment("\nGraphQL Mutations created");
     }
 
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->createFileName)) {
-            $this->commandData->commandComment('Create GraphQL Mutation file deleted: '.$this->createFileName);
+        if (Str::contains($this->fileContents, $this->templateData)) {
+            file_put_contents($this->path, str_replace($this->templateData, '', $this->fileContents));
+            $this->commandData->commandComment('GraphQL Mutations deleted');
+        }
+    }
+
+    private function generateSchema()
+    {
+        $schema = [];
+        foreach ($this->commandData->fields as $field) {
+            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
+                continue;
+            }
+            $field_type = ucfirst($field->fieldType) . (Str::contains($field->validations, 'required') ? '!' : '');
+
+            $schema[] = $field->name.": ".$field_type;
         }
 
-        if ($this->rollbackFile($this->path, $this->updateFileName)) {
-            $this->commandData->commandComment('Update GraphQL Mutation file deleted: '.$this->updateFileName);
-        }
-
-        if ($this->rollbackFile($this->path, $this->deleteFileName)) {
-            $this->commandData->commandComment('Delete GraphQL Mutation file deleted: '.$this->deleteFileName);
-        }
+        return ["\$SCHEMA\$" => implode(", ", $schema)];
     }
 }

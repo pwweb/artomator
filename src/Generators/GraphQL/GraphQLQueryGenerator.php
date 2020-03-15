@@ -2,6 +2,7 @@
 
 namespace PWWEB\Artomator\Generators\GraphQL;
 
+use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
@@ -16,90 +17,47 @@ class GraphQLQueryGenerator extends BaseGenerator
     /**
      * @var string
      */
-    private $path;
+    private $fileName;
 
     /**
      * @var string
      */
-    private $fileName;
+    private $fileContents;
+
+    /**
+     * @var string
+     */
+    private $templateData;
 
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathGraphQLQuery;
-        $this->fileName = $this->commandData->modelName.'Query.php';
+        $this->filename = $commandData->config->pathGraphQL;
+        $this->fileContents = file_get_contents($this->filename);
+        $this->templateData = get_artomator_template("graphql.query");
+        $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
     }
 
     public function generate()
     {
-        $templateName = 'graphql_query';
+        if (Str::contains($this->fileContents, $this->templateData) === true) {
+            $this->commandData->commandObj->info('GraphQL Query '.$this->commandData->config->mHumanPlural.' already exists; Skipping');
 
-        $templateData = get_template("graphql.query.$templateName", 'artomator');
-        $templateData = str_replace('$ARGUMENTS$', $this->generateArguments(), $templateData);
-        $templateData = str_replace('$RESOLVES$', $this->generateResolves(), $templateData);
-        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-        $templateData = $this->fillDocs($templateData);
-
-        FileUtil::createFile($this->path, $this->fileName, $templateData);
-
-        $this->commandData->commandComment("\nGraphQL Query created: ");
-        $this->commandData->commandInfo($this->fileName);
-    }
-
-    private function generateArguments()
-    {
-        $arguments = [];
-        foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
-                continue;
-            }
-
-            $arguments[] = "'".$field->name."' => ['name' => '".$field->name."', 'type' => Type::".$field->fieldType.'()],';
+            return;
         }
 
-        return implode(infy_nl_tab(1, 3), $arguments);
-    }
+        $this->fileContents = preg_replace('/(type Query {)(.+?[^}])(})/is', "$1$2".$this->templateData."$3", $this->fileContents);
 
-    private function generateResolves()
-    {
-        $resolves = [];
-        foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
-                continue;
-            }
+        file_put_contents($this->filename, $this->fileContents);
 
-            $resolves[] = "if (isset(\$args['".$field->name."']) === true)\n\t\t{\n\t\t\treturn \$MODEL_NAME\$::where('".$field->name."', \$args['".$field->name."'])->get();\n\t\t}\n";
-        }
-
-        return implode(infy_nl_tab(1, 2), $resolves);
-    }
-
-    private function fillDocs($templateData)
-    {
-        $methods = ['query'];
-
-        if ($this->commandData->getAddOn('swagger')) {
-            $templatePrefix = 'query_docs';
-            $templateType = 'swagger-generator';
-        } else {
-            $templatePrefix = 'graphql.docs.query';
-            $templateType = 'artomator';
-        }
-
-        foreach ($methods as $method) {
-            $key = '$DOC_'.strtoupper($method).'$';
-            $docTemplate = get_template($templatePrefix.'.'.$method, $templateType);
-            $docTemplate = fill_template($this->commandData->dynamicVars, $docTemplate);
-            $templateData = str_replace($key, $docTemplate, $templateData);
-        }
-
-        return $templateData;
+        $this->commandData->commandComment("\nGraphQL Query created");
     }
 
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('GraphQL Query file deleted: '.$this->fileName);
+        if (Str::contains($this->fileContents, $this->templateData)) {
+            file_put_contents($this->path, str_replace($this->templateData, '', $this->fileContents));
+            $this->commandData->commandComment('GraphQL Query deleted');
         }
     }
 }

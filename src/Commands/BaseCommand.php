@@ -6,6 +6,7 @@ use InfyOm\Generator\Commands\BaseCommand as Base;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
 
 class BaseCommand extends Base
 {
@@ -24,6 +25,11 @@ class BaseCommand extends Base
         if (! $this->isSkip('types') and ! $this->isSkip('graphql_types')) {
             $typeGenerator = new GraphQLTypeGenerator($this->commandData);
             $typeGenerator->generate();
+        }
+
+        if (! $this->isSkip('subscription') and ! $this->isSkip('graphql_subscription')) {
+            $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
+            $subscriptionGenerator->generate();
         }
     }
 }
