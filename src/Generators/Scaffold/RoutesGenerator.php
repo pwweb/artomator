@@ -112,7 +112,7 @@ class RoutesGenerator
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($key),
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
-                $templateString .= get_template('scaffold.routes.prefixed.namespace', 'artomator');
+                $templateString .= get_artomator_template('scaffold.routes.prefixed.namespace');
                 $templateString = fill_template($vars, $templateString);
             }
             if (isset($route['resources'])) {
@@ -123,7 +123,7 @@ class RoutesGenerator
                         '$ITERATION_MODEL_NAME$'              => $key,
                         '$INDENT$'                            => infy_tabs($tabs),
                     ];
-                    $templateString .= get_template('scaffold.routes.prefixed.route', 'artomator');
+                    $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
                     $templateString = fill_template($vars, $templateString);
                 }
                 if (0 == $indent) {
@@ -136,7 +136,7 @@ class RoutesGenerator
             $vars = [
                 '$INDENT$' => infy_tabs(($indent * 3)),
             ];
-            $templateString .= get_template('scaffold.routes.prefixed.closure', 'artomator');
+            $templateString .= get_artomator_template('scaffold.routes.prefixed.closure');
             $templateString = fill_template($vars, $templateString);
         }//end foreach
 
