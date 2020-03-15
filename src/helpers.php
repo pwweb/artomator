@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('get_template_file_path')) {
+if (! function_exists('get_artomator_template_file_path')) {
     /**
      * get path for template file.
      *
@@ -9,13 +9,13 @@ if (! function_exists('get_template_file_path')) {
      *
      * @return string
      */
-    function get_template_file_path($templateName, $templateType)
+    function get_artomator_template_file_path($templateName, $templateType)
     {
         $templateName = str_replace('.', '/', $templateName);
 
         $templatesPath = config(
-            'pwweb.artomator.path.templates_dir',
-            resource_path('pwweb/artomator-templates/')
+            'infyom.laravel_generator.path.templates_dir',
+            resource_path('infyom/infyom-generator-templates/')
         );
 
         $path = $templatesPath.$templateName.'.stub';
@@ -29,6 +29,23 @@ if (! function_exists('get_template_file_path')) {
         }
 
         return base_path('vendor/infyomlabs/'.$templateType.'/templates/'.$templateName.'.stub');
+    }
+}//end if
+
+if (!function_exists('get_artomator_template')) {
+    /**
+     * get template contents.
+     *
+     * @param string $templateName
+     * @param string $templateType
+     *
+     * @return string
+     */
+    function get_artomator_template($templateName, $templateType = "artomator")
+    {
+        $path = get_artomator_template_file_path($templateName, $templateType);
+
+        return file_get_contents($path);
     }
 }//end if
 
