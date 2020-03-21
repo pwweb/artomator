@@ -46,7 +46,7 @@ class GraphQLTypeGenerator extends BaseGenerator
             return;
         }
 
-        $this->fileContents .= "\n" . $this->templateData;
+        $this->fileContents .= "\n".$this->templateData;
         file_put_contents($this->filename, $this->fileContents);
 
         $this->commandData->commandComment("\nGraphQL Type created");
@@ -67,7 +67,7 @@ class GraphQLTypeGenerator extends BaseGenerator
             if (true === in_array($field->name, ['id'])) {
                 continue;
             }
-            $field_type = ucfirst($field->fieldType) . (Str::contains($field->validations, 'required') ? '!' : '');
+            $field_type = ucfirst($field->fieldType).(Str::contains($field->validations, 'required') ? '!' : '');
 
             $schema[] = $field->name.': '.$field_type;
         }

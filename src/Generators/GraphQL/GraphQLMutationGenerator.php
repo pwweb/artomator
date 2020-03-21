@@ -68,7 +68,7 @@ class GraphQLMutationGenerator extends BaseGenerator
             if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
                 continue;
             }
-            $field_type = ucfirst($field->fieldType) . (Str::contains($field->validations, 'required') ? '!' : '');
+            $field_type = ucfirst($field->fieldType).(Str::contains($field->validations, 'required') ? '!' : '');
 
             $schema[] = $field->name.': '.$field_type;
         }
