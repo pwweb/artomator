@@ -7,9 +7,6 @@ tools:
     php_analyzer: true
     php_mess_detector: true
     php_changetracking: true
-    php_code_sniffer:
-        config:
-            standard: PSR2
     php_loc:
         excluded_dirs:
             - vendor
@@ -151,8 +148,3 @@ checks:
         argument_type_checks: true
         avoid_aliased_php_functions: true
         deadlock_detection_in_loops: true
-        spaces:
-            before_parentheses:
-                function_declaration: true
-            around_operator:
-                negation: true
