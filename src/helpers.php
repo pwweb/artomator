@@ -32,7 +32,7 @@ if (! function_exists('get_artomator_template_file_path')) {
     }
 }//end if
 
-if (!function_exists('get_artomator_template')) {
+if (! function_exists('get_artomator_template')) {
     /**
      * get template contents.
      *
@@ -41,7 +41,7 @@ if (!function_exists('get_artomator_template')) {
      *
      * @return string
      */
-    function get_artomator_template($templateName, $templateType = "artomator")
+    function get_artomator_template($templateName, $templateType = 'artomator')
     {
         $path = get_artomator_template_file_path($templateName, $templateType);
 

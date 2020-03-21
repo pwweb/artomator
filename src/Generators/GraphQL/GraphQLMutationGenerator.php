@@ -4,7 +4,6 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
-use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLMutationGenerator extends BaseGenerator
@@ -34,7 +33,7 @@ class GraphQLMutationGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->filename = $commandData->config->pathGraphQL;
         $this->fileContents = file_get_contents($this->filename);
-        $this->templateData = get_artomator_template("graphql.mutations");
+        $this->templateData = get_artomator_template('graphql.mutations');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
         $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
@@ -47,7 +46,7 @@ class GraphQLMutationGenerator extends BaseGenerator
             return;
         }
 
-        $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', "$1$2".$this->templateData."$3", $this->fileContents);
+        $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', '$1$2'.$this->templateData.'$3', $this->fileContents);
 
         file_put_contents($this->filename, $this->fileContents);
 
@@ -71,9 +70,9 @@ class GraphQLMutationGenerator extends BaseGenerator
             }
             $field_type = ucfirst($field->fieldType) . (Str::contains($field->validations, 'required') ? '!' : '');
 
-            $schema[] = $field->name.": ".$field_type;
+            $schema[] = $field->name.': '.$field_type;
         }
 
-        return ["\$SCHEMA\$" => implode(", ", $schema)];
+        return ['$SCHEMA$' => implode(', ', $schema)];
     }
 }

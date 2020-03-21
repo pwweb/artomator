@@ -4,7 +4,6 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
-use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLSubscriptionGenerator extends BaseGenerator
@@ -34,7 +33,7 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->filename = $commandData->config->pathGraphQL;
         $this->fileContents = file_get_contents($this->filename);
-        $this->templateData = get_artomator_template("graphql.subscription");
+        $this->templateData = get_artomator_template('graphql.subscription');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
     }
 
@@ -46,7 +45,7 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
             return;
         }
 
-        $this->fileContents = preg_replace('/(type Subscription {)(.+?[^}])(})/is', "$1$2".$this->templateData."$3", $this->fileContents);
+        $this->fileContents = preg_replace('/(type Subscription {)(.+?[^}])(})/is', '$1$2'.$this->templateData.'$3', $this->fileContents);
 
         file_put_contents($this->filename, $this->fileContents);
 

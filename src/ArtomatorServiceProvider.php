@@ -6,8 +6,8 @@ use InfyOm\Generator\InfyOmGeneratorServiceProvider as ServiceProvider;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLMutationsGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLQueryGeneratorCommand;
-use PWWEB\Artomator\Commands\GraphQL\GraphQLTypeGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQL\GraphQLSubscriptionGeneratorCommand;
+use PWWEB\Artomator\Commands\GraphQL\GraphQLTypeGeneratorCommand;
 use PWWEB\Artomator\Commands\GraphQLScaffoldGeneratorCommand;
 use PWWEB\Artomator\Commands\Publish\PublishTemplateCommand;
 

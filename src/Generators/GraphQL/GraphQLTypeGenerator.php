@@ -4,7 +4,6 @@ namespace PWWEB\Artomator\Generators\GraphQL;
 
 use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
-use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
 
 class GraphQLTypeGenerator extends BaseGenerator
@@ -34,7 +33,7 @@ class GraphQLTypeGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->filename = $commandData->config->pathGraphQL;
         $this->fileContents = file_get_contents($this->filename);
-        $this->templateData = get_artomator_template("graphql.type");
+        $this->templateData = get_artomator_template('graphql.type');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
         $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
@@ -70,9 +69,9 @@ class GraphQLTypeGenerator extends BaseGenerator
             }
             $field_type = ucfirst($field->fieldType) . (Str::contains($field->validations, 'required') ? '!' : '');
 
-            $schema[] = $field->name.": ".$field_type;
+            $schema[] = $field->name.': '.$field_type;
         }
 
-        return ["\$SCHEMA\$" => implode(infy_nl_tab(1, 1), $schema)];
+        return ['$SCHEMA$' => implode(infy_nl_tab(1, 1), $schema)];
     }
 }

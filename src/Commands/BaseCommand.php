@@ -5,8 +5,8 @@ namespace PWWEB\Artomator\Commands;
 use InfyOm\Generator\Commands\BaseCommand as Base;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
-use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 
 class BaseCommand extends Base
 {
