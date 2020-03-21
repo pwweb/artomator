@@ -54,6 +54,27 @@
         <!-- There MUST NOT be more than one statement per line. -->
         <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
 
+        <!-- There MUST NO space for a string concatenation. -->
+        <rule ref="Squiz.Strings.ConcatenationSpacing">
+            <properties>
+                <property name="spacing" value="0" />
+            </properties>
+        </rule>
+
+        <!-- There MUST be space after not operator. -->
+        <rule ref="Generic.Formatting.SpaceAfterNot">
+            <properties>
+                <property name="spacing" value="1" />
+            </properties>
+        </rule>
+
+        <!-- There MUST be a space between function and parenthesis. -->
+        <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+            <properties>
+                <property name="ignoreNewlines" value="true" />
+            </properties>
+        </rule>
+
         <!-- 2.4 Indenting -->
 
         <!-- Code MUST use one tab indent, and MUST NOT use spaces for indenting. -->
