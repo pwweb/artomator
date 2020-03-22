@@ -30,7 +30,7 @@
     ],
     "require": {
         "php": ">=7.3",
-        "illuminate/support": "^6.0.0",
+        "laravel/framework": "^7.0",
         "laracasts/flash": "~3.0",
         "laravelcollective/html": "^6.1",
         "doctrine/dbal": "~2.3",
