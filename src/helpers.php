@@ -53,7 +53,7 @@ if (! function_exists('license_authors')) {
     /**
      * format authors for codeblock.
      *
-     * @param string|[string] $authors
+     * @param string|array $authors
      *
      * @return string
      */
