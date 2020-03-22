@@ -105,11 +105,11 @@ class RoutesGenerator
     private function buildText($routes, $indent = 0)
     {
         $templateString = '';
-        foreach ($routes as $key => $route) {
+        foreach ($routes as $route_key => $route) {
             if ((isset($route['group']) && is_array($route['group'])) || 0 != $indent) {
                 $vars = [
-                    '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($key),
-                    '$ITERATION_NAMESPACE_LOWER$' => strtolower($key),
+                    '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
+                    '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
                 $templateString .= get_artomator_template('scaffold.routes.prefixed.namespace');
@@ -117,10 +117,10 @@ class RoutesGenerator
             }
             if (isset($route['resources'])) {
                 $tabs = ($indent > 0) ? (($indent * 3) + 3) : 0;
-                foreach ($route['resources'] as $key => $resource) {
+                foreach ($route['resources'] as $resource_key => $resource) {
                     $vars = [
-                        '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($key)),
-                        '$ITERATION_MODEL_NAME$'              => $key,
+                        '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
+                        '$ITERATION_MODEL_NAME$'              => $resource_key,
                         '$INDENT$'                            => infy_tabs($tabs),
                     ];
                     $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
