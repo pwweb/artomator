@@ -55,7 +55,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PWWEB\\Artomator\\ArtomatorServiceProvider"
+                "PWWEB\\Artomator\\ArtomatorServiceProvider",
+                "InfyOm\\CoreUITemplates\\CoreUITemplatesServiceProvider"
             ]
         }
     }
