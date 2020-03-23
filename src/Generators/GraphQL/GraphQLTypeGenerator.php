@@ -31,8 +31,8 @@ class GraphQLTypeGenerator extends BaseGenerator
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->filename = $commandData->config->pathGraphQL;
-        $this->fileContents = file_get_contents($this->filename);
+        $this->fileName = $commandData->config->pathGraphQL;
+        $this->fileContents = file_get_contents($this->fileName);
         $this->templateData = get_artomator_template('graphql.type');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
         $this->templateData = fill_template($this->generateSchema(), $this->templateData);
@@ -47,7 +47,7 @@ class GraphQLTypeGenerator extends BaseGenerator
         }
 
         $this->fileContents .= "\n".$this->templateData;
-        file_put_contents($this->filename, $this->fileContents);
+        file_put_contents($this->fileName, $this->fileContents);
 
         $this->commandData->commandComment("\nGraphQL Type created");
     }
@@ -55,7 +55,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     public function rollback()
     {
         if (Str::contains($this->fileContents, $this->templateData)) {
-            file_put_contents($this->path, str_replace($this->templateData, '', $this->fileContents));
+            file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
             $this->commandData->commandComment('GraphQL Type deleted');
         }
     }

@@ -2,7 +2,7 @@
 
 namespace PWWEB\Artomator\Common;
 
-use InfyOm\Generator\Common\CommandData;
+use InfyOm\Generator\Common\CommandData as Data;
 use InfyOm\Generator\Common\GeneratorConfig as Config;
 
 class GeneratorConfig extends Config
@@ -17,7 +17,7 @@ class GeneratorConfig extends Config
         $this->pathGraphQL = config('lighthouse.schema.register', base_path('graphql/schema.graphql'));
     }
 
-    public function loadDynamicVariables(CommandData &$commandData)
+    public function loadDynamicVariables(Data &$commandData)
     {
         parent::loadDynamicVariables($commandData);
         $commandData->addDynamicVariable('$LICENSE_PACKAGE$', config('pwweb.artomator.license.package'));

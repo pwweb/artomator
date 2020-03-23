@@ -12,22 +12,22 @@ class BaseCommand extends Base
 {
     public function generateGraphQLItems()
     {
-        if (! $this->isSkip('mutations') and ! $this->isSkip('graphql_mutations')) {
+        if (($this->isSkip('mutations') or $this->isSkip('graphql_mutations')) === false) {
             $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
             $mutationGenerator->generate();
         }
 
-        if (! $this->isSkip('queries') and ! $this->isSkip('graphql_query')) {
+        if (($this->isSkip('queries') or $this->isSkip('graphql_query')) === false) {
             $queryGenerator = new GraphQLQueryGenerator($this->commandData);
             $queryGenerator->generate();
         }
 
-        if (! $this->isSkip('types') and ! $this->isSkip('graphql_types')) {
+        if (($this->isSkip('types') or $this->isSkip('graphql_types')) === false) {
             $typeGenerator = new GraphQLTypeGenerator($this->commandData);
             $typeGenerator->generate();
         }
 
-        if (! $this->isSkip('subscription') and ! $this->isSkip('graphql_subscription')) {
+        if (($this->isSkip('subscription') or $this->isSkip('graphql_subscription')) === false) {
             $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
             $subscriptionGenerator->generate();
         }

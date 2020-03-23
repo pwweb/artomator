@@ -30,7 +30,7 @@ class RoutesGenerator
     /**
      * @var string
      */
-    private $search;
+    private $routes;
 
     public function __construct(CommandData $commandData)
     {

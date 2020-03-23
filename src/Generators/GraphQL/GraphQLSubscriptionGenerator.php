@@ -31,8 +31,8 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->filename = $commandData->config->pathGraphQL;
-        $this->fileContents = file_get_contents($this->filename);
+        $this->fileName = $commandData->config->pathGraphQL;
+        $this->fileContents = file_get_contents($this->fileName);
         $this->templateData = get_artomator_template('graphql.subscription');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
     }
@@ -47,7 +47,7 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
 
         $this->fileContents = preg_replace('/(type Subscription {)(.+?[^}])(})/is', '$1$2'.$this->templateData.'$3', $this->fileContents);
 
-        file_put_contents($this->filename, $this->fileContents);
+        file_put_contents($this->fileName, $this->fileContents);
 
         $this->commandData->commandComment("\nGraphQL Subscription created");
     }
@@ -55,7 +55,7 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
     public function rollback()
     {
         if (Str::contains($this->fileContents, $this->templateData)) {
-            file_put_contents($this->path, str_replace($this->templateData, '', $this->fileContents));
+            file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
             $this->commandData->commandComment('GraphQL Subscription deleted');
         }
     }
