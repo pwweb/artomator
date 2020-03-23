@@ -38,7 +38,8 @@
         "infyomlabs/laravel-generator": "7.0.x-dev",
         "nuwave/lighthouse": "^4.9",
         "mll-lab/laravel-graphql-playground": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+        "pusher/pusher-php-server": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
