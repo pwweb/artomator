@@ -45,7 +45,7 @@ class GraphQLQueryGenerator extends BaseGenerator
             return;
         }
 
-        $this->fileContents = preg_replace('/(type Query {)(.+?[^}])(})/is', '$1$2'.$this->templateData.'$3', $this->fileContents);
+        $this->fileContents = preg_replace('/(type Query {)(.+?[^}])(})/is', '$1$2'.str_replace('\\', '\\\\', $this->templateData).'$3', $this->fileContents);
 
         file_put_contents($this->fileName, $this->fileContents);
 

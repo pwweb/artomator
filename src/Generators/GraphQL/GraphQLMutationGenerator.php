@@ -46,7 +46,7 @@ class GraphQLMutationGenerator extends BaseGenerator
             return;
         }
 
-        $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', '$1$2'.$this->templateData.'$3', $this->fileContents);
+        $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', '$1$2'.str_replace('\\', '\\\\', $this->templateData).'$3', $this->fileContents);
 
         file_put_contents($this->fileName, $this->fileContents);
 
@@ -73,6 +73,6 @@ class GraphQLMutationGenerator extends BaseGenerator
             $schema[] = $field->name.': '.$field_type;
         }
 
-        return ['$SCHEMA$' => implode(', ', $schema)];
+        return ['$SCHEMA$' => implode("\n\t\t", $schema)];
     }
 }

@@ -64,7 +64,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     {
         $schema = [];
         foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['id'])) {
+            if (true === in_array($field->name, ['id', 'created_at', 'updated_at'])) {
                 continue;
             }
             $field_type = ucfirst($field->fieldType).(Str::contains($field->validations, 'required') ? '!' : '');
