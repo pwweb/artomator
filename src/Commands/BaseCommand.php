@@ -27,7 +27,7 @@ class BaseCommand extends Base
             $typeGenerator->generate();
         }
 
-        if (($this->isSkip('subscription') or $this->isSkip('graphql_subscription')) === false) {
+        if ((($this->isSkip('subscription') or $this->isSkip('graphql_subscription')) === false) and config('pwweb.artomator.options.subscription')) {
             $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
             $subscriptionGenerator->generate();
         }
