@@ -1,4 +1,6 @@
-type $MODEL_NAME$ {
+type $MODEL_NAME$ @model(namespace: "$NAMESPACE_GRAPHQL_MODEL$"){
     id: ID!
     $SCHEMA$
+    created_at: DateTime!
+    updated_at: DateTime!
 }

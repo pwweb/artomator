@@ -24,6 +24,7 @@ class GeneratorConfig extends Config
         $commandData->addDynamicVariable('$LICENSE_AUTHORS$', license_authors(config('pwweb.artomator.license.authors')));
         $commandData->addDynamicVariable('$LICENSE_COPYRIGHT$', config('pwweb.artomator.license.copyright'));
         $commandData->addDynamicVariable('$LICENSE$', config('pwweb.artomator.license.license'));
+        $commandData->addDynamicVariable('$NAMESPACE_GRAPHQL_MODEL$', str_replace('\\', '\\\\', $this->nsModel));
 
         return $commandData;
     }
