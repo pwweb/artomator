@@ -1,5 +1,5 @@
 type $MODEL_NAME$ @model(namespace: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$") {
-    id: ID!
+    id: ID! @globalId
     $SCHEMA$
     created_at: DateTime!
     updated_at: DateTime!

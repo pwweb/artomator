@@ -4,10 +4,10 @@
     ): $MODEL_NAME$ @create(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     update$MODEL_NAME$(
-        id: ID
+        id: ID @rules(apply: ["required"])
         $SCHEMA$
     ): $MODEL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     delete$MODEL_NAME$(
-        id: ID!
+        id: ID! @rules(apply: ["required"])
     ): $MODEL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
