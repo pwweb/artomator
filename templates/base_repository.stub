@@ -6,16 +6,16 @@ use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
 
 /**
-  * $NAMESPACE_APP$\Repositories\BaseRepository BaseRepository
-  *
-  * This BaseRepository all other Repositories should implent.
-  * Class BaseRepository
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_APP$\Repositories\BaseRepository BaseRepository
+ *
+ * This BaseRepository all other Repositories should implent.
+ * Class BaseRepository
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 abstract class BaseRepository
 {
     /**

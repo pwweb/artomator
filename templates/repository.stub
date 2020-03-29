@@ -6,16 +6,16 @@ use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use $NAMESPACE_APP$\Repositories\BaseRepository;
 
 /**
-  * $NAMESPACE_REPOSITORY$\MODEL_NAME$Repository MODEL_NAME$Repository
-  *
-  * The repository for $MODLE_NAME$.
-  * Class MODEL_NAME$Repository
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_REPOSITORY$\MODEL_NAME$Repository MODEL_NAME$Repository
+ *
+ * The repository for $MODLE_NAME$.
+ * Class MODEL_NAME$Repository
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class $MODEL_NAME$Repository extends BaseRepository
 {
     /**

@@ -6,16 +6,16 @@ use Illuminate\Support\ServiceProvider;
 use View;
 
 /**
-  * App\Providers\ViewServiceProvider ViewServiceProvider
-  *
-  * The view service provided for the system.
-  * Class ViewServiceProvider
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * App\Providers\ViewServiceProvider ViewServiceProvider
+ *
+ * The view service provided for the system.
+ * Class ViewServiceProvider
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class ViewServiceProvider extends ServiceProvider
 {
     /**

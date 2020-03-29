@@ -6,16 +6,16 @@ use InfyOm\Generator\Utils\ResponseUtil;
 use Response;
 
 /**
-  * $NAMESPACE_APP$\Http\Controllers\AppBaseController AppBaseController
-  *
-  * This class should be parent class for other API controllers
-  * Class AppBaseController
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_APP$\Http\Controllers\AppBaseController AppBaseController
+ *
+ * This class should be parent class for other API controllers
+ * Class AppBaseController
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class AppBaseController extends Controller
 {
     public function sendResponse($result, $message)

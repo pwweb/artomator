@@ -12,16 +12,16 @@ use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use Response;
 
 /**
-  * $NAMESPACE_CONTROLLER$\$MODEL_NAME$Controller $MODEL_NAME$Controller
-  *
-  * The model datatables CRUD controller for $MODEL_NAME$
-  * Class $MODEL_NAME$Controller
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_CONTROLLER$\$MODEL_NAME$Controller $MODEL_NAME$Controller
+ *
+ * The model datatables CRUD controller for $MODEL_NAME$
+ * Class $MODEL_NAME$Controller
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class $MODEL_NAME$Controller extends AppBaseController
 {
     /**

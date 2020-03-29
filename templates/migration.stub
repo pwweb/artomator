@@ -4,16 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 /**
-  * $NAMESPACE_APP$\Create$TABLE_NAME_TITLE$Table Create$TABLE_NAME_TITLE$Table
-  *
-  * The create migration for the $TABLE_NAME$
-  * Class Create$TABLE_NAME_TITLE$Table
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_APP$\Create$TABLE_NAME_TITLE$Table Create$TABLE_NAME_TITLE$Table
+ *
+ * The create migration for the $TABLE_NAME$
+ * Class Create$TABLE_NAME_TITLE$Table
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class Create$TABLE_NAME_TITLE$Table extends Migration
 {
 

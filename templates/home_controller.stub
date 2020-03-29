@@ -5,16 +5,16 @@ namespace $NAMESPACE_CONTROLLER$;
 use Illuminate\Http\Request;
 
 /**
-  * $NAMESPACE_CONTROLLER$\HomeController HomeController
-  *
-  * This controller for the Home page
-  * Class HomeController
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $NAMESPACE_CONTROLLER$\HomeController HomeController
+ *
+ * This controller for the Home page
+ * Class HomeController
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class HomeController extends Controller
 {
     /**

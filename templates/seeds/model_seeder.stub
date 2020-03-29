@@ -3,16 +3,16 @@
 use Illuminate\Database\Seeder;
 
 /**
-  * $MODEL_NAME$Seeder $MODEL_NAME$Seeder
-  *
-  * The database seeder class for $MODEL_NAME$.
-  * Class $MODEL_NAME$Seeder
-  *
-  * @package   $LICENSE_PACKAGE$
-  * @author    $LICENSE_AUTHORS$
-  * @copyright $LICENSE_COPYRIGHT$
-  * @license   $LICENSE$
- */
+ * $MODEL_NAME$Seeder $MODEL_NAME$Seeder
+ *
+ * The database seeder class for $MODEL_NAME$.
+ * Class $MODEL_NAME$Seeder
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
 class $MODEL_NAME$Seeder extends Seeder
 {
     /**
