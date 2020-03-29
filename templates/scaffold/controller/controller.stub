@@ -10,6 +10,17 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 
+/**
+  * $NAMESPACE_CONTROLLER$\$MODEL_NAME$Controller $MODEL_NAME$Controller
+  *
+  * The CRUD controller for $MODEL_NAME$
+  * Class $MODEL_NAME$Controller
+  *
+  * @package   $LICENSE_PACKAGE$
+  * @author    $LICENSE_AUTHORS$
+  * @copyright $LICENSE_COPYRIGHT$
+  * @license   $LICENSE$
+ */
 class $MODEL_NAME$Controller extends AppBaseController
 {
     /** @var  $MODEL_NAME$Repository */

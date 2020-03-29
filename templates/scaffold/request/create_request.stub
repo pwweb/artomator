@@ -5,6 +5,17 @@ namespace $NAMESPACE_REQUEST$;
 use Illuminate\Foundation\Http\FormRequest;
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 
+/**
+  * $NAMESPACE_REQUEST$\Create$MODEL_NAME$Request Create$MODEL_NAME$Request
+  *
+  * The create request class for the $MODEL_NAME$
+  * Class Create$MODEL_NAME$Request
+  *
+  * @package   $LICENSE_PACKAGE$
+  * @author    $LICENSE_AUTHORS$
+  * @copyright $LICENSE_COPYRIGHT$
+  * @license   $LICENSE$
+ */
 class Create$MODEL_NAME$Request extends FormRequest
 {
 
