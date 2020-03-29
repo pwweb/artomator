@@ -32,14 +32,34 @@ This will publish the config files for the necesary packages and the `graphql.sc
 
 As this is an extension of the [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package the documentation for the base package can be found [here](https://labs.infyom.com/laravelgenerator/docs/6.0/introduction).
 
+All commands in the base package have been "extended" so there is an `artomator` version of each. Refer to the original documentation for instructions on how to use these.
+``` bash
+$ php artisan artomator.publish
+$ php artisan artomator.api <MODEL_NAME>
+$ php artisan artomator.scaffold <MODEL_NAME>
+$ php artisan artomator.api_scaffold <MODEL_NAME>
+$ php artisan artomator.publish.layout
+$ php artisan artomator.publish.templates
+$ php artisan artomator.migration <MODEL_NAME>
+$ php artisan artomator.model <MODEL_NAME>
+$ php artisan artomator.repository <MODEL_NAME>
+$ php artisan artomator.api.controller <MODEL_NAME>
+$ php artisan artomator.api.requests <MODEL_NAME>
+$ php artisan artomator.api.tests <MODEL_NAME>
+$ php artisan artomator.scaffold.controller <MODEL_NAME>
+$ php artisan artomator.scaffold.requests <MODEL_NAME>
+$ php artisan artomator.scaffold.views <MODEL_NAME>
+$ php artisan artomator.rollback <MODEL_NAME>
+$ php artisan artomator.publish.user
+```
+
 In addition to the base package commands there are the following:
 ``` bash
-$ php artisan artomator.publish:templates
-$ php artisan artomator.graphql_scaffold $MODEL_NAME
-$ php artisan artomator:graphql $MODEL_NAME
-$ php artisan artomator.graphql:mutations $MODEL_NAME
-$ php artisan artomator.graphql.query $MODEL_NAME
-$ php artisan artomator.graphql:type $MODEL_NAME
+$ php artisan artomator.graphql_scaffold <MODEL_NAME>
+$ php artisan artomator:graphql <MODEL_NAME>
+$ php artisan artomator.graphql:mutations <MODEL_NAME>
+$ php artisan artomator.graphql.query <MODEL_NAME>
+$ php artisan artomator.graphql:type <MODEL_NAME>
 ```
 
 ### `artomator.publish:templates`
@@ -53,23 +73,23 @@ This command will run the InfyOmLabs equivalent publish command and then overwri
 
 This will put the stub files into the `.\resources\infyom\infyom-generator-templates` folder. These can be edited and the when the commands are run, these templates will be used.
 
-### `artomator.graphql_scaffold $MODEL_NAME`
+### `artomator.graphql_scaffold <MODEL_NAME>`
 
-This function follows the same principal as the `php artisan infyom:api_scaffold $MODEL_NAME` function but generates the GraphQL files instead of the API files along with the laravel scaffold files.
+This function follows the same principal as the `php artisan infyom:api_scaffold <MODEL_NAME>` function but generates the GraphQL files instead of the API files along with the laravel scaffold files.
 
-### `artomator:graphql $MODEL_NAME`
+### `artomator:graphql <MODEL_NAME>`
 
-This function follows the same principal as the `php artisan infyom:api $MODEL_NAME` function but generates the GraphQL files instead of the API files.
+This function follows the same principal as the `php artisan infyom:api <MODEL_NAME>` function but generates the GraphQL files instead of the API files.
 
-#### `artomator.graphql:mutations $MODEL_NAME`
+#### `artomator.graphql:mutations <MODEL_NAME>`
 
 This function generates the GraphQL Mutations files only.
 
-#### `artomator.graphql:query $MODEL_NAME`
+#### `artomator.graphql:query <MODEL_NAME>`
 
 This function generates the GraphQL Query file only.
 
-#### `artomator.graphql:type $MODEL_NAME`
+#### `artomator.graphql:type <MODEL_NAME>`
 
 This function generates the GraphQL Type file only.
 
