@@ -15,18 +15,24 @@ class ArtomatorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
+     *
+     * @return void
      */
     public function boot()
     {
         $configPath = __DIR__.'/../config/artomator.php';
         $configPathInfyom = __DIR__.'/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
+        $schemaPath = __DIR__.'/../../../nuwave/lighthouse/assets/default-schema.graphql';
+        $configPathNuwave = __DIR__.'/../../../nuwave/lighthouse/src/lighthouse.php';
 
         $this->publishes(
             [
                 $configPath       => config_path('pwweb/artomator.php'),
                 $configPathInfyom => config_path('infyom/laravel_generator.php'),
+                $configPathNuwave => config_path('lighthouse.php'),
+                $schemaPath       => config('lighthouse.schema.register', base_path('graphql/schema.graphql')),
             ],
-            'artomator.config'
+            'artomator'
         );
 
         parent::boot();

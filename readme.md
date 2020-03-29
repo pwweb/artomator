@@ -19,15 +19,14 @@ Via Composer run the following:
 $ composer require pwweb/artomator --dev
 ```
 
-## Usage
-
-### Config
-
-To publish the `config` file from the command line
-
+Then publish the necessary files as follows:
 ``` bash
-$ php artisan vendor:publish --tag=artomator.config
+$ php artisan vendor:publish --tag=artomator
 ```
+
+This will publish the config files for the necesary packages and the `graphql.schema` file needed to run the GraphQL server.
+
+## Usage
 
 ### Commands
 
