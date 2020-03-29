@@ -2,11 +2,10 @@
 
 namespace PWWEB\Artomator\Commands\Scaffold;
 
-use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
-use PWWEB\Artomator\Commands\BaseCommand;
+use InfyOm\Generator\Commands\Scaffold\ViewsGeneratorCommand as Base;
 use PWWEB\Artomator\Common\CommandData;
 
-class ViewsGeneratorCommand extends BaseCommand
+class ViewsGeneratorCommand extends Base
 {
     /**
      * The console command name.
@@ -16,13 +15,6 @@ class ViewsGeneratorCommand extends BaseCommand
     protected $name = 'artomator.scaffold:views';
 
     /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create views file command';
-
-    /**
      * Create a new command instance.
      */
     public function __construct()
@@ -30,40 +22,5 @@ class ViewsGeneratorCommand extends BaseCommand
         parent::__construct();
 
         $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
-    }
-
-    /**
-     * Execute the command.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        parent::handle();
-
-        $viewGenerator = new ViewGenerator($this->commandData);
-        $viewGenerator->generate();
-
-        $this->performPostActions();
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return array_merge(parent::getOptions(), []);
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array_merge(parent::getArguments(), []);
     }
 }

@@ -2,11 +2,10 @@
 
 namespace PWWEB\Artomator\Commands\API;
 
-use InfyOm\Generator\Generators\API\APIControllerGenerator;
-use PWWEB\Artomator\Commands\BaseCommand;
+use InfyOm\Generator\Commands\API\APIControllerGeneratorCommand as Base;
 use PWWEB\Artomator\Common\CommandData;
 
-class APIControllerGeneratorCommand extends BaseCommand
+class APIControllerGeneratorCommand extends Base
 {
     /**
      * The console command name.
@@ -16,13 +15,6 @@ class APIControllerGeneratorCommand extends BaseCommand
     protected $name = 'artomator.api:controller';
 
     /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create an api controller command';
-
-    /**
      * Create a new command instance.
      */
     public function __construct()
@@ -30,40 +22,5 @@ class APIControllerGeneratorCommand extends BaseCommand
         parent::__construct();
 
         $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_API);
-    }
-
-    /**
-     * Execute the command.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        parent::handle();
-
-        $controllerGenerator = new APIControllerGenerator($this->commandData);
-        $controllerGenerator->generate();
-
-        $this->performPostActions();
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return array_merge(parent::getOptions(), []);
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array_merge(parent::getArguments(), []);
     }
 }

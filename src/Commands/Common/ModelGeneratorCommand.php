@@ -2,11 +2,10 @@
 
 namespace PWWEB\Artomator\Commands\Common;
 
-use InfyOm\Generator\Generators\ModelGenerator;
-use PWWEB\Artomator\Commands\BaseCommand;
+use InfyOm\Generator\Commands\Common\ModelGeneratorCommand as Base;
 use PWWEB\Artomator\Common\CommandData;
 
-class ModelGeneratorCommand extends BaseCommand
+class ModelGeneratorCommand extends Base
 {
     /**
      * The console command name.
@@ -16,13 +15,6 @@ class ModelGeneratorCommand extends BaseCommand
     protected $name = 'artomator:model';
 
     /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create model command';
-
-    /**
      * Create a new command instance.
      */
     public function __construct()
@@ -30,40 +22,5 @@ class ModelGeneratorCommand extends BaseCommand
         parent::__construct();
 
         $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_API);
-    }
-
-    /**
-     * Execute the command.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        parent::handle();
-
-        $modelGenerator = new ModelGenerator($this->commandData);
-        $modelGenerator->generate();
-
-        $this->performPostActions();
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return array_merge(parent::getOptions(), []);
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array_merge(parent::getArguments(), []);
     }
 }
