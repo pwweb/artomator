@@ -8,6 +8,8 @@ use InfyOm\Generator\Common\CommandData as Data;
 class CommandData extends Data
 {
     public static $COMMAND_TYPE_GRAPHQL = 'graphql';
+    
+    public static $COMMAND_TYPE_GRAPHQL_SCAFFOLD = 'graphql_scaffold';
 
     /**
      * @param Command          $commandObj
