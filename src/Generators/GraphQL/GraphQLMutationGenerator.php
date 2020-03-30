@@ -55,9 +55,20 @@ class GraphQLMutationGenerator extends BaseGenerator
 
     public function rollback()
     {
-        if (Str::contains($this->fileContents, $this->templateData)) {
-            file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
-            $this->commandData->commandComment('GraphQL Mutations deleted');
+        $strings = array(
+            'create',
+            'update',
+            'delete',
+        );
+        $model = $this->commandData->config->mHuman;
+
+        foreach ($strings as $string) {
+            if (Str::contains($this->fileContents, $string.$model)) {
+                $this->fileContents = preg_replace('/(\s)+('.$string.$model.'\()(.+?)(\):.+?)(\))/is', '', $this->fileContents);
+
+                file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
+                $this->commandData->commandComment('GraphQL '.ucfirst($string).' Mutation deleted');
+            }
         }
     }
 
