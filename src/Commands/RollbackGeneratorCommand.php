@@ -3,24 +3,15 @@
 namespace PWWEB\Artomator\Commands;
 
 use Illuminate\Console\Command;
-use InfyOm\Generator\Generators\API\APIControllerGenerator;
-use InfyOm\Generator\Generators\API\APIRequestGenerator;
-use InfyOm\Generator\Generators\API\APIRoutesGenerator;
-use InfyOm\Generator\Generators\API\APITestGenerator;
-use InfyOm\Generator\Generators\MigrationGenerator;
-use InfyOm\Generator\Generators\ModelGenerator;
-use InfyOm\Generator\Generators\RepositoryGenerator;
-use InfyOm\Generator\Generators\RepositoryTestGenerator;
-use InfyOm\Generator\Generators\Scaffold\ControllerGenerator;
-use InfyOm\Generator\Generators\Scaffold\MenuGenerator;
-use InfyOm\Generator\Generators\Scaffold\RequestGenerator;
-use InfyOm\Generator\Generators\Scaffold\RoutesGenerator;
+use InfyOm\Generator\Commands\RollbackGeneratorCommand as Base;
 use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
 use PWWEB\Artomator\Common\CommandData;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 
-class RollbackGeneratorCommand extends Command
+class RollbackGeneratorCommand extends Base
 {
     /**
      * The command Data.
@@ -34,12 +25,6 @@ class RollbackGeneratorCommand extends Command
      * @var string
      */
     protected $name = 'artomator:rollback';
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Rollback a full CRUD API and Scaffold for given model';
 
     /**
      * @var Composer
@@ -68,6 +53,7 @@ class RollbackGeneratorCommand extends Command
             CommandData::$COMMAND_TYPE_SCAFFOLD,
             CommandData::$COMMAND_TYPE_API_SCAFFOLD,
             CommandData::$COMMAND_TYPE_GRAPHQL,
+            CommandData::$COMMAND_TYPE_GRAPHQL_SCAFFOLD,
         ])) {
             $this->error('invalid rollback type');
         }
@@ -89,80 +75,20 @@ class RollbackGeneratorCommand extends Command
             return;
         }
 
-        $migrationGenerator = new MigrationGenerator($this->commandData);
-        $migrationGenerator->rollback();
+        $typeGenerator = new GraphQLTypeGenerator($this->commandData);
+        $typeGenerator->rollback();
 
-        $modelGenerator = new ModelGenerator($this->commandData);
-        $modelGenerator->rollback();
+        $queryGenerator = new GraphQLQueryGenerator($this->commandData);
+        $queryGenerator->rollback();
 
-        $repositoryGenerator = new RepositoryGenerator($this->commandData);
-        $repositoryGenerator->rollback();
+        $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
+        $mutationGenerator->rollback();
 
-        $requestGenerator = new APIRequestGenerator($this->commandData);
-        $requestGenerator->rollback();
-
-        $controllerGenerator = new APIControllerGenerator($this->commandData);
-        $controllerGenerator->rollback();
-
-        $routesGenerator = new APIRoutesGenerator($this->commandData);
-        $routesGenerator->rollback();
-
-        $requestGenerator = new RequestGenerator($this->commandData);
-        $requestGenerator->rollback();
-
-        $controllerGenerator = new ControllerGenerator($this->commandData);
-        $controllerGenerator->rollback();
-
-        $viewGenerator = new ViewGenerator($this->commandData);
-        $viewGenerator->rollback();
-
-        $routeGenerator = new RoutesGenerator($this->commandData);
-        $routeGenerator->rollback();
-
-        if ($this->commandData->getAddOn('tests')) {
-            $repositoryTestGenerator = new RepositoryTestGenerator($this->commandData);
-            $repositoryTestGenerator->rollback();
-
-            $apiTestGenerator = new APITestGenerator($this->commandData);
-            $apiTestGenerator->rollback();
+        if (config('pwweb.artomator.options.subscription')) {
+            $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
+            $subscriptionGenerator->rollback();
         }
 
-        if ($this->commandData->config->getAddOn('menu.enabled')) {
-            $menuGenerator = new MenuGenerator($this->commandData);
-            $menuGenerator->rollback();
-        }
-
-        // TODO: Add rollback for the graphql files too.
-
-        $this->info('Generating autoload files');
-        $this->composer->dumpOptimized();
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return [
-            ['tableName', null, InputOption::VALUE_REQUIRED, 'Table Name'],
-            ['prefix', null, InputOption::VALUE_REQUIRED, 'Prefix for all files'],
-            ['plural', null, InputOption::VALUE_REQUIRED, 'Plural Model name'],
-            ['views', null, InputOption::VALUE_REQUIRED, 'Views to rollback'],
-        ];
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['model', InputArgument::REQUIRED, 'Singular Model name'],
-            ['type', InputArgument::REQUIRED, 'Rollback type: (api / scaffold / api_scaffold)'],
-        ];
+        parent::handle();
     }
 }
