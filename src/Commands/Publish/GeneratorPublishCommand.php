@@ -129,7 +129,6 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     private function publishBaseController()
     {
-        $this->info('Boo!');
         $templateData = get_artomator_template('app_base_controller');
 
         $templateData = $this->fillTemplate($templateData);
