@@ -55,11 +55,11 @@ class GraphQLMutationGenerator extends BaseGenerator
 
     public function rollback()
     {
-        $strings = array(
+        $strings = [
             'create',
             'update',
             'delete',
-        );
+        ];
         $model = $this->commandData->config->mHuman;
 
         foreach ($strings as $string) {
