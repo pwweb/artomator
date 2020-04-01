@@ -9,7 +9,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 {
     /**
      * ALL REFERENCES TO (get_template\(\')([a-z_\.]+)(', 'laravel-generator'\))
-     * REPLACED WITH: get_artomator_template('$2')
+     * REPLACED WITH: get_artomator_template('$2').
      */
 
     /**
