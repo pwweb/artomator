@@ -2,6 +2,7 @@
 
 namespace PWWEB\Artomator\Commands\Publish;
 
+use InfyOm\Generator\Commands\Publish\PublishBaseCommand;
 use InfyOm\Generator\Utils\FileUtil;
 use Symfony\Component\Console\Input\InputOption;
 

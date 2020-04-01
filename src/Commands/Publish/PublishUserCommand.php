@@ -2,10 +2,16 @@
 
 namespace PWWEB\Artomator\Commands\Publish;
 
+use InfyOm\Generator\Commands\Publish\PublishBaseCommand;
 use InfyOm\Generator\Utils\FileUtil;
 
 class PublishUserCommand extends PublishBaseCommand
 {
+    /**
+     * ALL REFERENCES TO (get_template\(\')([a-z_\.]+)(', 'laravel-generator'\))
+     * REPLACED WITH: get_artomator_template('$2').
+     */
+
     /**
      * The console command name.
      *
@@ -78,7 +84,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         $routeContents = file_get_contents($path);
 
-        $routesTemplate = get_template('routes.user', 'laravel-generator');
+        $routesTemplate = get_artomator_template('routes.user');
 
         $routeContents .= "\n\n".$routesTemplate;
 
@@ -184,6 +190,29 @@ class PublishUserCommand extends PublishBaseCommand
 
     /**
      * Replaces dynamic variables of template.
+     * THIS IS A NEW FUNCTION ADDED.
+     *
+     * @param string $templateData
+     *
+     * @return string
+     */
+    private function fillLicense($templateData)
+    {
+        $replacements = [
+            '$LICENSE_PACKAGE$' => config('pwweb.artomator.license.package', 'boo'),
+            '$LICENSE_AUTHORS$' => license_authors(config('pwweb.artomator.license.authors')),
+            '$LICENSE_COPYRIGHT$' => config('pwweb.artomator.license.copyright'),
+            '$LICENSE$' => config('pwweb.artomator.license.license'),
+        ];
+        foreach ($replacements as $key => $replacement) {
+            $templateData = str_replace($key, $replacement, $templateData);
+        }
+
+        return $templateData;
+    }
+
+    /**
+     * Replaces dynamic variables of template.
      *
      * @param string $templateData
      *
@@ -198,7 +227,9 @@ class PublishUserCommand extends PublishBaseCommand
         $templateData = str_replace('$NAMESPACE_REPOSITORY$', config('infyom.laravel_generator.namespace.repository'), $templateData);
         $templateData = str_replace('$NAMESPACE_USER$', config('auth.providers.users.model'), $templateData);
 
-        return $templateData;
+        // return $templateData;
+        // ADDED THE FOLLOWING LINE:
+        return $this->fillLicense($templateData);
     }
 
     /**
