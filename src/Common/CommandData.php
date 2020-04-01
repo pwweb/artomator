@@ -12,7 +12,7 @@ class CommandData extends Data
 
     /**
      * @param Command          $commandObj
-     * @param string           $commandType
+     * @param string|string[]  $commandType
      * @param TemplatesManager $templatesManager
      */
     public function __construct(Command $commandObj, $commandType, TemplatesManager $templatesManager = null)

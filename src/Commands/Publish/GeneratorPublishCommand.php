@@ -116,7 +116,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->info('ApiTestTrait created');
 
         $testAPIsPath = config('infyom.laravel_generator.path.api_test', base_path('tests/APIs/'));
-        if (! file_exists($testAPIsPath)) {
+        if (false === file_exists($testAPIsPath)) {
             FileUtil::createDirectoryIfNotExist($testAPIsPath);
             $this->info('APIs Tests directory created');
         }

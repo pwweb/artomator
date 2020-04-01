@@ -119,7 +119,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         $fileName = 'UserController.php';
 
-        if (file_exists($controllerPath.$fileName) && ! $this->confirmOverwrite($fileName)) {
+        if (file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 

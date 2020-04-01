@@ -3,6 +3,7 @@
 namespace PWWEB\Artomator\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Composer;
 use InfyOm\Generator\Commands\RollbackGeneratorCommand as Base;
 use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
 use PWWEB\Artomator\Common\CommandData;
