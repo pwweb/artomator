@@ -12,22 +12,22 @@ class BaseCommand extends Base
 {
     public function generateGraphQLItems()
     {
-        if (($this->isSkip('mutations') or $this->isSkip('graphql_mutations')) === false) {
+        if (false === ($this->isSkip('mutations') or $this->isSkip('graphql_mutations'))) {
             $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
             $mutationGenerator->generate();
         }
 
-        if (($this->isSkip('queries') or $this->isSkip('graphql_query')) === false) {
+        if (false === ($this->isSkip('queries') or $this->isSkip('graphql_query'))) {
             $queryGenerator = new GraphQLQueryGenerator($this->commandData);
             $queryGenerator->generate();
         }
 
-        if (($this->isSkip('types') or $this->isSkip('graphql_types')) === false) {
+        if (false === ($this->isSkip('types') or $this->isSkip('graphql_types'))) {
             $typeGenerator = new GraphQLTypeGenerator($this->commandData);
             $typeGenerator->generate();
         }
 
-        if ((($this->isSkip('subscription') or $this->isSkip('graphql_subscription')) === false) and config('pwweb.artomator.options.subscription')) {
+        if ((false === ($this->isSkip('subscription') or $this->isSkip('graphql_subscription'))) and config('pwweb.artomator.options.subscription')) {
             $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
             $subscriptionGenerator->generate();
         }

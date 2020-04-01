@@ -55,6 +55,7 @@ return PhpCsFixer\Config::create()
         'visibility_required' => true,
         'encoding' => true,
         'full_opening_tag' => true,
+        'yoda_style' => true,
     ])
     ->setFinder($finder)
 ;

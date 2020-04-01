@@ -40,7 +40,7 @@ class GraphQLMutationGenerator extends BaseGenerator
 
     public function generate()
     {
-        if (Str::contains($this->fileContents, $this->templateData) === true) {
+        if (true === Str::contains($this->fileContents, $this->templateData)) {
             $this->commandData->commandObj->info('GraphQL Mutations '.$this->commandData->config->mHumanPlural.' already exist; Skipping');
 
             return;

@@ -108,7 +108,7 @@ class PublishUserCommand extends PublishBaseCommand
     private function publishUserController()
     {
         $templateData = get_template('user/user_controller', 'laravel-generator');
-        if (config('infyom.laravel_generator.options.repository_pattern') === false) {
+        if (false === config('infyom.laravel_generator.options.repository_pattern')) {
             $templateData = get_template('user/user_controller_without_repository', 'laravel-generator');
             $templateData = $this->fillTemplate($templateData);
         }
@@ -140,7 +140,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($repositoryPath);
 
-        if (file_exists($repositoryPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -161,7 +161,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($requestPath);
 
-        if (file_exists($requestPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -179,7 +179,7 @@ class PublishUserCommand extends PublishBaseCommand
         $requestPath = config('infyom.laravel_generator.path.request', app_path('Http/Requests/'));
 
         $fileName = 'UpdateUserRequest.php';
-        if (file_exists($requestPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 

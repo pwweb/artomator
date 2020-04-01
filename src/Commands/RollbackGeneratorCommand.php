@@ -48,13 +48,13 @@ class RollbackGeneratorCommand extends Base
      */
     public function handle()
     {
-        if (in_array($this->argument('type'), [
+        if (false === in_array($this->argument('type'), [
             CommandData::$COMMAND_TYPE_API,
             CommandData::$COMMAND_TYPE_SCAFFOLD,
             CommandData::$COMMAND_TYPE_API_SCAFFOLD,
             CommandData::$COMMAND_TYPE_GRAPHQL,
             CommandData::$COMMAND_TYPE_GRAPHQL_SCAFFOLD,
-        ]) === false) {
+        ])) {
             $this->error('invalid rollback type');
         }
 
@@ -64,7 +64,7 @@ class RollbackGeneratorCommand extends Base
         $this->commandData->config->init($this->commandData, ['tableName', 'prefix', 'plural', 'views']);
 
         $views = $this->commandData->getOption('views');
-        if (empty($views) === false) {
+        if (false === empty($views)) {
             $views = explode(',', $views);
             $viewGenerator = new ViewGenerator($this->commandData);
             $viewGenerator->rollback($views);

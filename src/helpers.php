@@ -1,6 +1,6 @@
 <?php
 
-if (function_exists('get_artomator_template_file_path') === false) {
+if (false === function_exists('get_artomator_template_file_path')) {
     /**
      * get path for template file.
      *
@@ -32,7 +32,7 @@ if (function_exists('get_artomator_template_file_path') === false) {
     }
 }//end if
 
-if (function_exists('get_artomator_template') === false) {
+if (false === function_exists('get_artomator_template')) {
     /**
      * get template contents.
      *
@@ -49,7 +49,7 @@ if (function_exists('get_artomator_template') === false) {
     }
 }//end if
 
-if (function_exists('license_authors') === false) {
+if (false === function_exists('license_authors')) {
     /**
      * format authors for codeblock.
      *

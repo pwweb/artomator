@@ -39,7 +39,7 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
 
     public function generate()
     {
-        if (Str::contains($this->fileContents, $this->templateData) === true) {
+        if (true === Str::contains($this->fileContents, $this->templateData)) {
             $this->commandData->commandObj->info('GraphQL Subscription '.$this->commandData->config->mHumanPlural.' already exists; Skipping');
 
             return;

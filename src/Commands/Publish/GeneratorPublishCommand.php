@@ -108,7 +108,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'ApiTestTrait.php';
 
-        if (file_exists($testsPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($testsPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -122,7 +122,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         }
 
         $testRepositoriesPath = config('infyom.laravel_generator.path.repository_test', base_path('tests/Repositories/'));
-        if (file_exists($testRepositoriesPath) === false) {
+        if (false === file_exists($testRepositoriesPath)) {
             FileUtil::createDirectoryIfNotExist($testRepositoriesPath);
             $this->info('Repositories Tests directory created');
         }
@@ -138,7 +138,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'AppBaseController.php';
 
-        if (file_exists($controllerPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -159,7 +159,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'BaseRepository.php';
 
-        if (file_exists($repositoryPath.$fileName) && $this->confirmOverwrite($fileName) === false) {
+        if (file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
