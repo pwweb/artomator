@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use View;
+
+/**
+ * App\Providers\ViewServiceProvider ViewServiceProvider
+ *
+ * The view service provided for the system.
+ * Class ViewServiceProvider
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
+class ViewServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+    }
+}

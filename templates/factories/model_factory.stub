@@ -1,0 +1,22 @@
+<?php
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use $NAMESPACE_MODEL$\$MODEL_NAME$;
+use Faker\Generator as Faker;
+
+/**
+ * The database factory for $MODEL_NAME$.
+ * Class AppBaseController
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
+$factory->define($MODEL_NAME$::class, function (Faker $faker) {
+
+    return [
+        $FIELDS$
+    ];
+});

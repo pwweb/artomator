@@ -1,0 +1,61 @@
+<?php
+
+$excluded_folders = [
+    'node_modules',
+    'storage',
+    'vendor',
+];
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude($excluded_folders)
+    ->notName('AcceptanceTester.php')
+    ->notName('FunctionalTester.php')
+    ->notName('UnitTester.php')
+    ->in(__DIR__);
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        'psr0' => false,
+        '@PSR2' => true,
+        'blank_line_after_namespace' => true,
+        'array_indentation' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'braces' => true,
+        'class_definition' => true,
+        'concat_space' => ['spacing' => 'none'],
+        'elseif' => true,
+        'function_declaration' => true,
+        'indentation_type' => true,
+        'line_ending' => true,
+        'lowercase_constants' => true,
+        'lowercase_keywords' => true,
+        'method_argument_space' => [
+            'ensure_fully_multiline' => true,
+        ],
+        'no_break_comment' => true,
+        'no_closing_tag' => true,
+        'no_spaces_after_function_name' => true,
+        'no_spaces_inside_parenthesis' => true,
+        'no_trailing_whitespace' => true,
+        'no_whitespace_in_blank_line' => true,
+        'no_trailing_whitespace_in_comment' => true,
+        'no_unused_imports' => true,
+        'not_operator_with_successor_space' => true,
+        'ordered_imports' => true,
+        'phpdoc_summary' => true,
+        'single_blank_line_at_eof' => true,
+        'single_class_element_per_statement' => [
+            'elements' => ['property'],
+        ],
+        'single_import_per_statement' => true,
+        'single_line_after_imports' => true,
+        'single_quote' => true,
+        'switch_case_semicolon_to_colon' => true,
+        'switch_case_space' => true,
+        'visibility_required' => true,
+        'encoding' => true,
+        'full_opening_tag' => true,
+        'yoda_style' => true,
+    ])
+    ->setFinder($finder)
+;

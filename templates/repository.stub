@@ -1,0 +1,45 @@
+<?php
+
+namespace $NAMESPACE_REPOSITORY$;
+
+use $NAMESPACE_MODEL$\$MODEL_NAME$;
+use $NAMESPACE_APP$\Repositories\BaseRepository;
+
+/**
+ * $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository $MODEL_NAME$Repository
+ *
+ * The repository for $MODEL_NAME$.
+ * Class $MODEL_NAME$Repository
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/
+class $MODEL_NAME$Repository extends BaseRepository
+{
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        $FIELDS$
+    ];
+
+    /**
+     * Return searchable fields
+     *
+     * @return array
+     */
+    public function getFieldsSearchable()
+    {
+        return $this->fieldSearchable;
+    }
+
+    /**
+     * Configure the Model
+     **/
+    public function model()
+    {
+        return $MODEL_NAME$::class;
+    }
+}
