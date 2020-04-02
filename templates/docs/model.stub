@@ -1,0 +1,10 @@
+/**
+ * $NAMESPACE_MODEL$\$MODEL_NAME$ Model
+ *
+ * Standard $MODEL_NAME$ Model.
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+$PHPDOC$ */

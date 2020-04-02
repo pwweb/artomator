@@ -1,0 +1,10 @@
+/**
+ * $NAMESPACE_MODEL$\$MODEL_NAME$Repository Repository
+ *
+ * Standard $MODEL_NAME$ Repository.
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+*/

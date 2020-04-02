@@ -1,19 +1,32 @@
 <?php
 
 return [
-    // The location of your custom stub files:
-    'stubPath' => '/public/vendor/pwweb/', // Leave blank to use package stubs
+    /*
+    |--------------------------------------------------------------------------
+    | Options
+    |--------------------------------------------------------------------------
+    |
+    */
 
-    // The list of Authors who are working on the package:
-    'authors' => [
-        'Jane Doe <jane.doe@example.com>',
-        'Joe Blogs <joe.blogs@example.com>',
+    'options' => [
+        'subscription'             => false, // Enable GraphQL Subscriptions; Requires Pusher.
     ],
 
-    // The Copyright text for the File DocBlock:
-    'copyright' => '2019 ACME Corp.',
+    /*
+    |--------------------------------------------------------------------------
+    | Custom License Details
+    |--------------------------------------------------------------------------
+    |
+    */
+    'license' => [
+        'package' => 'Incredible Package Name',
+        'authors' => [
+            'Jane Doe <jane.doe@example.com>',
+            'Joe Blogs <joe.blogs@example.com>',
+        ],
 
-    // The License text for the File DocBlock:
-    'license' => 'license.md',
+        'copyright' => '2019 ACME Corp.',
 
+        'license' => 'license.md All rights reserved.',
+    ],
 ];

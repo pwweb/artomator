@@ -1,42 +1,63 @@
 {
     "name": "pwweb/artomator",
-    "description": "A simple extension of the Artisan Make commands with custom stubs.",
+    "description": "PWWEB Artomator",
     "license": "MIT",
     "authors": [{
         "name": "Richard Browne",
         "email": "richard@pw-websolutions.com",
         "homepage": "https://www.pw-websolutions.com"
+    }, {
+        "name": "Frank Pillukeit",
+        "email": "frank@pw-websolutions.com",
+        "homepage": "https://www.pw-websolutions.com"
     }],
     "homepage": "https://github.com/pwweb/artomator",
-    "keywords": ["Laravel", "Artomator"],
+    "keywords": [
+        "laravel",
+        "api",
+        "model",
+        "request",
+        "migration",
+        "model",
+        "crud",
+        "repository",
+        "view",
+        "test",
+        "generator",
+        "swagger",
+        "artomator",
+        "graphql"
+    ],
     "require": {
-        "illuminate/support": "^6.0",
-        "laracasts/generators": "^1.1"
+        "php": ">=7.3",
+        "laravel/framework": "^7.0",
+        "laracasts/flash": "~3.0",
+        "laravelcollective/html": "^6.1",
+        "doctrine/dbal": "~2.3",
+        "infyomlabs/coreui-templates": "7.0.x-dev",
+        "infyomlabs/laravel-generator": "7.0.x-dev",
+        "nuwave/lighthouse": "^4.9",
+        "mll-lab/laravel-graphql-playground": "^2.0",
+        "laravel/ui": "^2.0",
+        "pusher/pusher-php-server": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~8.0",
-        "mockery/mockery": "^1.1",
-        "orchestra/testbench": "~3.0",
-        "sempro/phpunit-pretty-print": "^1.0"
+        "phpunit/phpunit": "^8.5",
+        "mockery/mockery": "~0.9"
     },
     "autoload": {
         "psr-4": {
             "PWWEB\\Artomator\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "PWWEB\\Artomator\\Tests\\": "tests"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
             "providers": [
-                "PWWEB\\Artomator\\ArtomatorServiceProvider"
-            ],
-            "aliases": {
-                "Artomator": "PWWEB\\Artomator\\Facades\\Artomator"
-            }
+                "\\PWWEB\\Artomator\\ArtomatorServiceProvider"
+            ]
         }
     }
 }
