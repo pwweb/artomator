@@ -38,7 +38,7 @@ class RoutesGenerator
         $this->path = $commandData->config->pathRoutes;
         $this->prepareRoutes();
         $this->routeContents = file_get_contents($this->path);
-        if (0 === preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
+        if (false === preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
@@ -58,7 +58,6 @@ class RoutesGenerator
         }
 
         if (empty($this->commandData->config->prefixes['route'])) {
-            // TODO: what to do when blank route prefix?
             $new = [
                 'resources' => [$this->commandData->modelName => $this->commandData->modelName],
                 'name'      => strtolower($this->commandData->modelName),
@@ -104,19 +103,11 @@ class RoutesGenerator
 
     private function buildText($routes, $indent = 0)
     {
-        $templateString = '';
+        $templateContent = '';
         foreach ($routes as $route_key => $route) {
-            if ((isset($route['group']) && is_array($route['group'])) || 0 != $indent) {
-                $vars = [
-                    '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
-                    '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
-                    '$INDENT$'                    => infy_tabs($indent * 3),
-                ];
-                $templateString .= get_artomator_template('scaffold.routes.prefixed.namespace');
-                $templateString = fill_template($vars, $templateString);
-            }
+            $templateString = '';
             if (isset($route['resources'])) {
-                $tabs = ($indent > 0) ? (($indent * 3) + 3) : 0;
+                $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
                 foreach ($route['resources'] as $resource_key => $resource) {
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
@@ -126,20 +117,22 @@ class RoutesGenerator
                     $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
                     $templateString = fill_template($vars, $templateString);
                 }
-                if (0 == $indent) {
-                    continue;
-                }
             }
-            if ((isset($route['group']) && is_array($route['group']))) {
+            if ((isset($route['group']))) {
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
-            $vars = [
-                '$INDENT$' => infy_tabs(($indent * 3)),
-            ];
-            $templateString .= get_artomator_template('scaffold.routes.prefixed.closure');
-            $templateString = fill_template($vars, $templateString);
+            if ((isset($route['prefix']))) {
+                $vars = [
+                    '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
+                    '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
+                    '$INDENT$'                    => infy_tabs($indent * 3),
+                ];
+                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace').$templateString.get_artomator_template('scaffold.routes.prefixed.closure');
+                $templateString = fill_template($vars, $templateString);
+            }
+            $templateContent .= $templateString;
         }//end foreach
 
-        return $templateString;
+        return $templateContent;
     }
 }
