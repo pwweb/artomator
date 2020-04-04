@@ -38,7 +38,7 @@ class RoutesGenerator
         $this->path = $commandData->config->pathRoutes;
         $this->prepareRoutes();
         $this->routeContents = file_get_contents($this->path);
-        if (false === preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
+        if (1 !== preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
