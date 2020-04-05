@@ -46,6 +46,10 @@ class GraphQLMutationGenerator extends BaseGenerator
             return;
         }
 
+        if (false === str::contains($this->fileContents, 'type Mutation {')) {
+            $this->fileContents = preg_replace('/(type Query {)(.+?[^}])(})/is', '$1$2$3'."\n\ntype Mutation {  }", $this->fileContents);
+        }
+
         $this->fileContents = preg_replace('/(type Mutation {)(.+?[^}])(})/is', '$1$2'.str_replace('\\', '\\\\', $this->templateData).'$3', $this->fileContents);
 
         file_put_contents($this->fileName, $this->fileContents);
