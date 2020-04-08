@@ -12,6 +12,7 @@ use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
+use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Base
 {
@@ -64,5 +65,17 @@ class BaseCommand extends Base
             $menuGenerator = new MenuGenerator($this->commandData);
             $menuGenerator->generate();
         }
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return array_merge(parent::getOptions(), [
+            ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
+        ]);
     }
 }

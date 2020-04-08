@@ -1,4 +1,4 @@
-type $MODEL_NAME$ @model(namespace: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$") {
+type $GRAPHQL_NAME$ @model(namespace: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$") {
     id: ID! @globalId
     $SCHEMA$
     created_at: DateTime!

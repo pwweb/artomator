@@ -64,7 +64,7 @@ class GraphQLMutationGenerator extends BaseGenerator
             'update',
             'delete',
         ];
-        $model = $this->commandData->config->mHuman;
+        $model = $this->commandData->config->gHuman;
 
         foreach ($strings as $string) {
             if (Str::contains($this->fileContents, $string.$model)) {
