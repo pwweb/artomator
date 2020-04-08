@@ -10,6 +10,12 @@ class GeneratorConfig extends Config
     /* Path variables */
     public $pathGraphQL;
 
+    public function init(Data &$commandData, $options = null)
+    {
+        parent::$availableOptions[] = 'gqlName';
+        parent::init($commandData, $options);
+    }
+
     public function loadPaths()
     {
         parent::loadPaths();
