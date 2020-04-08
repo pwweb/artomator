@@ -54,7 +54,7 @@ class GraphQLTypeGenerator extends BaseGenerator
 
     public function rollback()
     {
-        $model = $this->commandData->config->mHuman;
+        $model = $this->commandData->config->gHuman;
 
         if (Str::contains($this->fileContents, 'type '.$model)) {
             $this->fileContents = preg_replace('/(\s)+(type '.$model.')(.+?)(})/is', '', $this->fileContents);
