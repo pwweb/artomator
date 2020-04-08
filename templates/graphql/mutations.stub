@@ -1,13 +1,13 @@
 
-    create$MODEL_NAME$(
+    create$GRAPHQL_NAME$(
         $SCHEMA$
-    ): $MODEL_NAME$ @create(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+    ): $GRAPHQL_NAME$ @create(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
-    update$MODEL_NAME$(
+    update$GRAPHQL_NAME$(
         id: ID @rules(apply: ["required"])
         $SCHEMA$
-    ): $MODEL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+    ): $GRAPHQL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
-    delete$MODEL_NAME$(
+    delete$GRAPHQL_NAME$(
         id: ID! @rules(apply: ["required"])
-    ): $MODEL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+    ): $GRAPHQL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")

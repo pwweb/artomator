@@ -62,6 +62,8 @@ $ php artisan artomator.graphql.query <MODEL_NAME>
 $ php artisan artomator.graphql:type <MODEL_NAME>
 ```
 
+For the GraphQL commands you can also provide an additional switch `--gql=AlternativeGraphqlName` which will allow you to customise the name used by the GraphQL engine. If this is omitted the model name will be used instead.
+
 ### `artomator.publish:templates`
 
 To alter the stub files provided with the package, you can publish them from the command line
