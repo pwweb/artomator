@@ -52,6 +52,7 @@ return PhpCsFixer\Config::create()
         'single_quote' => true,
         'switch_case_semicolon_to_colon' => true,
         'switch_case_space' => true,
+        'ternary_operator_spaces' => true,
         'visibility_required' => true,
         'encoding' => true,
         'full_opening_tag' => true,

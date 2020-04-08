@@ -28,7 +28,7 @@ if (false === function_exists('get_artomator_template_file_path')) {
             return base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub');
         }
 
-        return base_path('vendor/infyomlabs/'.$templateType.'/templates/'.$templateName.'.stub');
+        return get_template_file_path($templateName, 'laravel-generator');
     }
 }//end if
 

@@ -66,7 +66,7 @@ class GeneratorConfig extends Config
 
     public function prepareGraphQLNames()
     {
-        $this->gName = ($this->getOption('gqlName')?: $this->mName);
+        $this->gName = ($this->getOption('gqlName') ?: $this->mName);
         $this->gPlural = Str::plural($this->gName);
         $this->gCamel = Str::camel($this->gName);
         $this->gCamelPlural = Str::camel($this->gPlural);
