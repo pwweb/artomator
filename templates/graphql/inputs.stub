@@ -1,0 +1,14 @@
+
+input Create$GRAPHQL_NAME$Input {
+    $CREATE_SCHEMA$
+}
+
+input Update$GRAPHQL_NAME$Input {
+    id: ID!
+    $UPDATE_SCHEMA$
+}
+
+input Upsert$GRAPHQL_NAME$Input {
+    id: ID!
+    $UPSERT_SCHEMA$
+}

@@ -7,6 +7,7 @@ use InfyOm\Generator\Generators\Scaffold\ControllerGenerator;
 use InfyOm\Generator\Generators\Scaffold\MenuGenerator;
 use InfyOm\Generator\Generators\Scaffold\RequestGenerator;
 use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLInputGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
@@ -18,11 +19,6 @@ class BaseCommand extends Base
 {
     public function generateGraphQLItems()
     {
-        if (false === ($this->isSkip('mutations') or $this->isSkip('graphql_mutations'))) {
-            $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
-            $mutationGenerator->generate();
-        }
-
         if (false === ($this->isSkip('queries') or $this->isSkip('graphql_query'))) {
             $queryGenerator = new GraphQLQueryGenerator($this->commandData);
             $queryGenerator->generate();
@@ -31,6 +27,16 @@ class BaseCommand extends Base
         if (false === ($this->isSkip('types') or $this->isSkip('graphql_types'))) {
             $typeGenerator = new GraphQLTypeGenerator($this->commandData);
             $typeGenerator->generate();
+        }
+
+        if (false === ($this->isSkip('mutations') or $this->isSkip('graphql_mutations'))) {
+            $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
+            $mutationGenerator->generate();
+        }
+
+        if (false === ($this->isSkip('inputs') or $this->isSkip('graphql_inputs'))) {
+            $mutationGenerator = new GraphQLInputGenerator($this->commandData);
+            $mutationGenerator->generate();
         }
 
         if ((false === ($this->isSkip('subscription') or $this->isSkip('graphql_subscription'))) and config('pwweb.artomator.options.subscription')) {

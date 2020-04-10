@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use PWWEB\Artomator\Common\CommandData;
 
-class GraphQLTypeGenerator extends BaseGenerator
+class GraphQLInputGenerator extends BaseGenerator
 {
     /**
      * @var CommandData
@@ -33,7 +33,7 @@ class GraphQLTypeGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->fileName = $commandData->config->pathGraphQL;
         $this->fileContents = file_get_contents($this->fileName);
-        $this->templateData = get_artomator_template('graphql.type');
+        $this->templateData = get_artomator_template('graphql.inputs');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
         $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
@@ -41,26 +41,23 @@ class GraphQLTypeGenerator extends BaseGenerator
     public function generate()
     {
         if (true === Str::contains($this->fileContents, $this->templateData)) {
-            $this->commandData->commandObj->info('GraphQL Type '.$this->commandData->config->mHumanPlural.' already exists; Skipping');
+            $this->commandData->commandObj->info('GraphQL Inputs '.$this->commandData->config->mHumanPlural.' already exist; Skipping');
 
             return;
         }
 
-        $this->fileContents .= "\n".$this->templateData;
+        $this->fileContents .= $this->templateData;
+
         file_put_contents($this->fileName, $this->fileContents);
 
-        $this->commandData->commandComment("\nGraphQL Type created");
+        $this->commandData->commandComment("\nGraphQL Inputs created");
     }
 
     public function rollback()
     {
-        $model = $this->commandData->config->gHuman;
-
-        if (Str::contains($this->fileContents, 'type '.$model)) {
-            $this->fileContents = preg_replace('/(\s)+(type '.$model.')(.+?)(})/is', '', $this->fileContents);
-
-            file_put_contents($this->fileName, $this->fileContents);
-            $this->commandData->commandComment('GraphQL Type deleted');
+        if (Str::contains($this->fileContents, $this->templateData)) {
+            file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
+            $this->commandData->commandComment('GraphQL Inputs deleted');
         }
     }
 
@@ -71,16 +68,26 @@ class GraphQLTypeGenerator extends BaseGenerator
             if ($field->isFillable) {
                 if ('foreignId' === $field->fieldType) {
                     continue;
+                } else {
+                    $field_type = ucfirst($field->fieldType);
                 }
-                $field_type = ucfirst($field->fieldType);
+
                 $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
 
                 $schema[] = $field->name.': '.$field_type;
             }
         }
         $schema = array_merge($schema, $this->generateRelations());
+        $schema = implode(infy_nl_tab(1, 1), $schema);
+        $create_schema = str_replace('$TYPE$', 'Create', $schema);
+        $update_schema = str_replace('$TYPE$', 'Update', $schema);
+        $upsert_schema = str_replace('$TYPE$', 'Upsert', $schema);
 
-        return ['$SCHEMA$' => implode(infy_nl_tab(1, 1), $schema)];
+        return [
+            '$CREATE_SCHEMA$' => $create_schema,
+            '$UPDATE_SCHEMA$' => $update_schema,
+            '$UPSERT_SCHEMA$' => $upsert_schema
+        ];
     }
 
     private function generateRelations()
@@ -135,11 +142,13 @@ class GraphQLTypeGenerator extends BaseGenerator
         switch ($relationship->type) {
             case '1t1':
                 $functionName = $singularRelation;
-                $template = '$FUNCTION_NAME$: $RELATION_GRAPHQL_NAME$ @hasOne';
+                $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$';
+                $templateFile = '';
                 break;
             case '1tm':
                 $functionName = $pluralRelation;
-                $template = '$FUNCTION_NAME$: [$RELATION_GRAPHQL_NAME$!]! @hasMany';
+                $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$HasMany';
+                $templateFile = 'hasMany';
                 break;
             case 'mt1':
                 if (false === empty($relationship->relationName)) {
@@ -148,22 +157,33 @@ class GraphQLTypeGenerator extends BaseGenerator
                     $singularRelation = Str::camel(str_replace('_id', '', strtolower($relationship->inputs[1])));
                 }
                 $functionName = $singularRelation;
-                $template = '$FUNCTION_NAME$: $RELATION_GRAPHQL_NAME$! @belongsTo';
+                $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsTo';
+                $templateFile = 'belongsTo';
                 break;
             case 'mtm':
                 $functionName = $pluralRelation;
-                $template = '$FUNCTION_NAME$: [$RELATION_GRAPHQL_NAME$!]! @belongsToMany';
+                $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsToMany';
+                $templateFile = 'belongsToMany';
                 break;
             case 'hmt':
                 $functionName = $pluralRelation;
                 $template = '';
+                $templateFile = '';
                 break;
             default:
                 $functionName = '';
                 $template = '';
+                $templateFile = '';
                 break;
         }
+        if (false === empty($templateFile)) {
+            $templateFile = get_artomator_template('graphql.relations.'.$templateFile);
+            $templateFile = str_replace('$RELATION_GRAPHQL_NAME$', ucfirst(Str::singular($functionName)), $templateFile);
 
+            if (false === Str::contains($this->fileContents, $templateFile) && false === Str::contains($this->templateData, $templateFile)) {
+                $this->templateData .= $templateFile;
+            }
+        }
 
         return compact('functionName', 'template');
     }

@@ -35,7 +35,6 @@ class GraphQLMutationGenerator extends BaseGenerator
         $this->fileContents = file_get_contents($this->fileName);
         $this->templateData = get_artomator_template('graphql.mutations');
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
-        $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
 
     public function generate()
@@ -80,12 +79,17 @@ class GraphQLMutationGenerator extends BaseGenerator
     {
         $schema = [];
         foreach ($this->commandData->fields as $field) {
-            if (true === in_array($field->name, ['created_at', 'updated_at', 'id'])) {
-                continue;
-            }
-            $field_type = ucfirst($field->fieldType).(Str::contains($field->validations, 'required') ? '!' : '');
+            if ($field->isFillable) {
+                if ('foreignId' === $field->fieldType) {
+                    continue;
+                } else {
+                    $field_type = ucfirst($field->fieldType);
+                }
 
-            $schema[] = $field->name.': '.$field_type;
+                $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
+
+                $schema[] = $field->name.': '.$field_type;
+            }
         }
 
         return ['$SCHEMA$' => implode("\n\t\t", $schema)];

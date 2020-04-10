@@ -1,0 +1,25 @@
+
+input Create$RELATION_GRAPHQL_NAME$BelongsTo {
+    connect: ID
+    create: Create$RELATION_GRAPHQL_NAME$Input
+    update: Update$RELATION_GRAPHQL_NAME$Input
+    upsert: Upsert$RELATION_GRAPHQL_NAME$Input
+}
+
+input Update$RELATION_GRAPHQL_NAME$BelongsTo {
+    connect: ID
+    create: Create$RELATION_GRAPHQL_NAME$Input
+    update: Update$RELATION_GRAPHQL_NAME$Input
+    upsert: Upsert$RELATION_GRAPHQL_NAME$Input
+    disconnect: Boolean
+    delete: Boolean
+}
+
+input Upsert$RELATION_GRAPHQL_NAME$BelongsTo {
+    connect: ID
+    create: Create$RELATION_GRAPHQL_NAME$Input
+    update: Update$RELATION_GRAPHQL_NAME$Input
+    upsert: Upsert$RELATION_GRAPHQL_NAME$Input
+    disconnect: Boolean
+    delete: Boolean
+}
