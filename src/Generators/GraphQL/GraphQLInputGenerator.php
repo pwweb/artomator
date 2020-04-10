@@ -86,7 +86,7 @@ class GraphQLInputGenerator extends BaseGenerator
         return [
             '$CREATE_SCHEMA$' => $create_schema,
             '$UPDATE_SCHEMA$' => $update_schema,
-            '$UPSERT_SCHEMA$' => $upsert_schema
+            '$UPSERT_SCHEMA$' => $upsert_schema,
         ];
     }
 
@@ -105,7 +105,7 @@ class GraphQLInputGenerator extends BaseGenerator
                 $count++;
             }
 
-            $relationText = $this->getRelationFunctionText($relationShipText, $relation);
+            $relationText = $this->getRelationFunctionText($relation, $relationShipText);
             if (false === empty($relationText)) {
                 $fieldsArr[] = $field;
                 $relations[] = $relationText;
@@ -115,9 +115,9 @@ class GraphQLInputGenerator extends BaseGenerator
         return $relations;
     }
 
-    protected function getRelationFunctionText($relationText = null, $relationship)
+    protected function getRelationFunctionText($relationship, $relationText = null)
     {
-        extract($this->prepareRelationship($relationText, $relationship));
+        extract($this->prepareRelationship($relationship, $relationText));
 
         if (false === empty($functionName)) {
             return $this->generateRelation($functionName, $template);
@@ -134,7 +134,7 @@ class GraphQLInputGenerator extends BaseGenerator
         return $template;
     }
 
-    protected function prepareRelationship($relationText = null, $relationship)
+    protected function prepareRelationship($relationship, $relationText = null)
     {
         $singularRelation = (false === empty($relationship->relationName)) ? $relationship->relationName : Str::camel(Str::singular($relationText));
         $pluralRelation = (false === empty($relationship->relationName)) ? $relationship->relationName : Str::camel(Str::plural($relationText));

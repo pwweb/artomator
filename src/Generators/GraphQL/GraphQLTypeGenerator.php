@@ -98,7 +98,7 @@ class GraphQLTypeGenerator extends BaseGenerator
                 $count++;
             }
 
-            $relationText = $this->getRelationFunctionText($relationShipText, $relation);
+            $relationText = $this->getRelationFunctionText($relation, $relationShipText);
             if (false === empty($relationText)) {
                 $fieldsArr[] = $field;
                 $relations[] = $relationText;
@@ -108,9 +108,9 @@ class GraphQLTypeGenerator extends BaseGenerator
         return $relations;
     }
 
-    protected function getRelationFunctionText($relationText = null, $relationship)
+    protected function getRelationFunctionText($relationship, $relationText = null)
     {
-        extract($this->prepareRelationship($relationText, $relationship));
+        extract($this->prepareRelationship($relationship, $relationText));
 
         if (false === empty($functionName)) {
             return $this->generateRelation($functionName, $template);
@@ -127,7 +127,7 @@ class GraphQLTypeGenerator extends BaseGenerator
         return $template;
     }
 
-    protected function prepareRelationship($relationText = null, $relationship)
+    protected function prepareRelationship($relationship, $relationText = null)
     {
         $singularRelation = (false === empty($relationship->relationName)) ? $relationship->relationName : Str::camel(Str::singular($relationText));
         $pluralRelation = (false === empty($relationship->relationName)) ? $relationship->relationName : Str::camel(Str::plural($relationText));
