@@ -164,7 +164,6 @@ class GraphQLTypeGenerator extends BaseGenerator
                 break;
         }
 
-
         return compact('functionName', 'template');
     }
 }
