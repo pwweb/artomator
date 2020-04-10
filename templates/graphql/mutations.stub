@@ -1,11 +1,10 @@
 
     create$GRAPHQL_NAME$(
-        $SCHEMA$
+        input: Create$GRAPHQL_NAME$Input! @spread
     ): $GRAPHQL_NAME$ @create(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     update$GRAPHQL_NAME$(
-        id: ID @rules(apply: ["required"])
-        $SCHEMA$
+        input: Update$GRAPHQL_NAME$Input! @spread
     ): $GRAPHQL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     delete$GRAPHQL_NAME$(

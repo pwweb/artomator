@@ -1,9 +1,9 @@
 /**
      * Accessor for linked $RELATION_MODEL_NAME$ model.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\$RELATIONSHIP_CLASS$
      **/
-    public function $FUNCTION_NAME$()
+    public function $FUNCTION_NAME$(): $RELATIONSHIP_CLASS$
     {
         return $this->$RELATION$(\$NAMESPACE_MODEL$\$RELATION_MODEL_NAME$::class$INPUT_FIELDS$);
     }

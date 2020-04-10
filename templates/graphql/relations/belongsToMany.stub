@@ -1,0 +1,18 @@
+
+input Create$RELATION_GRAPHQL_NAME$BelongsToMany {
+    create: [Create$RELATION_GRAPHQL_NAME$Input!]
+    upsert: [Upsert$RELATION_GRAPHQL_NAME$Input!]
+    connect: [ID!]
+    sync: [ID!]
+}
+
+input Update$RELATION_GRAPHQL_NAME$BelongsToMany {
+    create: [Create$RELATION_GRAPHQL_NAME$Input!]
+    connect: [ID!]
+    update: [Update$RELATION_GRAPHQL_NAME$Input!]
+    upsert: [Upsert$RELATION_GRAPHQL_NAME$Input!]
+    sync: [ID!]
+    syncWithoutDetaching: [ID!]
+    delete: [ID!]
+    disconnect: [ID!]
+}

@@ -1,0 +1,11 @@
+
+input Create$RELATION_GRAPHQL_NAME$HasMany {
+    create: [Create$RELATION_GRAPHQL_NAME$Input!]!
+}
+
+input Update$RELATION_GRAPHQL_NAME$HasMany {
+    create: [Create$RELATION_GRAPHQL_NAME$Input!]
+    update: [Update$RELATION_GRAPHQL_NAME$Input!]
+    upsert: [Upsert$RELATION_GRAPHQL_NAME$Input!]
+    delete: [ID!]
+}

@@ -7,6 +7,7 @@ use Illuminate\Support\Composer;
 use InfyOm\Generator\Commands\RollbackGeneratorCommand as Base;
 use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
 use PWWEB\Artomator\Common\CommandData;
+use PWWEB\Artomator\Generators\GraphQL\GraphQLInputGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
@@ -81,6 +82,9 @@ class RollbackGeneratorCommand extends Base
 
         $queryGenerator = new GraphQLQueryGenerator($this->commandData);
         $queryGenerator->rollback();
+
+        $inputGenerator = new GraphQLInputGenerator($this->commandData);
+        $inputGenerator->rollback();
 
         $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
         $mutationGenerator->rollback();
