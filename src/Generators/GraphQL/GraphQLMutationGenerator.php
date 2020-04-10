@@ -74,24 +74,4 @@ class GraphQLMutationGenerator extends BaseGenerator
             }
         }
     }
-
-    private function generateSchema()
-    {
-        $schema = [];
-        foreach ($this->commandData->fields as $field) {
-            if ($field->isFillable) {
-                if ('foreignId' === $field->fieldType) {
-                    continue;
-                } else {
-                    $field_type = ucfirst($field->fieldType);
-                }
-
-                $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
-
-                $schema[] = $field->name.': '.$field_type;
-            }
-        }
-
-        return ['$SCHEMA$' => implode("\n\t\t", $schema)];
-    }
 }
