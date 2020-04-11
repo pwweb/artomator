@@ -13,7 +13,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class Create$TABLE_NAME_TITLE$Table extends Migration
 {
 

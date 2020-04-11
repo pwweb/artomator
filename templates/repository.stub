@@ -15,10 +15,12 @@ use $NAMESPACE_APP$\Repositories\BaseRepository;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class $MODEL_NAME$Repository extends BaseRepository
 {
     /**
+     *  Fields that are searchable
+     *
      * @var array
      */
     protected $fieldSearchable = [
@@ -37,6 +39,8 @@ class $MODEL_NAME$Repository extends BaseRepository
 
     /**
      * Configure the Model
+     *
+     * @return $MODEL_NAME$ $MODEL_NAME Model
      **/
     public function model()
     {

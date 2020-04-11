@@ -15,7 +15,7 @@ use $NAMESPACE_MODEL$\$MODEL_NAME$;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class Update$MODEL_NAME$Request extends FormRequest
 {
 
