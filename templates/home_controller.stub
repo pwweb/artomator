@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class HomeController extends Controller
 {
     /**

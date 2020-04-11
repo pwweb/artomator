@@ -21,13 +21,14 @@ use Response;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class $MODEL_NAME$Controller extends AppBaseController
 {
     /**
      * Display a listing of the $MODEL_NAME$.
      *
-     * @param $MODEL_NAME$DataTable $$MODEL_NAME_CAMEL$DataTable
+     * @param $MODEL_NAME$DataTable $$MODEL_NAME_CAMEL$DataTable Datatable
+     *
      * @return Response
      */
     public function index($MODEL_NAME$DataTable $$MODEL_NAME_CAMEL$DataTable)
@@ -48,7 +49,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * Store a newly created $MODEL_NAME$ in storage.
      *
-     * @param Create$MODEL_NAME$Request $request
+     * @param Create$MODEL_NAME$Request $request Create request
      *
      * @return Response
      */
@@ -67,7 +68,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * Display the specified $MODEL_NAME$.
      *
-     * @param  int $id
+     * @param  int $id Model ID
      *
      * @return Response
      */
@@ -76,7 +77,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('models/$MODEL_NAME_PLURAL_CAMEL$.singular').' '.__('messages.not_found'));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -88,7 +89,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * Show the form for editing the specified $MODEL_NAME$.
      *
-     * @param  int $id
+     * @param  int $id Model ID
      *
      * @return Response
      */
@@ -97,7 +98,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -109,8 +110,8 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * Update the specified $MODEL_NAME$ in storage.
      *
-     * @param  int              $id
-     * @param Update$MODEL_NAME$Request $request
+     * @param  int $id            Model ID
+     * @param Update$MODEL_NAME$Request $request Update request
      *
      * @return Response
      */
@@ -119,7 +120,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -136,7 +137,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * Remove the specified $MODEL_NAME$ from storage.
      *
-     * @param  int $id
+     * @param  int $id Model ID
      *
      * @throws \Exception
      *
@@ -147,7 +148,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));

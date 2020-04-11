@@ -10,6 +10,7 @@ class $MODEL_NAME$ extends Model
 $SOFT_DELETE$
     /**
      * Database table name.
+     *
      * @var string
      */
     public $table = '$TABLE_NAME$';
@@ -19,6 +20,7 @@ $CONNECTION$
 $PRIMARY$
     /**
      * The attributes that can be filled.
+     * 
      * @var string[]
      */
     public $fillable = [

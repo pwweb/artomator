@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 abstract class BaseRepository
 {
     /**
