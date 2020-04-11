@@ -28,6 +28,7 @@ class $MODEL_NAME$Controller extends AppBaseController
      * Display a listing of the $MODEL_NAME$.
      *
      * @param $MODEL_NAME$DataTable $$MODEL_NAME_CAMEL$DataTable
+     *
      * @return Response
      */
     public function index($MODEL_NAME$DataTable $$MODEL_NAME_CAMEL$DataTable)
@@ -76,7 +77,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('models/$MODEL_NAME_PLURAL_CAMEL$.singular').' '.__('messages.not_found'));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -97,7 +98,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -119,7 +120,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -147,7 +148,7 @@ class $MODEL_NAME$Controller extends AppBaseController
         /** @var $MODEL_NAME$ $$MODEL_NAME_CAMEL$ */
         $$MODEL_NAME_CAMEL$ = $MODEL_NAME$::find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (empty($$MODEL_NAME_CAMEL$) === true) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
