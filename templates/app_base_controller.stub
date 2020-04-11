@@ -15,7 +15,7 @@ use Response;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class AppBaseController extends Controller
 {
     public function sendResponse($result, $message)

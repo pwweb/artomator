@@ -17,7 +17,7 @@ use Yajra\DataTables\Html\Column;
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
-*/
+ */
 class $MODEL_NAME$DataTable extends DataTable
 {
     /**
@@ -38,7 +38,7 @@ class $MODEL_NAME$DataTable extends DataTable
      * Get query source of dataTable.
      *
      * @param \App\Models\$MODEL_NAME$ $model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query($MODEL_NAME$ $model)
