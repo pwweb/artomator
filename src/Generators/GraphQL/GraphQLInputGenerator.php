@@ -85,8 +85,8 @@ class GraphQLInputGenerator extends BaseGenerator
 
         return [
             '$CREATE_SCHEMA$' => $create_schema,
-            '$UPDATE_SCHEMA$' => $update_schema,
-            '$UPSERT_SCHEMA$' => $upsert_schema,
+            '$UPDATE_SCHEMA$' => str_replace('!', '', $update_schema),
+            '$UPSERT_SCHEMA$' => str_replace('!', '', $upsert_schema),
         ];
     }
 
