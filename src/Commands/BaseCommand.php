@@ -17,6 +17,13 @@ use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Base
 {
+    public function handle()
+    {
+        parent::handle();
+        $this->commandData->config->prepareGraphQLNames($this->option('gqlName'));
+        $this->commandData = $this->commandData->config->loadDynamicGraphQLVariables($this->commandData);
+    }
+
     public function generateGraphQLItems()
     {
         if (false === ($this->isSkip('queries') or $this->isSkip('graphql_query'))) {
