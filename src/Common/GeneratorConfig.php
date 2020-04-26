@@ -40,6 +40,7 @@ class GeneratorConfig extends Config
         $commandData->addDynamicVariable('$LICENSE_COPYRIGHT$', config('pwweb.artomator.license.copyright'));
         $commandData->addDynamicVariable('$LICENSE$', config('pwweb.artomator.license.license'));
         $commandData->addDynamicVariable('$NAMESPACE_GRAPHQL_MODEL$', str_replace('\\', '\\\\', $this->nsModel));
+
         return $commandData;
     }
 
@@ -76,6 +77,7 @@ class GeneratorConfig extends Config
         $commandData->addDynamicVariable('$GRAPHQL_NAME_PLURAL_SLASH$', $this->gSlashPlural);
         $commandData->addDynamicVariable('$GRAPHQL_NAME_HUMAN$', $this->gHuman);
         $commandData->addDynamicVariable('$GRAPHQL_NAME_PLURAL_HUMAN$', $this->gHumanPlural);
+
         return $commandData;
     }
 }
