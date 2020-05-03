@@ -6,7 +6,6 @@
 [![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/pwweb/artomator?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/pwweb/artomator/)
 [![StyleCI Status](https://github.styleci.io/repos/190910947/shield?branch=feature/lg)](https://github.styleci.io/repos/190910947)
 
-
 ![](robot.png)
 
 **Artomator**: Custom commands making life easier. Extending the package [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package to include GraphQL and extend the document blocks.
@@ -15,16 +14,35 @@
 
 Via Composer run the following:
 
-``` bash
+```bash
 $ composer require pwweb/artomator --dev
 ```
 
 Then publish the necessary files as follows:
-``` bash
+
+```bash
 $ php artisan vendor:publish --tag=artomator
 ```
 
 This will publish the config files for the necesary packages and the `graphql.schema` file needed to run the GraphQL server.
+
+By default `infyomlabs\laravel-generator` uses `infyomlabs\adminlte-templates` templates. If you would prefer to use the `coreui` templates, then this is included as an additional package dependency and you can update the `Templates` section of the config file: `config/inyom/laravel-generator.php` as follows:
+
+```php
+return [
+    ...
+
+    /*
+    |--------------------------------------------------------------------------
+    | Templates
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'templates'         => 'coreui-templates',
+    ...
+];
+```
 
 ## Usage
 
@@ -33,7 +51,8 @@ This will publish the config files for the necesary packages and the `graphql.sc
 As this is an extension of the [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package the documentation for the base package can be found [here](https://labs.infyom.com/laravelgenerator/docs/6.0/introduction).
 
 All commands in the base package have been "extended" so there is an `artomator` version of each. Refer to the original documentation for instructions on how to use these.
-``` bash
+
+```bash
 $ php artisan artomator.publish
 $ php artisan artomator.api <MODEL_NAME>
 $ php artisan artomator.scaffold <MODEL_NAME>
@@ -54,7 +73,8 @@ $ php artisan artomator.publish.user
 ```
 
 In addition to the base package commands there are the following:
-``` bash
+
+```bash
 $ php artisan artomator.graphql_scaffold <MODEL_NAME>
 $ php artisan artomator:graphql <MODEL_NAME>
 $ php artisan artomator.graphql:mutations <MODEL_NAME>
@@ -68,9 +88,10 @@ For the GraphQL commands you can also provide an additional switch `--gqlName=Al
 
 To alter the stub files provided with the package, you can publish them from the command line
 
-``` bash
+```bash
 $ php artisan artomator.publish:templates
 ```
+
 This command will run the InfyOmLabs equivalent publish command and then overwrite with those within the Artomator package. Therefore you will be asked to confirm the overwrite of the files, type `yes` to confirm.
 
 This will put the stub files into the `.\resources\infyom\infyom-generator-templates` folder. These can be edited and the when the commands are run, these templates will be used.
@@ -109,15 +130,15 @@ If you discover any security related issues, please email securtity@pw-websoluti
 
 ## Credits
 
-- [Richard Browne](https://github.com/orgs/pwweb/people/rabrowne85)
-- [Frank Pillukeit](https://github.com/orgs/pwweb/people/frankpde)
-- [PWWEB][link-author]
-- [All Contributors][link-contributors]
-- [InfyOmLabs](https://github.com/InfyOmLabs)
+-   [Richard Browne](https://github.com/orgs/pwweb/people/rabrowne85)
+-   [Frank Pillukeit](https://github.com/orgs/pwweb/people/frankpde)
+-   [PWWEB][link-author]
+-   [All Contributors][link-contributors]
+-   [InfyOmLabs](https://github.com/InfyOmLabs)
 
 ## License
 
-Copyright &copy; pw-websolutions.com. Please see the [license file](license.md) for more information.
+Copyright © pw-websolutions.com. Please see the [license file](license.md) for more information.
 
 <!-- [ico-version]: https://img.shields.io/packagist/v/pwweb/artomator.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/pwweb/artomator.svg?style=flat-square
@@ -127,5 +148,7 @@ Copyright &copy; pw-websolutions.com. Please see the [license file](license.md) 
 [link-downloads]: https://packagist.org/packages/pwweb/artomator
 [link-travis]: https://travis-ci.org/pwweb/artomator
 [link-styleci]: https://styleci.io/repos/12345678 -->
+
 [link-author]: https://github.com/pwweb
+
 [link-contributors]: https://github.com/pwweb/artomator/graphs/contributors
