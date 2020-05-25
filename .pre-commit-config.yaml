@@ -1,13 +1,14 @@
 repos:
--   repo:        https://github.com/digitalpulp/pre-commit-php.git
-    sha:         1.3.0
+-   repo:          https://github.com/digitalpulp/pre-commit-php.git
+    sha:           1.3.0
     hooks:
-        - id:    php-lint
-        - id:    php-cs-fixer
-          files: \.(php)$
-        - id:    php-cbf
-          files: \.(php)$
-          args:  [--standard=phpcs.xml -p]
-        - id:    php-cs
-          files: \.(php)$
-          args:  [--standard=phpcs.xml -p]
+        - id:      php-lint
+        - id:      php-unit
+        - id:      php-cbf
+          files:   \.(php)$
+          exclude: \.(blade)\.(php)$
+          args:    [--standard=phpcs.xml -p]
+        - id:      php-cs
+          files:   \.(php)$
+          exclude: \.(blade)\.(php)$
+          args:    [--standard=phpcs.xml -p]
