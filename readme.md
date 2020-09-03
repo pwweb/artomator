@@ -198,17 +198,35 @@ This function generates the GraphQL Query file only.
 
 This function generates the GraphQL Type file only.
 
-## Change log
+### Custom Routes
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
+If you want to define custom routes that are persisted and re-generated when new models are added there is now a `custom` property that you can add to the json file `web.json`:
 
-## Contributing
+```json
+"custom": [
+    {
+        "method": "post",
+        "endpoint": "/print/{id}",
+        "controller": "Printing",
+        "function": "printer",
+        "name": "customprint"
+    }
+],
+"group": {...}
+```
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+Ensure this is inline with the `group` property.
+
+The above will result in a route being added as follows:
+```php
+Route::post('/print/{id}', 'PrintingController@printer')->name('customprint');
+```
+
+If you leave the function blank it will remove the `@printer` part from the callback.
 
 ## Security
 
-If you discover any security related issues, please email securtity@pw-websolutions.com instead of using the issue tracker.
+If you discover any security related issues, please email security@pw-websolutions.com instead of using the issue tracker.
 
 ## Credits
 

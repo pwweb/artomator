@@ -8,30 +8,45 @@ use PWWEB\Artomator\Common\CommandData;
 class RoutesGenerator
 {
     /**
+     * Command data instance
+     *
      * @var CommandData
      */
     private $commandData;
 
     /**
+     * Path variable
+     *
      * @var string
      */
     private $path;
 
     /**
+     * Route Contents
+     *
      * @var string
      */
     private $routeContents;
 
     /**
+     * Route template
+     *
      * @var string
      */
     private $routesTemplate;
 
     /**
+     * Routes array
+     *
      * @var string
      */
     private $routes;
 
+    /**
+     * Constructor
+     *
+     * @param CommandData $commandData Command data passed in from above.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -45,11 +60,16 @@ class RoutesGenerator
         $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
     }
 
+    /**
+     * Prepare the routes array.
+     *
+     * @return void
+     */
     public function prepareRoutes()
     {
         $fileName = $this->path.'.json';
 
-        if (file_exists($fileName)) {
+        if (file_exists($fileName) === true) {
             // Routes json exists:
             $fileRoutes = file_get_contents($fileName);
             $fileRoutes = json_decode($fileRoutes, true);
@@ -57,7 +77,7 @@ class RoutesGenerator
             $fileRoutes = [];
         }
 
-        if (empty($this->commandData->config->prefixes['route'])) {
+        if (empty($this->commandData->config->prefixes['route']) === true) {
             $new = [
                 'resources' => [$this->commandData->modelName => $this->commandData->modelName],
                 'name'      => strtolower($this->commandData->modelName),
@@ -86,28 +106,46 @@ class RoutesGenerator
         $this->routes = $this->buildText($fileRoutes);
     }
 
+    /**
+     * Generator function.
+     *
+     * @return void
+     */
     public function generate()
     {
         file_put_contents($this->path, $this->routeContents);
         $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' routes added.');
     }
 
+    /**
+     * Rollback function.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if (Str::contains($this->routeContents, $this->routesTemplate)) {
+        if (Str::contains($this->routeContents, $this->routesTemplate) === true) {
             $this->routeContents = str_replace($this->routesTemplate, '', $this->routeContents);
             file_put_contents($this->path, $this->routeContents);
             $this->commandData->commandComment('scaffold routes deleted');
         }
     }
 
-    private function buildText($routes, $indent = 0)
+    /**
+     * Template text builder function
+     *
+     * @param array   $routes Routes array to process
+     * @param integer $indent Indent counter
+     *
+     * @return void
+     */
+    private function buildText(array $routes, int $indent = 0)
     {
         $templateContent = '';
         foreach ($routes as $route_key => $route) {
             $templateString = '';
-            if (isset($route['resources'])) {
-                $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
+            $tabs = (isset($route['prefix']) === true) ? (($indent * 3) + 3) : 0;
+            if (isset($route['resources']) === true) {
                 foreach ($route['resources'] as $resource_key => $resource) {
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
@@ -118,10 +156,27 @@ class RoutesGenerator
                     $templateString = fill_template($vars, $templateString);
                 }
             }
-            if ((isset($route['group']))) {
+            if (isset($route['custom']) === true) {
+                foreach ($route['custom'] as $custom_key => $custom) {
+                    if (true === isset($custom['function']) && $custom['function'] !== '') {
+                        $custom['function'] = '@' . $custom['function'];
+                    }
+                    $vars = [
+                        '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
+                        '$ITERATION_CUSTOM_ENDPOINT$' => $custom['endpoint'],
+                        '$ITERATION_CUSTOM_CONTROLLER$' => $custom['controller'],
+                        '$ITERATION_CUSTOM_FUNCTION$' => $custom['function'],
+                        '$ITERATION_CUSTOM_NAME$' => $custom['name'],
+                        '$INDENT$' => infy_tabs($tabs),
+                    ];
+                    $templateString .= get_artomator_template('scaffold.routes.prefixed.custom');
+                    $templateString = fill_template($vars, $templateString);
+                }
+            }
+            if ((isset($route['group'])) === true) {
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
-            if ((isset($route['prefix']))) {
+            if ((isset($route['prefix'])) === true) {
                 $vars = [
                     '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
