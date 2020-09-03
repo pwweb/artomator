@@ -8,42 +8,42 @@ use PWWEB\Artomator\Common\CommandData;
 class RoutesGenerator
 {
     /**
-     * Command data instance
+     * Command data instance.
      *
      * @var CommandData
      */
     private $commandData;
 
     /**
-     * Path variable
+     * Path variable.
      *
      * @var string
      */
     private $path;
 
     /**
-     * Route Contents
+     * Route Contents.
      *
      * @var string
      */
     private $routeContents;
 
     /**
-     * Route template
+     * Route template.
      *
      * @var string
      */
     private $routesTemplate;
 
     /**
-     * Routes array
+     * Routes array.
      *
      * @var string
      */
     private $routes;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param CommandData $commandData Command data passed in from above.
      */
@@ -132,10 +132,10 @@ class RoutesGenerator
     }
 
     /**
-     * Template text builder function
+     * Template text builder function.
      *
      * @param array   $routes Routes array to process
-     * @param integer $indent Indent counter
+     * @param int $indent Indent counter
      *
      * @return void
      */
@@ -159,7 +159,7 @@ class RoutesGenerator
             if (isset($route['custom']) === true) {
                 foreach ($route['custom'] as $custom_key => $custom) {
                     if (true === isset($custom['function']) && $custom['function'] !== '') {
-                        $custom['function'] = '@' . $custom['function'];
+                        $custom['function'] = '@'.$custom['function'];
                     }
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
