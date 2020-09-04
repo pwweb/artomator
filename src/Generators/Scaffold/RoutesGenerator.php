@@ -57,7 +57,7 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
     }
 
     /**
@@ -67,7 +67,7 @@ class RoutesGenerator
      */
     public function prepareRoutes()
     {
-        $fileName = $this->path.'.json';
+        $fileName = $this->path . '.json';
 
         if (file_exists($fileName) === true) {
             // Routes json exists:
@@ -98,7 +98,7 @@ class RoutesGenerator
                 }
                 $routes = [ucfirst($prefix) => $new];
             }
-        }//end if
+        }
         $fileRoutes = array_replace_recursive($fileRoutes, $routes);
         file_put_contents($fileName, json_encode($fileRoutes, JSON_PRETTY_PRINT));
         $this->commandData->commandComment("\nRoute JSON File saved: ");
@@ -114,7 +114,7 @@ class RoutesGenerator
     public function generate()
     {
         file_put_contents($this->path, $this->routeContents);
-        $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' routes added.');
+        $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' routes added.');
     }
 
     /**
@@ -134,8 +134,8 @@ class RoutesGenerator
     /**
      * Template text builder function.
      *
-     * @param array   $routes Routes array to process
-     * @param int $indent Indent counter
+     * @param array $routes Routes array to process
+     * @param int   $indent Indent counter
      *
      * @return void
      */
@@ -145,21 +145,10 @@ class RoutesGenerator
         foreach ($routes as $route_key => $route) {
             $templateString = '';
             $tabs = (isset($route['prefix']) === true) ? (($indent * 3) + 3) : 0;
-            if (isset($route['resources']) === true) {
-                foreach ($route['resources'] as $resource_key => $resource) {
-                    $vars = [
-                        '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
-                        '$ITERATION_MODEL_NAME$'              => $resource_key,
-                        '$INDENT$'                            => infy_tabs($tabs),
-                    ];
-                    $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
-                    $templateString = fill_template($vars, $templateString);
-                }
-            }
             if (isset($route['custom']) === true) {
                 foreach ($route['custom'] as $custom_key => $custom) {
                     if (true === isset($custom['function']) && $custom['function'] !== '') {
-                        $custom['function'] = '@'.$custom['function'];
+                        $custom['function'] = '@' . $custom['function'];
                     }
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
@@ -173,6 +162,17 @@ class RoutesGenerator
                     $templateString = fill_template($vars, $templateString);
                 }
             }
+            if (isset($route['resources']) === true) {
+                foreach ($route['resources'] as $resource_key => $resource) {
+                    $vars = [
+                        '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
+                        '$ITERATION_MODEL_NAME$'              => $resource_key,
+                        '$INDENT$'                            => infy_tabs($tabs),
+                    ];
+                    $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
+                    $templateString = fill_template($vars, $templateString);
+                }
+            }
             if ((isset($route['group'])) === true) {
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
@@ -182,11 +182,11 @@ class RoutesGenerator
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
-                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace').$templateString.get_artomator_template('scaffold.routes.prefixed.closure');
+                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace') . $templateString . get_artomator_template('scaffold.routes.prefixed.closure');
                 $templateString = fill_template($vars, $templateString);
             }
             $templateContent .= $templateString;
-        }//end foreach
+        }
 
         return $templateContent;
     }
