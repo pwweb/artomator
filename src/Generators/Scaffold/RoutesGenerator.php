@@ -51,13 +51,6 @@ class RoutesGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathRoutes;
-        $this->prepareRoutes();
-        $this->routeContents = file_get_contents($this->path);
-        if (1 !== preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
-            $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
-        }
-
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
     }
 
     /**
@@ -113,8 +106,44 @@ class RoutesGenerator
      */
     public function generate()
     {
+        $this->prepareRoutes();
+        $this->routeContents = file_get_contents($this->path);
+        if (1 !== preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
+            $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
+        }
+
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
+
         file_put_contents($this->path, $this->routeContents);
         $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' routes added.');
+    }
+
+    /**
+     * Re-generator the routes function.
+     *
+     * @return void
+     */
+    public function regenerate()
+    {
+        $fileName = $this->path . '.json';
+
+        if (file_exists($fileName) === true) {
+            // Routes json exists:
+            $fileRoutes = file_get_contents($fileName);
+            $fileRoutes = json_decode($fileRoutes, true);
+        } else {
+            $fileRoutes = [];
+        }
+        $this->routes = $this->buildText($fileRoutes);
+        $this->routeContents = file_get_contents($this->path);
+        if (1 !== preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
+            $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
+        }
+
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
+
+        file_put_contents($this->path, $this->routeContents);
+        $this->commandData->commandComment("\nRoutes regenerated.");
     }
 
     /**
