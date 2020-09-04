@@ -60,7 +60,7 @@ class RoutesGenerator
      */
     public function prepareRoutes()
     {
-        $fileName = $this->path . '.json';
+        $fileName = $this->path.'.json';
 
         if (file_exists($fileName) === true) {
             // Routes json exists:
@@ -112,10 +112,10 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
 
         file_put_contents($this->path, $this->routeContents);
-        $this->commandData->commandComment("\n" . $this->commandData->config->mCamelPlural . ' routes added.');
+        $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' routes added.');
     }
 
     /**
@@ -125,7 +125,7 @@ class RoutesGenerator
      */
     public function regenerate()
     {
-        $fileName = $this->path . '.json';
+        $fileName = $this->path.'.json';
 
         if (file_exists($fileName) === true) {
             // Routes json exists:
@@ -140,7 +140,7 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n" . $this->routes . '$3', $this->routeContents);
+        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
 
         file_put_contents($this->path, $this->routeContents);
         $this->commandData->commandComment("\nRoutes regenerated.");
@@ -177,7 +177,7 @@ class RoutesGenerator
             if (isset($route['custom']) === true) {
                 foreach ($route['custom'] as $custom_key => $custom) {
                     if (true === isset($custom['function']) && $custom['function'] !== '') {
-                        $custom['function'] = '@' . $custom['function'];
+                        $custom['function'] = '@'.$custom['function'];
                     }
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
@@ -211,7 +211,7 @@ class RoutesGenerator
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
-                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace') . $templateString . get_artomator_template('scaffold.routes.prefixed.closure');
+                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace').$templateString.get_artomator_template('scaffold.routes.prefixed.closure');
                 $templateString = fill_template($vars, $templateString);
             }
             $templateContent .= $templateString;

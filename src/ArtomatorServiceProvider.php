@@ -24,9 +24,9 @@ use PWWEB\Artomator\Commands\Publish\PublishUserCommand;
 use PWWEB\Artomator\Commands\RollbackGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\ControllerGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\RequestsGeneratorCommand;
+use PWWEB\Artomator\Commands\Scaffold\RoutesGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\ScaffoldGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\ViewsGeneratorCommand;
-use PWWEB\Artomator\Commands\Scaffold\RoutesGeneratorCommand;
 
 class ArtomatorServiceProvider extends ServiceProvider
 {
@@ -37,10 +37,10 @@ class ArtomatorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $configPath = __DIR__ . '/../config/artomator.php';
-        $configPathInfyom = __DIR__ . '/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
-        $schemaPath = __DIR__ . '/../../../nuwave/lighthouse/assets/default-schema.graphql';
-        $configPathNuwave = __DIR__ . '/../../../nuwave/lighthouse/src/lighthouse.php';
+        $configPath = __DIR__.'/../config/artomator.php';
+        $configPathInfyom = __DIR__.'/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
+        $schemaPath = __DIR__.'/../../../nuwave/lighthouse/assets/default-schema.graphql';
+        $configPathNuwave = __DIR__.'/../../../nuwave/lighthouse/src/lighthouse.php';
 
         $this->publishes(
             [
