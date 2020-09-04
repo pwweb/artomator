@@ -3,8 +3,8 @@
 namespace PWWEB\Artomator\Commands\Scaffold;
 
 use PWWEB\Artomator\Commands\BaseCommand as Base;
-use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
 use PWWEB\Artomator\Common\CommandData;
+use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 
 class RoutesGeneratorCommand extends Base
