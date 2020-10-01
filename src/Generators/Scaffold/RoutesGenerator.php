@@ -108,7 +108,7 @@ class RoutesGenerator
             $templateString = '';
             if (isset($route['resources'])) {
                 $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
-                foreach ($route['resources'] as $resource_key => $resource) {
+                foreach (array_keys($route['resources']) as $resource_key) {
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
                         '$ITERATION_MODEL_NAME$'              => $resource_key,
