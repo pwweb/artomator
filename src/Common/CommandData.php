@@ -4,6 +4,7 @@ namespace PWWEB\Artomator\Common;
 
 use Illuminate\Console\Command;
 use InfyOm\Generator\Common\CommandData as Data;
+use InfyOm\Generator\Common\TemplatesManager;
 
 class CommandData extends Data
 {
