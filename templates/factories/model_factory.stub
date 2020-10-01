@@ -1,9 +1,9 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace $NAMESPACE_FACTORY$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * The database factory for $MODEL_NAME$.
@@ -14,9 +14,24 @@ use Faker\Generator as Faker;
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
-$factory->define($MODEL_NAME$::class, function (Faker $faker) {
+ class $MODEL_NAME$Factory extends Factory
+ {
+     /**
+      * The name of the factory's corresponding model.
+      *
+      * @var string
+      */
+     protected $model = $MODEL_NAME$::class;
 
-    return [
-        $FIELDS$
-    ];
-});
+     /**
+      * Define the model's default state.
+      *
+      * @return array
+      */
+     public function definition()
+     {
+         return [
+             $FIELDS$
+         ];
+     }
+ }
