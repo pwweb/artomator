@@ -7,7 +7,7 @@ use $NAMESPACE_REQUEST$\Update$MODEL_NAME$Request;
 use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use Illuminate\Http\Request;
-use Flash;
+use Laracasts\Flash\Flash;
 use Response;
 
 /**
