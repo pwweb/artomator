@@ -62,7 +62,7 @@ class RoutesGenerator
     {
         $fileName = $this->path.'.json';
 
-        if (file_exists($fileName) === true) {
+        if (true === file_exists($fileName)) {
             // Routes json exists:
             $fileRoutes = file_get_contents($fileName);
             $fileRoutes = json_decode($fileRoutes, true);
@@ -70,7 +70,7 @@ class RoutesGenerator
             $fileRoutes = [];
         }
 
-        if (empty($this->commandData->config->prefixes['route']) === true) {
+        if (true === empty($this->commandData->config->prefixes['route'])) {
             $new = [
                 'resources' => [$this->commandData->modelName => $this->commandData->modelName],
                 'name'      => strtolower($this->commandData->modelName),
@@ -127,7 +127,7 @@ class RoutesGenerator
     {
         $fileName = $this->path.'.json';
 
-        if (file_exists($fileName) === true) {
+        if (true === file_exists($fileName)) {
             // Routes json exists:
             $fileRoutes = file_get_contents($fileName);
             $fileRoutes = json_decode($fileRoutes, true);
@@ -153,7 +153,7 @@ class RoutesGenerator
      */
     public function rollback()
     {
-        if (Str::contains($this->routeContents, $this->routesTemplate) === true) {
+        if (true === Str::contains($this->routeContents, $this->routesTemplate)) {
             $this->routeContents = str_replace($this->routesTemplate, '', $this->routeContents);
             file_put_contents($this->path, $this->routeContents);
             $this->commandData->commandComment('scaffold routes deleted');
@@ -173,10 +173,10 @@ class RoutesGenerator
         $templateContent = '';
         foreach ($routes as $route_key => $route) {
             $templateString = '';
-            $tabs = (isset($route['prefix']) === true) ? (($indent * 3) + 3) : 0;
-            if (isset($route['custom']) === true) {
+            $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
+            if (true === isset($route['custom'])) {
                 foreach ($route['custom'] as $custom_key => $custom) {
-                    if (true === isset($custom['function']) && $custom['function'] !== '') {
+                    if (true === isset($custom['function']) && '' !== $custom['function']) {
                         $custom['function'] = '@'.$custom['function'];
                     }
                     $vars = [
@@ -203,10 +203,10 @@ class RoutesGenerator
                     $templateString = fill_template($vars, $templateString);
                 }
             }
-            if ((isset($route['group'])) === true) {
+            if (true === (isset($route['group']))) {
                 $templateString .= $this->buildText($route['group'], ($indent + 1));
             }
-            if ((isset($route['prefix'])) === true) {
+            if (true === (isset($route['prefix']))) {
                 $vars = [
                     '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
