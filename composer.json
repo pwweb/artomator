@@ -37,7 +37,7 @@
         "infyomlabs/coreui-templates": "8.0.x-dev",
         "infyomlabs/adminlte-templates": "8.0.x-dev",
         "infyomlabs/laravel-generator": "8.0.x-dev",
-        "nuwave/lighthouse": "^5.0@alpha",
+        "nuwave/lighthouse": "^4.17.0",
         "mll-lab/laravel-graphql-playground": "^2.0",
         "laravel/ui": "^2.0",
         "pusher/pusher-php-server": "^4.0"
