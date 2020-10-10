@@ -144,11 +144,13 @@ class GraphQLInputGenerator extends BaseGenerator
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$';
                 $templateFile = '';
+
                 break;
             case '1tm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$HasMany';
                 $templateFile = 'hasMany';
+
                 break;
             case 'mt1':
                 if (false === empty($relationship->relationName)) {
@@ -159,21 +161,25 @@ class GraphQLInputGenerator extends BaseGenerator
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsTo';
                 $templateFile = 'belongsTo';
+
                 break;
             case 'mtm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsToMany';
                 $templateFile = 'belongsToMany';
+
                 break;
             case 'hmt':
                 $functionName = $pluralRelation;
                 $template = '';
                 $templateFile = '';
+
                 break;
             default:
                 $functionName = '';
                 $template = '';
                 $templateFile = '';
+
                 break;
         }
         if (false === empty($templateFile)) {
