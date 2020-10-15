@@ -136,10 +136,12 @@ class GraphQLTypeGenerator extends BaseGenerator
             case '1t1':
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $RELATION_GRAPHQL_NAME$ @hasOne';
+
                 break;
             case '1tm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: [$RELATION_GRAPHQL_NAME$!]! @hasMany';
+
                 break;
             case 'mt1':
                 if (false === empty($relationship->relationName)) {
@@ -149,18 +151,22 @@ class GraphQLTypeGenerator extends BaseGenerator
                 }
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $RELATION_GRAPHQL_NAME$! @belongsTo';
+
                 break;
             case 'mtm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: [$RELATION_GRAPHQL_NAME$!]! @belongsToMany';
+
                 break;
             case 'hmt':
                 $functionName = $pluralRelation;
                 $template = '';
+
                 break;
             default:
                 $functionName = '';
                 $template = '';
+
                 break;
         }
 

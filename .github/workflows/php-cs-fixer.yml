@@ -19,13 +19,10 @@ jobs:
                 with:
                     args:           --config=.php_cs.dist --allow-risky=yes
 
-            -   name:               Extract branch name
-                shell:              bash
-                run:                echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-                id:                 extract_branch
-
-            -   name:               Commit changes
-                uses:               stefanzweifel/git-auto-commit-action@v2.3.0
+            -   name:               Create Pull Request
+                uses:               peter-evans/create-pull-request@v3
                 with:
                     commit_message: Fix styling
-                    branch:         ${{ steps.extract_branch.outputs.branch }}
+                    branch:         auto-styling/patch
+                    title: Changes by check & fix styling workflow
+                    body: Automated changes by Check & Fix Styling - php-cs-fixer
