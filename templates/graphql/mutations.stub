@@ -10,3 +10,7 @@
     delete$GRAPHQL_NAME$(
         id: ID! @globalId @rules(apply: ["required"])
     ): $GRAPHQL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+
+    restore$GRAPHQL_NAME$(
+        id: ID! @globalId @rules(apply: ["required"])
+    ): $GRAPHQL_NAME$ @restore(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
