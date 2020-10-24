@@ -8,5 +8,5 @@
     ): $GRAPHQL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     delete$GRAPHQL_NAME$(
-        id: ID! @rules(apply: ["required"])
+        id: ID! @globalId @rules(apply: ["required"])
     ): $GRAPHQL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
