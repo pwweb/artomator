@@ -1,5 +1,5 @@
 $INDENT$Route::prefix('$ITERATION_NAMESPACE_LOWER$')
 $INDENT$    ->name('$ITERATION_NAMESPACE_LOWER$.')
-$INDENT$    ->middleware('auth', 'tenant')
+$INDENT$    ->middleware('auth')
 $INDENT$    ->group(
 $INDENT$        function () {

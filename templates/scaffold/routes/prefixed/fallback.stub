@@ -1,5 +1,5 @@
 $INDENT$            Route::fallback(
 $INDENT$                function () {
-$INDENT$                    return redirect()->route($FALLBACK_ROUTE$);
+$INDENT$                    return redirect()->route('$FALLBACK_ROUTE$');
 $INDENT$                }
 $INDENT$            );
