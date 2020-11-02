@@ -8,9 +8,13 @@
     ): $GRAPHQL_NAME$ @update(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     delete$GRAPHQL_NAME$(
-        id: ID! @globalId @rules(apply: ["required"])
-    ): $GRAPHQL_NAME$ @delete(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+        id: ID! @rules(apply: ["required"])
+    ): $GRAPHQL_NAME$ @delete(globalId: true, model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+
+    forceDelete$GRAPHQL_NAME$(
+        id: ID! @rules(apply: ["required"])
+    ): $GRAPHQL_NAME$ @forceDelete(globalId: true, model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
 
     restore$GRAPHQL_NAME$(
-        id: ID! @globalId @rules(apply: ["required"])
-    ): $GRAPHQL_NAME$ @restore(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+        id: ID! @rules(apply: ["required"])
+    ): $GRAPHQL_NAME$ @restore(globalId: true, model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")

@@ -1,3 +1,3 @@
 
-    $GRAPHQL_NAME_PLURAL_CAMEL$: [$GRAPHQL_NAME$!]! @paginate(defaultCount: 10 model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")
+    $GRAPHQL_NAME_PLURAL_CAMEL$: [$GRAPHQL_NAME$!]! @paginate(defaultCount: 10 model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$") @softDeletes
     $GRAPHQL_NAME_CAMEL$(id: ID @globalId): $GRAPHQL_NAME$ @find(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$")

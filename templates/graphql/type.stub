@@ -3,4 +3,5 @@ type $GRAPHQL_NAME$ @node(model: "$NAMESPACE_GRAPHQL_MODEL$\\$MODEL_NAME$") {
     $SCHEMA$
     created_at: DateTime!
     updated_at: DateTime!
+    deleted_at: DateTime
 }
