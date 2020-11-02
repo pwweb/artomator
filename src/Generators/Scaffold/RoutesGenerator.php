@@ -163,14 +163,16 @@ class RoutesGenerator
     /**
      * Template text builder function.
      *
-     * @param array $routes Routes array to process
-     * @param int   $indent Indent counter
+     * @param array  $routes Routes array to process
+     * @param int    $indent Indent counter
+     * @param string $parent Parent prefix for fallback route
      *
      * @return void
      */
-    private function buildText(array $routes, int $indent = 0)
+    private function buildText(array $routes, int $indent = 0, string $parent = '')
     {
         $templateContent = '';
+        $fallback = '';
         foreach ($routes as $route_key => $route) {
             $templateString = '';
             $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
@@ -193,10 +195,21 @@ class RoutesGenerator
             }
             if (isset($route['resources'])) {
                 $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
-                foreach (array_keys($route['resources']) as $resource_key) {
+                foreach ($route['resources'] as $resource_key => $only) {
+                    if (null === $fallback) {
+                        $fallback = $parent.'.'.$resource_key.'.index';
+                    }
+
+                    if (true === is_array($only)) {
+                        $only = '->only([\''.implode('\', \'', $only).'\'])';
+                    } else {
+                        $only = '';
+                    }
+
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
                         '$ITERATION_MODEL_NAME$'              => $resource_key,
+                        '$ITERATION_ONLY$'                    => $only,
                         '$INDENT$'                            => infy_tabs($tabs),
                     ];
                     $templateString .= get_artomator_template('scaffold.routes.prefixed.route');
@@ -204,15 +217,24 @@ class RoutesGenerator
                 }
             }
             if (true === (isset($route['group']))) {
-                $templateString .= $this->buildText($route['group'], ($indent + 1));
+                if ('' !== $parent) {
+                    $parent .= '.';
+                }
+                $parent .= (true === isset($route['prefix'])) ? $route['prefix'] : '';
+                $templateString .= $this->buildText($route['group'], ($indent + 1), $parent);
             }
             if (true === (isset($route['prefix']))) {
                 $vars = [
                     '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
+                    '$FALLBACK_ROUTE$'            => $fallback,
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
-                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace').$templateString.get_artomator_template('scaffold.routes.prefixed.closure');
+                $templateString = get_artomator_template('scaffold.routes.prefixed.namespace')
+                    .$templateString
+                    .get_artomator_template('scaffold.routes.prefixed.fallback')
+                    .get_artomator_template('scaffold.routes.prefixed.closure');
+
                 $templateString = fill_template($vars, $templateString);
             }
             $templateContent .= $templateString;
