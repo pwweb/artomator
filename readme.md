@@ -69,6 +69,7 @@ This will generate Auth Controllers and layout files along with authentication b
 By default `infyomlabs\laravel-generator` uses `infyomlabs\adminlte-templates` templates. If you would prefer to use the `coreui` templates, then this is included as an additional package dependency and you can update the `Templates` section of the config file: `config/inyom/laravel-generator.php` as follows:
 
 ```php
+<?php
 return [
     ...
 
@@ -117,6 +118,7 @@ This will:
 2.  add the following routes:
 
 ```php
+<?php
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
@@ -218,11 +220,23 @@ If you want to define custom routes that are persisted and re-generated when new
 Ensure this is inline with the `group` property.
 
 The above will result in a route being added as follows:
+
 ```php
+<?php
 Route::post('/print/{id}', 'PrintingController@printer')->name('customprint');
 ```
 
 If you leave the function blank it will remove the `@printer` part from the callback.
+
+### Resource Routes Only
+
+If you want to specify that only certain parts of a resource route are used, then you can update your `web.json` file and use a comma separated list of endpoints to specify. For example:
+
+```json
+"resources": {
+    "ModelName": "index,create,store"
+}
+```
 
 ## Security
 
