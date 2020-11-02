@@ -1,1 +1,1 @@
-use $ITERATION_MODEL_NAME$Controller;
+use App\Http\Controllers\$ITERATION_NAMESPACE_CONTROLLER_NAME$Controller;

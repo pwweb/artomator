@@ -43,6 +43,20 @@ class RoutesGenerator
     private $routes;
 
     /**
+     * Clasess array.
+     *
+     * @var string
+     */
+    private $classes;
+
+    /**
+     * Classes array.
+     *
+     * @var string[]
+     */
+    private $classNames;
+
+    /**
      * Constructor.
      *
      * @param CommandData $commandData Command data passed in from above.
@@ -97,6 +111,7 @@ class RoutesGenerator
         $this->commandData->commandComment("\nRoute JSON File saved: ");
         $this->commandData->commandInfo($fileName);
         $this->routes = $this->buildText($fileRoutes);
+        $this->classes = $this->buildClasses();
     }
 
     /**
@@ -112,7 +127,29 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
+        $this->routeContents = preg_replace(
+            '/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU',
+            "$1\n".$this->routes.'$3',
+            $this->routeContents
+        );
+
+
+        if (1 !== preg_match(
+            '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
+            $this->routeContents
+        )) {
+            $this->routeContents = preg_replace(
+                '/(<\?php)/sU',
+                "<?php\n\n// Artomator Routes Start\n// Artomator Routes Stop",
+                $this->routeContents
+            );
+        }
+
+        $this->routeContents = preg_replace(
+            '/(\/\/ Artomator Class References Start)(.*)(\/\/ Artomator Class References Stop)/sU',
+            "$1\n".$this->classes.'$3',
+            $this->routeContents
+        );
 
         file_put_contents($this->path, $this->routeContents);
         $this->commandData->commandComment("\n".$this->commandData->config->mCamelPlural.' routes added.');
@@ -140,7 +177,29 @@ class RoutesGenerator
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
         }
 
-        $this->routeContents = preg_replace('/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU', "$1\n".$this->routes.'$3', $this->routeContents);
+        $this->routeContents = preg_replace(
+            '/(\/\/ Artomator Routes Start)(.*)(\/\/ Artomator Routes Stop)/sU',
+            "$1\n".$this->routes.'$3',
+            $this->routeContents
+        );
+
+
+        if (1 !== preg_match(
+            '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
+            $this->routeContents
+        )) {
+            $this->routeContents = preg_replace(
+                '/(<\?php)/sU',
+                "<?php\n\n// Artomator Routes Start\n// Artomator Routes Stop",
+                $this->routeContents
+            );
+        }
+
+        $this->routeContents = preg_replace(
+            '/(\/\/ Artomator Class References Start)(.*)(\/\/ Artomator Class References Stop)/sU',
+            "$1\n".$this->classes.'$3',
+            $this->routeContents
+        );
 
         file_put_contents($this->path, $this->routeContents);
         $this->commandData->commandComment("\nRoutes regenerated.");
@@ -206,6 +265,15 @@ class RoutesGenerator
                         $only = '';
                     }
 
+                    $className = $parent.'.'.$resource_key;
+                    $className = explode('.', $className);
+                    foreach ($className as &$path) {
+                        $path = ucfirst($path);
+                    }
+                    $className = implode('/', $className);
+
+                    $this->classNames[] = $className;
+
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
                         '$ITERATION_MODEL_NAME$'              => $resource_key,
@@ -241,5 +309,28 @@ class RoutesGenerator
         }
 
         return $templateContent;
+    }
+
+    /**
+     * Build the class names to be used in the refences.
+     *
+     * @return string The string of classnames in the form.
+     */
+    private function buildClasses()
+    {
+        $this->classNames = Arr::sort($this->classNames);
+
+        $classContent = '';
+        foreach ($this->classNames as $key => $value) {
+            $var = [
+                '$ITERATION_NAMESPACE_CONTROLLER_NAME$' => $value,
+            ];
+
+            $classContent .= get_artomator_template('scaffold.routes.prefixed.reference');
+
+            $classContent = fill_template($var, $classContent);
+        }
+
+        return $classContent;
     }
 }
