@@ -2,6 +2,7 @@
 
 namespace PWWEB\Artomator\Generators\Scaffold;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use PWWEB\Artomator\Common\CommandData;
 
@@ -139,7 +140,7 @@ class RoutesGenerator
         )) {
             $this->routeContents = preg_replace(
                 '/(<\?php)/sU',
-                "<?php\n\n// Artomator Routes Start\n// Artomator Routes Stop",
+                "<?php\n\n// Artomator Class References Start\n// Artomator Class References Stop",
                 $this->routeContents
             );
         }
@@ -188,7 +189,7 @@ class RoutesGenerator
         )) {
             $this->routeContents = preg_replace(
                 '/(<\?php)/sU',
-                "<?php\n\n// Artomator Routes Start\n// Artomator Routes Stop",
+                "<?php\n\n// Artomator Class References Start\n// Artomator Class References Stop",
                 $this->routeContents
             );
         }
@@ -231,6 +232,10 @@ class RoutesGenerator
         $templateContent = '';
         $fallback = '';
         foreach ($routes as $route_key => $route) {
+            if ('' !== $parent) {
+                $parent .= '.';
+            }
+            $parent .= (true === isset($route['prefix'])) ? $route['prefix'] : '';
             $templateString = '';
             $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
             if (true === isset($route['custom'])) {
@@ -253,22 +258,24 @@ class RoutesGenerator
             if (isset($route['resources'])) {
                 $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
                 foreach ($route['resources'] as $resource_key => $only) {
-                    if (null === $fallback) {
-                        $fallback = $parent.'.'.$resource_key.'.index';
+                    if ('' === $fallback) {
+                        $fallback = $parent.'.'.Str::lower($resource_key).'.index';
                     }
 
-                    if (true === is_array($only)) {
-                        $only = '->only([\''.implode('\', \'', $only).'\'])';
+                    if ($resource_key !== $only) {
+                        $only = '->only([\''.implode('\', \'', explode(',', $only)).'\'])';
                     } else {
                         $only = '';
                     }
 
-                    $className = $parent.'.'.$resource_key;
+                    $className = $parent;
+                    $className .= (true === isset($route['prefix'])) ? '.'.$route['prefix'] : '';
+                    $className .= '.'.$resource_key;
                     $className = explode('.', $className);
                     foreach ($className as &$path) {
                         $path = ucfirst($path);
                     }
-                    $className = implode('/', $className);
+                    $className = implode('\\', $className);
 
                     $this->classNames[] = $className;
 
@@ -283,10 +290,6 @@ class RoutesGenerator
                 }
             }
             if (true === (isset($route['group']))) {
-                if ('' !== $parent) {
-                    $parent .= '.';
-                }
-                $parent .= (true === isset($route['prefix'])) ? $route['prefix'] : '';
                 $templateString .= $this->buildText($route['group'], ($indent + 1), $parent);
             }
             if (true === (isset($route['prefix']))) {
@@ -296,9 +299,14 @@ class RoutesGenerator
                     '$FALLBACK_ROUTE$'            => $fallback,
                     '$INDENT$'                    => infy_tabs($indent * 3),
                 ];
+                if ('' !== $fallback) {
+                    $fallback_tmp = get_artomator_template('scaffold.routes.prefixed.fallback');
+                } else {
+                    $fallback_tmp = '';
+                }
                 $templateString = get_artomator_template('scaffold.routes.prefixed.namespace')
                     .$templateString
-                    .get_artomator_template('scaffold.routes.prefixed.fallback')
+                    .$fallback_tmp
                     .get_artomator_template('scaffold.routes.prefixed.closure');
 
                 $templateString = fill_template($vars, $templateString);
