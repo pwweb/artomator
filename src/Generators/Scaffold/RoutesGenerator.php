@@ -133,7 +133,6 @@ class RoutesGenerator
             $this->routeContents
         );
 
-
         if (1 !== preg_match(
             '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
             $this->routeContents
@@ -182,7 +181,6 @@ class RoutesGenerator
             "$1\n".$this->routes.'$3',
             $this->routeContents
         );
-
 
         if (1 !== preg_match(
             '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
