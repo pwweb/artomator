@@ -84,11 +84,18 @@ class RoutesGenerator
         } else {
             $fileRoutes = [];
         }
-
+        $nsControllerName = $this->commandData->config->nsController.'\\'.$this->commandData->modelName.'Controller';
         if (true === empty($this->commandData->config->prefixes['route'])) {
             $new = [
-                'resources' => [$this->commandData->modelName => $this->commandData->modelName],
-                'name'      => strtolower($this->commandData->modelName),
+                'resources' => [
+                    $this->commandData->modelName => [
+                        'only' => '*',
+                        'controller' => $nsControllerName,
+                        'as' => '',
+                        'isFallback' => false,
+                    ],
+                ],
+                'name' => strtolower($this->commandData->modelName),
             ];
             $routes = [ucfirst($this->commandData->modelName) => $new];
         } else {
@@ -100,7 +107,14 @@ class RoutesGenerator
                     'name'   => strtolower($prefix),
                 ];
                 if (0 === $key) {
-                    $new['resources'] = [$this->commandData->modelName => $this->commandData->modelName];
+                    $new['resources'] = [
+                        $this->commandData->modelName => [
+                            'only' => '*',
+                            'controller' => $nsControllerName,
+                            'as' => '',
+                            'isFallback' => false,
+                        ],
+                    ];
                 } else {
                     $new['group'] = $routes;
                 }
@@ -230,8 +244,8 @@ class RoutesGenerator
     private function buildText(array $routes, int $indent = 0, string $parent = '')
     {
         $templateContent = '';
-        $fallback = '';
         foreach ($routes as $route_key => $route) {
+            $fallback = '';
             if ('' !== $parent) {
                 $parent .= '.';
             }
@@ -257,31 +271,23 @@ class RoutesGenerator
             }
             if (isset($route['resources'])) {
                 $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
-                foreach ($route['resources'] as $resource_key => $only) {
-                    if ('' === $fallback) {
-                        $fallback = $parent.'.'.Str::lower($resource_key).'.index';
+                foreach ($route['resources'] as $resource_key => $resource) {
+                    if (true === isset($resource['isFallback']) && true === $resource['isFallback']) {
+                        // TODO: Fix this.
+                        $fallback = $parent.Str::plural(Str::lower($resource_key)).'.index';
                     }
 
-                    if ($resource_key !== $only) {
-                        $only = '->only([\''.implode('\', \'', explode(',', $only)).'\'])';
+                    if (true === isset($resource['only']) && '*' !== $resource['only']) {
+                        $only = '->only([\''.implode('\', \'', explode(',', $resource['only'])).'\'])';
                     } else {
                         $only = '';
                     }
 
-                    $className = $parent;
-                    $className .= (true === isset($route['prefix'])) ? '.'.$route['prefix'] : '';
-                    $className .= '.'.$resource_key;
-                    $className = explode('.', $className);
-                    foreach ($className as &$path) {
-                        $path = ucfirst($path);
-                    }
-                    $className = implode('\\', $className);
-
-                    $this->classNames[] = $className;
+                    $this->classNames[$resource['controller']] = $resource['as'];
 
                     $vars = [
                         '$ITERATION_MODEL_NAME_PLURAL_CAMEL$' => Str::camel(Str::plural($resource_key)),
-                        '$ITERATION_MODEL_NAME$'              => $resource_key,
+                        '$ITERATION_CONTROLLER_NAME_AS$'      => $resource['as'],
                         '$ITERATION_ONLY$'                    => $only,
                         '$INDENT$'                            => infy_tabs($tabs),
                     ];
@@ -324,12 +330,16 @@ class RoutesGenerator
      */
     private function buildClasses()
     {
-        $this->classNames = Arr::sort($this->classNames);
+        // $this->classNames = Arr::sort($this->classNames);
 
         $classContent = '';
-        foreach ($this->classNames as $key => $value) {
+        foreach ($this->classNames as $controller => $as) {
+            if ('' !== $as) {
+                $as = ' as '.$as;
+            }
             $var = [
-                '$ITERATION_NAMESPACE_CONTROLLER_NAME$' => $value,
+                '$ITERATION_NAMESPACE_CONTROLLER_NAME$' => $controller,
+                '$ITERATION_NAMESPACE_CONTROLLER_AS$' => $as,
             ];
 
             $classContent .= get_artomator_template('scaffold.routes.prefixed.reference');
