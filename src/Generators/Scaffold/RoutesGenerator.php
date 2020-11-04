@@ -245,7 +245,6 @@ class RoutesGenerator
     {
         $templateContent = '';
         foreach ($routes as $route_key => $route) {
-            $fallback = '';
             if ('' !== $parent) {
                 $parent .= '.';
             }
@@ -272,11 +271,6 @@ class RoutesGenerator
             if (isset($route['resources'])) {
                 $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
                 foreach ($route['resources'] as $resource_key => $resource) {
-                    if (true === isset($resource['isFallback']) && true === $resource['isFallback']) {
-                        // TODO: Fix this.
-                        $fallback = $parent.Str::plural(Str::lower($resource_key)).'.index';
-                    }
-
                     if (true === isset($resource['only']) && '*' !== $resource['only']) {
                         $only = '->only([\''.implode('\', \'', explode(',', $resource['only'])).'\'])';
                     } else {
@@ -299,6 +293,11 @@ class RoutesGenerator
                 $templateString .= $this->buildText($route['group'], ($indent + 1), $parent);
             }
             if (true === (isset($route['prefix']))) {
+                if (true === isset($resource['fallback'])) {
+                    $fallback = $resource['fallback'];
+                } else {
+                    $fallback = '';
+                }
                 $vars = [
                     '$ITERATION_NAMESPACE_CAMEL$' => ucfirst($route_key),
                     '$ITERATION_NAMESPACE_LOWER$' => strtolower($route_key),
