@@ -224,7 +224,10 @@ The above will result in a route being added as follows:
 
 ```php
 <?php
-Route::post('/print/{id}', 'PrintingController@printer')->name('customprint');
+Route::post(
+    '/print/{id}',
+    [PrintingController::class, 'printer']
+)->name('customprint');
 ```
 
 If you leave the function blank it will remove the `@printer` part from the callback.
