@@ -291,8 +291,8 @@ class RoutesGenerator
                 $templateString .= $this->buildText($route['group'], ($indent + 1), $parent);
             }
             if (true === (isset($route['prefix']))) {
-                if (true === isset($resource['fallback'])) {
-                    $fallback = $resource['fallback'];
+                if (true === isset($route['fallback'])) {
+                    $fallback = $route['fallback'];
                 } else {
                     $fallback = '';
                 }
