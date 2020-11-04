@@ -91,7 +91,7 @@ class RoutesGenerator
                     $this->commandData->modelName => [
                         'only' => '*',
                         'controller' => $nsControllerName,
-                        'as' => '',
+                        'as' => $this->commandData->modelName.'Controller',
                         'isFallback' => false,
                     ],
                 ],
@@ -111,8 +111,7 @@ class RoutesGenerator
                         $this->commandData->modelName => [
                             'only' => '*',
                             'controller' => $nsControllerName,
-                            'as' => '',
-                            'isFallback' => false,
+                            'as' => $this->commandData->modelName.'Controller',
                         ],
                     ];
                 } else {
