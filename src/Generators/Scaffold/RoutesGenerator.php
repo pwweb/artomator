@@ -251,9 +251,6 @@ class RoutesGenerator
             $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
             if (true === isset($route['custom'])) {
                 foreach ($route['custom'] as $custom_key => $custom) {
-                    if (true === isset($custom['function']) && '' !== $custom['function']) {
-                        $custom['function'] = '@'.$custom['function'];
-                    }
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
                         '$ITERATION_CUSTOM_ENDPOINT$' => $custom['endpoint'],
