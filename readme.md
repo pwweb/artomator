@@ -228,15 +228,39 @@ Route::post('/print/{id}', 'PrintingController@printer')->name('customprint');
 
 If you leave the function blank it will remove the `@printer` part from the callback.
 
-### Resource Routes Only
+### Routes General
 
-If you want to specify that only certain parts of a resource route are used, then you can update your `web.json` file and use a comma separated list of endpoints to specify. For example:
+Below is an example output for the `web.json` file. You are free to add the `"fallback"` option and change the `"only"` `"controller"` and `"as"` options for a resource controller:
 
 ```json
-"resources": {
-    "ModelName": "index,create,store"
+{
+    "Gran": {
+        "prefix": "gran",
+        "name": "gran",
+        "fallback": "gran.parent.somethings.index",
+        "group": {
+            "Parent": {
+                "prefix": "parent",
+                "name": "parent",
+                "resources": {
+                    "Something": {
+                        "only": "index,create,store",
+                        "controller": "App\\Http\\Controllers\\Gran\\Parent\\SomethingController",
+                        "as": "WeirdnameController"
+                    }
+                }
+            }
+        }
+    }
 }
 ```
+
+-   `"fallback"` - this is the name of the route you want to use as the fallback for the group level. This is appended to the end of the group after all the other resources and groups have been generated.
+-   `"only"` - a comma separated list of the routes you want to limit to.
+-   `"controller"` - this is the full namespace path of the controller for the routes. If you update this, it will be set at the top of the `web.php` file in the `use` calls.
+-   `"as"` - this allows you to override the name used for the controller. It defaults to the name of the controller but this allows you to override it should there be a clash.
+
+**!! WARNING !!** These additional fields are not compatible with prior versions. Please manually update the JSON file with the missing fields.
 
 ## Security
 
