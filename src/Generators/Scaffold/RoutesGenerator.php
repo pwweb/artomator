@@ -255,12 +255,12 @@ class RoutesGenerator
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
                         '$ITERATION_CUSTOM_ENDPOINT$' => $custom['endpoint'],
-                        '$ITERATION_CUSTOM_CONTROLLER$' => $custom['controller'],
+                        '$ITERATION_CUSTOM_CONTROLLER$' => $custom['as'],
                         '$ITERATION_CUSTOM_FUNCTION$' => $custom['function'],
                         '$ITERATION_CUSTOM_NAME$' => $custom['name'],
                         '$INDENT$' => infy_tabs($tabs),
                     ];
-                    $this->classNames[$custom['controller'].'Controller'] = $custom['controller'].'Controller';
+                    $this->classNames[$custom['controller']] = $custom['as'];
                     $templateString .= get_artomator_template('scaffold.routes.prefixed.custom');
                     $templateString = fill_template($vars, $templateString);
                 }
