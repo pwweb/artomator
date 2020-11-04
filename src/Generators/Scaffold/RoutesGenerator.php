@@ -92,7 +92,6 @@ class RoutesGenerator
                         'only' => '*',
                         'controller' => $nsControllerName,
                         'as' => $this->commandData->modelName.'Controller',
-                        'isFallback' => false,
                     ],
                 ],
                 'name' => strtolower($this->commandData->modelName),
