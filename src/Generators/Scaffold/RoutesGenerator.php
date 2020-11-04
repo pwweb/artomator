@@ -260,6 +260,7 @@ class RoutesGenerator
                         '$ITERATION_CUSTOM_NAME$' => $custom['name'],
                         '$INDENT$' => infy_tabs($tabs),
                     ];
+                    $this->classNames[$custom['controller'].'Controller'] = $custom['controller'].'Controller';
                     $templateString .= get_artomator_template('scaffold.routes.prefixed.custom');
                     $templateString = fill_template($vars, $templateString);
                 }
