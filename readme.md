@@ -209,7 +209,8 @@ If you want to define custom routes that are persisted and re-generated when new
     {
         "method": "post",
         "endpoint": "/print/{id}",
-        "controller": "Printing",
+        "controller": "App\\Http\\Controllers\\Gran\\Parent\\PrintingController",
+        "as": "PrintingController",
         "function": "printer",
         "name": "customprint"
     }
