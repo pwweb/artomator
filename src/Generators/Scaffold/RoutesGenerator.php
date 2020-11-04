@@ -184,6 +184,7 @@ class RoutesGenerator
             $fileRoutes = [];
         }
         $this->routes = $this->buildText($fileRoutes);
+        $this->classes = $this->buildClasses();
         $this->routeContents = file_get_contents($this->path);
         if (1 !== preg_match('/\/\/ Artomator Routes Start(.*)\/\/ Artomator Routes Stop/sU', $this->routeContents)) {
             $this->routeContents .= "\n\n// Artomator Routes Start\n// Artomator Routes Stop";
