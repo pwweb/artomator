@@ -61,6 +61,108 @@ class GraphQLInputGenerator extends BaseGenerator
         }
     }
 
+    private function sanitiseFieldTypes(string $fieldType)
+    {
+        $needle = '/\(.+\)?/g';
+        $replace = '';
+        $fieldType = preg_replace($needle, $replace, $fieldType);
+        // There are 5 basic scalar types + 2 lighthouse ones (Date and DateTime);
+        switch ($fieldType) {
+            case 'bigIncrements':
+            case 'bigInteger':
+            case 'binary':
+            case 'increments':
+            case 'integer':
+            case 'mediumIncrements':
+            case 'mediumInteger':
+            case 'smallIncrements':
+            case 'smallInteger':
+            case 'tinyIncrements':
+            case 'tinyInteger':
+            case 'unsignedBigInteger':
+            case 'unsignedInteger':
+            case 'unsignedMediumInteger':
+            case 'unsignedSmallInteger':
+            case 'unsignedTinyInteger':
+            case 'year':
+                return 'Int';
+
+                break;
+
+            case 'unsignedDecimal':
+            case 'point':
+            case 'polygon':
+            case 'multiPoint':
+            case 'multiPolygon':
+            case 'float':
+            case 'decimal':
+            case 'double':
+                return 'Float';
+
+                break;
+
+            case 'uuid':
+            case 'string':
+            case 'text':
+            case 'rememberToken':
+            case 'mediumText':
+            case 'multiLineString':
+            case 'ipAddress':
+            case 'json':
+            case 'jsonb':
+            case 'lineString':
+            case 'longText':
+            case 'macAddress':
+            case 'char':
+                return 'String';
+
+                break;
+
+            case 'boolean':
+                return 'Boolean';
+
+                break;
+
+            case 'foreignId':
+                return 'ID';
+
+                break;
+
+            case 'time':
+            case 'timeTz':
+            case 'timestamp':
+            case 'timestampTz':
+            case 'timestamps':
+            case 'timestampsTz':
+            case 'softDeletes':
+            case 'softDeletesTz':
+            case 'nullableTimestamps':
+            case 'dateTime':
+            case 'dateTimeTz':
+                return 'DateTime';
+
+                break;
+
+            case 'date':
+                return 'Date';
+
+                break;
+
+            case 'set':
+            case 'nullableMorphs':
+            case 'nullableUuidMorphs':
+            case 'morphs':
+            case 'uuidMorphs':
+            case 'geometry':
+            case 'geometryCollection':
+            case 'enum':
+            default:
+                return ucfirst($fieldType);
+
+                break;
+        }
+    }
+
     private function generateSchema()
     {
         $schema = [];
@@ -69,7 +171,7 @@ class GraphQLInputGenerator extends BaseGenerator
                 if ('foreignId' === $field->fieldType) {
                     continue;
                 } else {
-                    $field_type = ucfirst($field->fieldType);
+                    $field_type = $this->sanitiseFieldTypes($field->fieldType);
                 }
 
                 $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
