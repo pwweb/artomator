@@ -12,6 +12,7 @@ use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
+use PWWEB\Artomator\Generators\InterfaceGenerator;
 use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -22,6 +23,16 @@ class BaseCommand extends Base
         parent::handle();
         $this->commandData->config->prepareGraphQLNames($this->option('gqlName'));
         $this->commandData = $this->commandData->config->loadDynamicGraphQLVariables($this->commandData);
+    }
+
+    public function generateCommonItems()
+    {
+        parent::generateCommonItems();
+
+        if (! $this->isSkip('repository') && $this->commandData->getOption('repositoryPattern')) {
+            $interfaceGenerator = new InterfaceGenerator($this->commandData);
+            $interfaceGenerator->generate();
+        }
     }
 
     public function generateGraphQLItems()

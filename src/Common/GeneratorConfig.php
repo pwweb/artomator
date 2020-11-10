@@ -24,12 +24,18 @@ class GeneratorConfig extends Config
     public $gSlashPlural;
     public $gHuman;
     public $gHumanPlural;
+    public $nsInterface;
 
     public function loadPaths()
     {
         parent::loadPaths();
 
         $this->pathGraphQL = config('lighthouse.schema.register', base_path('graphql/schema.graphql'));
+
+        $this->pathInterface = config(
+            'pwweb.artomator.path.interface',
+            app_path('Interfaces/')
+        ).$prefix;
     }
 
     public function loadDynamicVariables(Data &$commandData)
@@ -40,6 +46,10 @@ class GeneratorConfig extends Config
         $commandData->addDynamicVariable('$LICENSE_COPYRIGHT$', config('pwweb.artomator.license.copyright'));
         $commandData->addDynamicVariable('$LICENSE$', config('pwweb.artomator.license.license'));
         $commandData->addDynamicVariable('$NAMESPACE_GRAPHQL_MODEL$', str_replace('\\', '\\\\', $this->nsModel));
+
+
+        $this->nsRepository = config('pwweb.artomator.namespace.interface', 'App\Interfaces').$prefix;
+        $commandData->addDynamicVariable('$NAMESPACE_INTERFACE$', $this->nsInterface);
 
         return $commandData;
     }

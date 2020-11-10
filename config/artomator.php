@@ -1,6 +1,34 @@
 <?php
 
 return [
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Paths
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'path' => [
+
+        'interface'        => app_path('Interfaces/'),
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Namespaces
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'namespace' => [
+
+        'interface'        => 'App\Interfaces',
+
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Options
@@ -9,7 +37,9 @@ return [
     */
 
     'options' => [
+
         'subscription'             => false, // Enable GraphQL Subscriptions; Requires Pusher.
+
     ],
 
     /*
@@ -19,10 +49,15 @@ return [
     |
     */
     'license' => [
+
         'package' => 'Incredible Package Name',
+
         'authors' => [
+
             'Jane Doe <jane.doe@example.com>',
+
             'Joe Blogs <joe.blogs@example.com>',
+
         ],
 
         'copyright' => '2019 ACME Corp.',
