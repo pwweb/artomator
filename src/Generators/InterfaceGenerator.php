@@ -6,7 +6,7 @@ use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
 
-class RepositoryInterfaceGenerator extends BaseGenerator
+class InterfaceGenerator extends BaseGenerator
 {
     /** @var CommandData */
     private $commandData;

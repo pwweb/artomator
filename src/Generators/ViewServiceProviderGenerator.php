@@ -170,7 +170,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
             $mainViewContent,
-            $newPropertyStatement,
+            $newBootStatement,
             $replacePosition + strlen($bootStatement),
             0
         );
@@ -185,7 +185,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
             $mainViewContent,
-            $newPropertyStatement,
+            $newBootStatement,
             $replacePosition + strlen($bootStatement),
             0
         );
@@ -201,7 +201,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
             $mainViewContent,
-            $newPropertyStatement,
+            $newBootStatement,
             $replacePosition + strlen($bootStatement),
             0
         );

@@ -238,7 +238,7 @@ class RoutesGenerator
      * @param int    $indent Indent counter
      * @param string $parent Parent prefix for fallback route
      *
-     * @return void
+     * @return string
      */
     private function buildText(array $routes, int $indent = 0, string $parent = '')
     {
@@ -251,7 +251,7 @@ class RoutesGenerator
             $templateString = '';
             $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
             if (true === isset($route['custom'])) {
-                foreach ($route['custom'] as $custom_key => $custom) {
+                foreach ($route['custom'] as $custom) {
                     $vars = [
                         '$ITERATION_CUSTOM_METHOD$' => $custom['method'],
                         '$ITERATION_CUSTOM_ENDPOINT$' => $custom['endpoint'],

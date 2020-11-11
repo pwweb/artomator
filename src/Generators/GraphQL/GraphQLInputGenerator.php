@@ -87,8 +87,6 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'year':
                 return 'Int';
 
-                break;
-
             case 'unsignedDecimal':
             case 'point':
             case 'polygon':
@@ -98,8 +96,6 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'decimal':
             case 'double':
                 return 'Float';
-
-                break;
 
             case 'uuid':
             case 'string':
@@ -116,17 +112,11 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'char':
                 return 'String';
 
-                break;
-
             case 'boolean':
                 return 'Boolean';
 
-                break;
-
             case 'foreignId':
                 return 'ID';
-
-                break;
 
             case 'time':
             case 'timeTz':
@@ -141,12 +131,8 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'dateTimeTz':
                 return 'DateTime';
 
-                break;
-
             case 'date':
                 return 'Date';
-
-                break;
 
             case 'set':
             case 'nullableMorphs':
@@ -158,8 +144,6 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'enum':
             default:
                 return ucfirst($fieldType);
-
-                break;
         }
     }
 
