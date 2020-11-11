@@ -63,7 +63,7 @@ class GraphQLInputGenerator extends BaseGenerator
 
     private function sanitiseFieldTypes(string $fieldType)
     {
-        $needle = '/\(.+\)?/g';
+        $needle = "/\(.+\)?/";
         $replace = '';
         $fieldType = preg_replace($needle, $replace, $fieldType);
         // There are 5 basic scalar types + 2 lighthouse ones (Date and DateTime);
