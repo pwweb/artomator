@@ -143,7 +143,6 @@ class ViewServiceProviderGenerator extends BaseGenerator
             .ucfirst($model)."\n\t */\n\tprivate \$"
             .lcfirst($model)."Repository;\n\n";
 
-
         preg_match_all('/private(.*)/', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
         $propertyStatement = $matches[0][$totalMatches - 1];
