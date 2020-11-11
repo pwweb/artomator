@@ -6,7 +6,6 @@ use InfyOm\Generator\Commands\BaseCommand as Base;
 use InfyOm\Generator\Generators\Scaffold\ControllerGenerator;
 use InfyOm\Generator\Generators\Scaffold\MenuGenerator;
 use InfyOm\Generator\Generators\Scaffold\RequestGenerator;
-use InfyOm\Generator\Generators\Scaffold\ViewGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLInputGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
@@ -14,6 +13,7 @@ use PWWEB\Artomator\Generators\GraphQL\GraphQLSubscriptionGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 use PWWEB\Artomator\Generators\InterfaceGenerator;
 use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
+use PWWEB\Artomator\Generators\Scaffold\ViewGenerator;
 use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Base

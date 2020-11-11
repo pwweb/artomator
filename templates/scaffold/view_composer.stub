@@ -1,0 +1,10 @@
+        View::composer(
+            $selects['$COMPOSER_VIEW_MODEL$'],
+            function ($view) {
+                $$COMPOSER_VIEW_MODEL$Select = $this->$COMPOSER_VIEW_MODEL$Repository
+                    ->all()
+                    ->pluck($COMPOSER_VIEW_COLUMNS$)
+                    ->toArray();
+                $view->with(compact('$COMPOSER_VIEW_MODEL$Select'));
+            }
+        );

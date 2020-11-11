@@ -3,9 +3,9 @@
 namespace PWWEB\Artomator\Commands\Common;
 
 use InfyOm\Generator\Commands\Common\RepositoryGeneratorCommand as Base;
-use InfyOm\Generator\Generators\RepositoryGenerator;
 use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Generators\InterfaceGenerator;
+use PWWEB\Artomator\Generators\RepositoryGenerator;
 
 class RepositoryGeneratorCommand extends Base
 {
