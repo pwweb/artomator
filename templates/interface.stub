@@ -29,7 +29,7 @@ interface $MODEL_NAME$RepositoryInterface extends BaseRepositoryInterface
     /**
      * Configure the Model
      *
-     * @return $MODEL_NAME$ $MODEL_NAME Model
+     * @return $MODEL_NAME$ $MODEL_NAME$ Model
      **/
     public function model();
 }

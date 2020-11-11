@@ -37,7 +37,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         if (File::exists($destination)) {
             return;
         }
-        File::copy($templateData, $destination);
+        file_put_contents($destination, $templateData);
 
         $this->commandData->commandComment($fileName.' published');
         $this->commandData->commandInfo($fileName);
@@ -78,7 +78,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $newViewStatement = fill_template($this->commandData->dynamicVars, $newViewStatement);
 
         $newViewStatement = infy_nl(1).$newViewStatement;
-        preg_match_all('/public function boot(.*)/', $mainViewContent, $matches);
+        preg_match_all('/}(\s)}/', $mainViewContent, $matches);
 
         $totalMatches = count($matches[0]);
         $lastSeederStatement = $matches[0][$totalMatches - 1];
@@ -87,7 +87,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $mainViewContent = substr_replace(
             $mainViewContent,
             $newViewStatement,
-            $replacePosition + strlen($lastSeederStatement) + 6,
+            $replacePosition,
             0
         );
 
@@ -143,9 +143,9 @@ class ViewServiceProviderGenerator extends BaseGenerator
             .ucfirst($model)."\n\t */\n\tprivate \$"
             .lcfirst($model)."Repository;\n\n";
 
-        preg_match_all('/private(.*)/', $mainViewContent, $matches);
+        preg_match_all('/\{/', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
-        $propertyStatement = $matches[0][$totalMatches - 1];
+        $propertyStatement = $matches[0][0];
         $replacePosition = strpos($mainViewContent, $propertyStatement);
         $mainViewContent = substr_replace(
             $mainViewContent,
@@ -159,18 +159,18 @@ class ViewServiceProviderGenerator extends BaseGenerator
 
     public function addBoot($model, $mainViewContent)
     {
-        $newBootStatement = ",\n\t\t"
+        $newBootStatement = "\n\t\t"
             .ucfirst($model).' $'
-            .lcfirst($model)."Repo\n\t";
+            .lcfirst($model).'Repo,';
 
-        preg_match_all('/repo$/', $mainViewContent, $matches);
+        preg_match_all('/boot\(.*?\)/mis', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
         $bootStatement = $matches[0][$totalMatches - 1];
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
             $mainViewContent,
             $newBootStatement,
-            $replacePosition + strlen($bootStatement),
+            $replacePosition + strlen($bootStatement) - 1,
             0
         );
 
@@ -178,8 +178,12 @@ class ViewServiceProviderGenerator extends BaseGenerator
             .lcfirst($model).'Repository = $'
             .lcfirst($model).'Repo;';
 
-        preg_match_all('/repo;$/', $mainViewContent, $matches);
+        preg_match_all('/Repo\;$/', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
+        if ($totalMatches <= 0) {
+            preg_match_all('/boot\(.*?\{/s', $mainViewContent, $matches);
+            $totalMatches = count($matches[0]);
+        }
         $bootStatement = $matches[0][$totalMatches - 1];
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
@@ -189,13 +193,16 @@ class ViewServiceProviderGenerator extends BaseGenerator
             0
         );
 
-        $newBootStatement = "\n\t * @param "
+        $newBootStatement = "\t * @param "
             .ucfirst($model).' $'
             .lcfirst($model).'Repo '
             .ucfirst($model).' repo';
 
-        preg_match_all('/@parm(.*)/', $mainViewContent, $matches);
+
+        preg_match_all('/Bootstrap(.*)services\./mis', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
+        echo $totalMatches."\n";
+        $newBootStatement = "\n\n".$newBootStatement;
         $bootStatement = $matches[0][$totalMatches - 1];
         $replacePosition = strpos($mainViewContent, $bootStatement);
         $mainViewContent = substr_replace(
@@ -215,7 +222,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
         $isNameSpaceExist = strpos($mainViewContent, $newModelStatement);
         $newModelStatement = infy_nl().$newModelStatement.infy_nl_tab().'\''.$view.'\','.infy_nl();
         if (! $isNameSpaceExist) {
-            preg_match_all('/namespace(.*)/', $mainViewContent, $matches);
+            preg_match_all('/selects = \[/', $mainViewContent, $matches);
             $totalMatches = count($matches[0]);
             $nameSpaceStatement = $matches[0][$totalMatches - 1];
             $replacePosition = strpos($mainViewContent, $nameSpaceStatement);
