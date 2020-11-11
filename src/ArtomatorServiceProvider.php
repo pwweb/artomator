@@ -21,7 +21,6 @@ use PWWEB\Artomator\Commands\Publish\GeneratorPublishCommand;
 use PWWEB\Artomator\Commands\Publish\LayoutPublishCommand;
 use PWWEB\Artomator\Commands\Publish\PublishTemplateCommand;
 use PWWEB\Artomator\Commands\Publish\PublishUserCommand;
-use PWWEB\Artomator\Commands\RepositoryGeneratorCommand;
 use PWWEB\Artomator\Commands\RollbackGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\ControllerGeneratorCommand;
 use PWWEB\Artomator\Commands\Scaffold\RequestsGeneratorCommand;
