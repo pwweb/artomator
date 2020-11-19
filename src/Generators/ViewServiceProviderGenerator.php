@@ -198,7 +198,6 @@ class ViewServiceProviderGenerator extends BaseGenerator
             .lcfirst($model).'Repo '
             .ucfirst($model).' repo';
 
-
         preg_match_all('/Bootstrap(.*)services\./mis', $mainViewContent, $matches);
         $totalMatches = count($matches[0]);
         echo $totalMatches."\n";
