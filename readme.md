@@ -1,12 +1,12 @@
 # Artomator
 
+![](https://banners.beyondco.de/Artomator.png?theme=dark&packageName=pwweb%2Fartomator&pattern=morphingDiamonds&style=style_1&description=Custom+commands+to+make+life+easy&md=1&showWatermark=1&fontSize=100px&images=fast-forward)
+
 [![Latest Stable Version](https://poser.pugx.org/pwweb/artomator/v/stable?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![Total Downloads](https://poser.pugx.org/pwweb/artomator/downloads?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![License](https://poser.pugx.org/pwweb/artomator/license?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/pwweb/artomator?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/pwweb/artomator/)
 [![StyleCI Status](https://github.styleci.io/repos/190910947/shield?branch=master)](https://github.styleci.io/repos/190910947)
-
-![](robot.png)
 
 **Artomator**: Custom commands making life easier. Extending the package [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package to include GraphQL and extend the document blocks.
 
