@@ -72,7 +72,7 @@ class GraphQLTypeGenerator extends BaseGenerator
                 if ('foreignId' === $field->fieldType) {
                     continue;
                 }
-                $field_type = ucfirst($field->fieldType);
+                $field_type = $this->sanitiseFieldTypes($field->fieldType);
                 $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
 
                 $schema[] = $field->name.': '.$field_type;
@@ -125,6 +125,92 @@ class GraphQLTypeGenerator extends BaseGenerator
         $template = str_replace('$RELATION_GRAPHQL_NAME$', ucfirst(Str::singular($functionName)), $template);
 
         return $template;
+    }
+
+    private function sanitiseFieldTypes(string $fieldType)
+    {
+        $needle = "/\(.+\)?/";
+        $replace = '';
+        $fieldType = preg_replace($needle, $replace, $fieldType);
+        // There are 5 basic scalar types + 2 lighthouse ones (Date and DateTime);
+        switch ($fieldType) {
+            case 'bigIncrements':
+            case 'bigInteger':
+            case 'binary':
+            case 'increments':
+            case 'integer':
+            case 'mediumIncrements':
+            case 'mediumInteger':
+            case 'smallIncrements':
+            case 'smallInteger':
+            case 'tinyIncrements':
+            case 'tinyInteger':
+            case 'unsignedBigInteger':
+            case 'unsignedInteger':
+            case 'unsignedMediumInteger':
+            case 'unsignedSmallInteger':
+            case 'unsignedTinyInteger':
+            case 'year':
+                return 'Int';
+
+            case 'unsignedDecimal':
+            case 'point':
+            case 'polygon':
+            case 'multiPoint':
+            case 'multiPolygon':
+            case 'float':
+            case 'decimal':
+            case 'double':
+                return 'Float';
+
+            case 'uuid':
+            case 'string':
+            case 'text':
+            case 'rememberToken':
+            case 'mediumText':
+            case 'multiLineString':
+            case 'ipAddress':
+            case 'json':
+            case 'jsonb':
+            case 'lineString':
+            case 'longText':
+            case 'macAddress':
+            case 'char':
+                return 'String';
+
+            case 'boolean':
+                return 'Boolean';
+
+            case 'foreignId':
+                return 'ID';
+
+            case 'time':
+            case 'timeTz':
+            case 'timestamp':
+            case 'timestampTz':
+            case 'timestamps':
+            case 'timestampsTz':
+            case 'softDeletes':
+            case 'softDeletesTz':
+            case 'nullableTimestamps':
+            case 'dateTime':
+            case 'dateTimeTz':
+                return 'DateTime';
+
+            case 'date':
+                return 'Date';
+
+            case 'set':
+            case 'nullableMorphs':
+            case 'nullableUuidMorphs':
+            case 'morphs':
+            case 'uuidMorphs':
+            case 'geometry':
+            case 'geometryCollection':
+            case 'enum':
+            default:
+                return ucfirst($fieldType);
+        }
     }
 
     protected function prepareRelationship($relationship, $relationText = null)
