@@ -260,7 +260,6 @@ class ViewGenerator extends BaseGenerator
                     $sizeText = $validationText;
                 }
 
-
                 if (Str::contains($validation, 'required')) {
                     $required = ',\'required\' => true';
                 }
