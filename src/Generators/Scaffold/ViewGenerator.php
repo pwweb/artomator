@@ -246,6 +246,7 @@ class ViewGenerator extends BaseGenerator
 
             $validations = explode('|', $field->validations);
             $minMaxRules = '';
+            $required = '';
             foreach ($validations as $validation) {
                 if (! Str::contains($validation, ['max:', 'min:'])) {
                     continue;
@@ -259,16 +260,17 @@ class ViewGenerator extends BaseGenerator
                     $sizeText = $validationText;
                 }
 
+
+                if (Str::contains($validation, 'required')) {
+                    $required = ',\'required\' => true';
+                }
+
                 $size = ",'$sizeText' => $sizeInNumber";
                 $minMaxRules .= $size;
             }
 
             $this->commandData->addDynamicVariable('$SIZE$', $minMaxRules);
 
-            $required = '';
-            if (Str::contains($validations, 'required')) {
-                $required = ',\'required\' => true';
-            }
             $this->commandData->addDynamicVariable('$REQUIRED$', $required);
 
             $fieldTemplate = HTMLFieldGenerator::generateHTML($field, $this->templateType, $localized);
