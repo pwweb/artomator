@@ -39,7 +39,7 @@ class ArtomatorServiceProvider extends ServiceProvider
     {
         $configPath = __DIR__.'/../config/artomator.php';
         $configPathInfyom = __DIR__.'/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
-        $schemaPath = __DIR__.'/../../../nuwave/lighthouse/assets/default-schema.graphql';
+        $schemaPath = __DIR__.'/../../../nuwave/lighthouse/src/default-schema.graphql';
         $configPathNuwave = __DIR__.'/../../../nuwave/lighthouse/src/lighthouse.php';
 
         $this->publishes(
