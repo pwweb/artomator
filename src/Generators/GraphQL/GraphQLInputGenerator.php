@@ -61,6 +61,92 @@ class GraphQLInputGenerator extends BaseGenerator
         }
     }
 
+    private function sanitiseFieldTypes(string $fieldType)
+    {
+        $needle = "/\(.+\)?/";
+        $replace = '';
+        $fieldType = preg_replace($needle, $replace, $fieldType);
+        // There are 5 basic scalar types + 2 lighthouse ones (Date and DateTime);
+        switch ($fieldType) {
+            case 'bigIncrements':
+            case 'bigInteger':
+            case 'binary':
+            case 'increments':
+            case 'integer':
+            case 'mediumIncrements':
+            case 'mediumInteger':
+            case 'smallIncrements':
+            case 'smallInteger':
+            case 'tinyIncrements':
+            case 'tinyInteger':
+            case 'unsignedBigInteger':
+            case 'unsignedInteger':
+            case 'unsignedMediumInteger':
+            case 'unsignedSmallInteger':
+            case 'unsignedTinyInteger':
+            case 'year':
+                return 'Int';
+
+            case 'unsignedDecimal':
+            case 'point':
+            case 'polygon':
+            case 'multiPoint':
+            case 'multiPolygon':
+            case 'float':
+            case 'decimal':
+            case 'double':
+                return 'Float';
+
+            case 'uuid':
+            case 'string':
+            case 'text':
+            case 'rememberToken':
+            case 'mediumText':
+            case 'multiLineString':
+            case 'ipAddress':
+            case 'json':
+            case 'jsonb':
+            case 'lineString':
+            case 'longText':
+            case 'macAddress':
+            case 'char':
+                return 'String';
+
+            case 'boolean':
+                return 'Boolean';
+
+            case 'foreignId':
+                return 'ID';
+
+            case 'time':
+            case 'timeTz':
+            case 'timestamp':
+            case 'timestampTz':
+            case 'timestamps':
+            case 'timestampsTz':
+            case 'softDeletes':
+            case 'softDeletesTz':
+            case 'nullableTimestamps':
+            case 'dateTime':
+            case 'dateTimeTz':
+                return 'DateTime';
+
+            case 'date':
+                return 'Date';
+
+            case 'set':
+            case 'nullableMorphs':
+            case 'nullableUuidMorphs':
+            case 'morphs':
+            case 'uuidMorphs':
+            case 'geometry':
+            case 'geometryCollection':
+            case 'enum':
+            default:
+                return ucfirst($fieldType);
+        }
+    }
+
     private function generateSchema()
     {
         $schema = [];
@@ -69,7 +155,7 @@ class GraphQLInputGenerator extends BaseGenerator
                 if ('foreignId' === $field->fieldType) {
                     continue;
                 } else {
-                    $field_type = ucfirst($field->fieldType);
+                    $field_type = $this->sanitiseFieldTypes($field->fieldType);
                 }
 
                 $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
@@ -144,11 +230,13 @@ class GraphQLInputGenerator extends BaseGenerator
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$';
                 $templateFile = '';
+
                 break;
             case '1tm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$HasMany';
                 $templateFile = 'hasMany';
+
                 break;
             case 'mt1':
                 if (false === empty($relationship->relationName)) {
@@ -159,21 +247,25 @@ class GraphQLInputGenerator extends BaseGenerator
                 $functionName = $singularRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsTo';
                 $templateFile = 'belongsTo';
+
                 break;
             case 'mtm':
                 $functionName = $pluralRelation;
                 $template = '$FUNCTION_NAME$: $TYPE$$RELATION_GRAPHQL_NAME$BelongsToMany';
                 $templateFile = 'belongsToMany';
+
                 break;
             case 'hmt':
                 $functionName = $pluralRelation;
                 $template = '';
                 $templateFile = '';
+
                 break;
             default:
                 $functionName = '';
                 $template = '';
                 $templateFile = '';
+
                 break;
         }
         if (false === empty($templateFile)) {

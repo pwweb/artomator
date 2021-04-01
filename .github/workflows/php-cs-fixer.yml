@@ -1,0 +1,28 @@
+name:                               Check & fix styling
+
+on:
+    push:
+        branches:
+            - master
+            - dev
+
+jobs:
+    style:
+        runs-on:                    ubuntu-latest
+
+        steps:
+            -   name:               Checkout code
+                uses:               actions/checkout@v2
+
+            -   name:               Fix style
+                uses:               docker://oskarstark/php-cs-fixer-ga
+                with:
+                    args:           --config=.php_cs.dist --allow-risky=yes
+
+            -   name:               Create Pull Request
+                uses:               peter-evans/create-pull-request@v3
+                with:
+                    commit_message: Fix styling
+                    branch:         auto-styling/patch
+                    title: Changes by check & fix styling workflow
+                    body: Automated changes by Check & Fix Styling - php-cs-fixer

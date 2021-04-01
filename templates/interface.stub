@@ -1,0 +1,35 @@
+<?php
+
+namespace $NAMESPACE_INTERFACE$;
+
+use $NAMESPACE_MODEL$\$MODEL_NAME$;
+use $NAMESPACE_APP$\Interfaces\BaseRepositoryInterface;
+
+/**
+ * $NAMESPACE_REPOSITORY$\$MODEL_NAME$RepositoryInterface $MODEL_NAME$RepositoryInterface
+ *
+ * The repository interface for $MODEL_NAME$.
+ * Class $MODEL_NAME$RepositoryInterface
+ *
+ * @package   $LICENSE_PACKAGE$
+ * @author    $LICENSE_AUTHORS$
+ * @copyright $LICENSE_COPYRIGHT$
+ * @license   $LICENSE$
+ */
+interface $MODEL_NAME$RepositoryInterface extends BaseRepositoryInterface
+{
+
+    /**
+     * Return searchable fields
+     *
+     * @return array
+     */
+    public function getFieldsSearchable();
+
+    /**
+     * Configure the Model
+     *
+     * @return $MODEL_NAME$ $MODEL_NAME$ Model
+     **/
+    public function model();
+}

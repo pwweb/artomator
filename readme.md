@@ -1,12 +1,12 @@
 # Artomator
 
+![](https://banners.beyondco.de/Artomator.png?theme=dark&packageName=pwweb%2Fartomator&pattern=morphingDiamonds&style=style_1&description=Custom+commands+to+make+life+easy&md=1&showWatermark=1&fontSize=100px&images=fast-forward)
+
 [![Latest Stable Version](https://poser.pugx.org/pwweb/artomator/v/stable?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![Total Downloads](https://poser.pugx.org/pwweb/artomator/downloads?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![License](https://poser.pugx.org/pwweb/artomator/license?format=flat-square)](https://packagist.org/packages/pwweb/artomator)
 [![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/pwweb/artomator?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/pwweb/artomator/)
 [![StyleCI Status](https://github.styleci.io/repos/190910947/shield?branch=master)](https://github.styleci.io/repos/190910947)
-
-![](robot.png)
 
 **Artomator**: Custom commands making life easier. Extending the package [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package to include GraphQL and extend the document blocks.
 
@@ -69,6 +69,7 @@ This will generate Auth Controllers and layout files along with authentication b
 By default `infyomlabs\laravel-generator` uses `infyomlabs\adminlte-templates` templates. If you would prefer to use the `coreui` templates, then this is included as an additional package dependency and you can update the `Templates` section of the config file: `config/inyom/laravel-generator.php` as follows:
 
 ```php
+<?php
 return [
     ...
 
@@ -117,6 +118,7 @@ This will:
 2.  add the following routes:
 
 ```php
+<?php
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
@@ -207,7 +209,8 @@ If you want to define custom routes that are persisted and re-generated when new
     {
         "method": "post",
         "endpoint": "/print/{id}",
-        "controller": "Printing",
+        "controller": "App\\Http\\Controllers\\Gran\\Parent\\PrintingController",
+        "as": "PrintingController",
         "function": "printer",
         "name": "customprint"
     }
@@ -218,11 +221,50 @@ If you want to define custom routes that are persisted and re-generated when new
 Ensure this is inline with the `group` property.
 
 The above will result in a route being added as follows:
+
 ```php
-Route::post('/print/{id}', 'PrintingController@printer')->name('customprint');
+<?php
+Route::post(
+    '/print/{id}',
+    [PrintingController::class, 'printer']
+)->name('customprint');
 ```
 
 If you leave the function blank it will remove the `@printer` part from the callback.
+
+### Routes General
+
+Below is an example output for the `web.json` file. You are free to add the `"fallback"` option and change the `"only"` `"controller"` and `"as"` options for a resource controller:
+
+```json
+{
+    "Gran": {
+        "prefix": "gran",
+        "name": "gran",
+        "fallback": "gran.parent.somethings.index",
+        "group": {
+            "Parent": {
+                "prefix": "parent",
+                "name": "parent",
+                "resources": {
+                    "Something": {
+                        "only": "index,create,store",
+                        "controller": "App\\Http\\Controllers\\Gran\\Parent\\SomethingController",
+                        "as": "WeirdnameController"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+-   `"fallback"` - this is the name of the route you want to use as the fallback for the group level. This is appended to the end of the group after all the other resources and groups have been generated.
+-   `"only"` - a comma separated list of the routes you want to limit to.
+-   `"controller"` - this is the full namespace path of the controller for the routes. If you update this, it will be set at the top of the `web.php` file in the `use` calls.
+-   `"as"` - this allows you to override the name used for the controller. It defaults to the name of the controller but this allows you to override it should there be a clash.
+
+**!! WARNING !!** These additional fields are not compatible with prior versions. Please manually update the JSON file with the missing fields.
 
 ## Security
 

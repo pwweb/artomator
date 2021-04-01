@@ -4,6 +4,7 @@ namespace $NAMESPACE_APP$\Repositories;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
+use $NAMESPACE_APP$\Interfaces\BaseRepositoryInterface;
 
 /**
  * $NAMESPACE_APP$\Repositories\BaseRepository BaseRepository
@@ -16,188 +17,249 @@ use Illuminate\Database\Eloquent\Model;
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
-abstract class BaseRepository
-{
-    /**
-     * @var Model
-     */
-    protected $model;
+ abstract class BaseRepository implements BaseRepositoryInterface
+ {
+     /**
+      * The model instance.
+      *
+      * @var Model $model
+      */
+     protected $model;
 
-    /**
-     * @var Application
-     */
-    protected $app;
+     /**
+      * Application instance.
+      *
+      * @var Application $app
+      */
+     protected $app;
 
-    /**
-     * @param Application $app
-     *
-     * @throws \Exception
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-        $this->makeModel();
-    }
+     /**
+      * Order deatils.
+      *
+      * @var array $orderBy
+      */
+     protected $orderBy = [];
 
-    /**
-     * Get searchable fields array
-     *
-     * @return array
-     */
-    abstract public function getFieldsSearchable();
+     /**
+      * Contructor.
+      *
+      * @param Application $app Application instance.
+      *
+      * @throws \Exception
+      */
+     public function __construct(Application $app)
+     {
+         $this->app = $app;
+         $this->makeModel();
+     }
 
-    /**
-     * Configure the Model
-     *
-     * @return string
-     */
-    abstract public function model();
+     /**
+      * Get searchable fields array.
+      *
+      * @return array
+      */
+     abstract public function getFieldsSearchable();
 
-    /**
-     * Make Model instance
-     *
-     * @throws \Exception
-     *
-     * @return Model
-     */
-    public function makeModel()
-    {
-        $model = $this->app->make($this->model());
+     /**
+      * Configure the Model.
+      *
+      * @return String
+      */
+     abstract public function model();
 
-        if (!$model instanceof Model) {
-            throw new \Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
-        }
+     /**
+      * Make Model instance.
+      *
+      * @throws \Exception
+      *
+      * @return Model
+      */
+     public function makeModel()
+     {
+         $model = $this->app->make($this->model());
 
-        return $this->model = $model;
-    }
+         if (false === $model instanceof Model) {
+             throw new \Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+         }
 
-    /**
-     * Paginate records for scaffold.
-     *
-     * @param int $perPage
-     * @param array $columns
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function paginate($perPage, $columns = ['*'])
-    {
-        $query = $this->allQuery();
+         return $this->model = $model;
+     }
 
-        return $query->paginate($perPage, $columns);
-    }
+     /**
+      * Paginate records for scaffold.
+      *
+      * @param int   $perPage       Number of items per page.
+      * @param array $columns       Columns to return.
+      * @param array $relationships Relationships to eager load.
+      *
+      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+      */
+     public function paginate($perPage, $columns = ['*'], $relationships = [])
+     {
+         $query = $this->allQuery([], null, null, $relationships);
 
-    /**
-     * Build a query for retrieving all records.
-     *
-     * @param array $search
-     * @param int|null $skip
-     * @param int|null $limit
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function allQuery($search = [], $skip = null, $limit = null)
-    {
-        $query = $this->model->newQuery();
+         return $query->paginate($perPage, $columns);
+     }
 
-        if (count($search)) {
-            foreach($search as $key => $value) {
-                if (in_array($key, $this->getFieldsSearchable())) {
-                    $query->where($key, $value);
-                }
-            }
-        }
+     /**
+      * Order by for scaffold.
+      *
+      * @param array|string $orderBy Column [, and dir] to order by.
+      *
+      * @return self
+      */
+     public function orderBy($orderBy)
+     {
+         if (false === is_array($orderBy)) {
+             $this->orderBy[$orderBy] = 'asc';
+         } else {
+             foreach ($orderBy as $key => $value) {
+                 if (false === is_array($value)) {
+                     // String...
+                     if (false === in_array(strtolower($value), ['asc', 'desc'])) {
+                         $this->orderBy[$value] = 'asc';
+                     } else {
+                         $this->orderBy[$key] = $value;
+                     }
+                 } else {
+                     // Array...
+                     if (isset($value[0])) {
+                         $this->orderBy[$value[0]] = 'asc';
+                     } else {
+                         $this->orderBy = array_merge($this->orderBy, $value);
+                     }
+                 }
+             }
+         }
 
-        if (!is_null($skip)) {
-            $query->skip($skip);
-        }
+         return $this;
+     }
 
-        if (!is_null($limit)) {
-            $query->limit($limit);
-        }
+     /**
+      * Build a query for retrieving all records.
+      *
+      * @param array    $search        Search parameters
+      * @param int|null $skip          Number of items to skip
+      * @param int|null $limit         Limit of the query results.
+      * @param array    $relationships Relationships to eager load.
+      *
+      * @return \Illuminate\Database\Query\Builder
+      */
+     public function allQuery($search = [], $skip = null, $limit = null, $relationships = [])
+     {
+         $query = $this->model->with($relationships)->newQuery();
 
-        return $query;
-    }
+         if (count($search) > 0) {
+             foreach ($search as $key => $value) {
+                 if (true === in_array($key, $this->getFieldsSearchable())) {
+                     $query->where($key, $value);
+                 }
+             }
+         }
 
-    /**
-     * Retrieve all records with given filter criteria
-     *
-     * @param array $search
-     * @param int|null $skip
-     * @param int|null $limit
-     * @param array $columns
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
-     */
-    public function all($search = [], $skip = null, $limit = null, $columns = ['*'])
-    {
-        $query = $this->allQuery($search, $skip, $limit);
+         if (false === is_null($skip)) {
+             $query->skip($skip);
+         }
 
-        return $query->get($columns);
-    }
+         if (false === is_null($limit)) {
+             $query->limit($limit);
+         }
 
-    /**
-     * Create model record
-     *
-     * @param array $input
-     *
-     * @return Model
-     */
-    public function create($input)
-    {
-        $model = $this->model->newInstance($input);
+         if (false === is_null($this->orderBy)) {
+             foreach ($this->orderBy as $key => $value) {
+                 $query->orderBy($key, $value);
+             }
+         }
 
-        $model->save();
+         return $query;
+     }
 
-        return $model;
-    }
+     /**
+      * Retrieve all records with given filter criteria.
+      *
+      * @param array    $search        Search parameters.
+      * @param int|null $skip          Number of entries to skip.
+      * @param int|null $limit         Number of entries to return.
+      * @param array    $columns       Columns to return.
+      * @param array    $relationships Relationships to eager load.
+      *
+      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+      */
+     public function all($search = [], $skip = null, $limit = null, $columns = ['*'], $relationships = [])
+     {
+         $query = $this->allQuery($search, $skip, $limit, $relationships);
 
-    /**
-     * Find model record for given id
-     *
-     * @param int $id
-     * @param array $columns
-     *
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|null
-     */
-    public function find($id, $columns = ['*'])
-    {
-        $query = $this->model->newQuery();
+         return $query->get($columns);
+     }
 
-        return $query->find($id, $columns);
-    }
+     /**
+      * Create model record.
+      *
+      * @param array $input Input values to save.
+      *
+      * @return Model
+      */
+     public function create($input)
+     {
+         $model = $this->model->newInstance($input);
 
-    /**
-     * Update model record for given id
-     *
-     * @param array $input
-     * @param int $id
-     *
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model
-     */
-    public function update($input, $id)
-    {
-        $query = $this->model->newQuery();
+         $model->save();
 
-        $model = $query->findOrFail($id);
+         return $model;
+     }
 
-        $model->fill($input);
+     /**
+      * Find model record for given id.
+      *
+      * @param int   $id            ID of the record.
+      * @param array $columns       Columns to return.
+      * @param array $relationships Relationships to eager load.
+      *
+      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|null
+      */
+     public function find($id, $columns = ['*'], $relationships = [])
+     {
+         $query = $this->model->with($relationships)->newQuery();
 
-        $model->save();
+         return $query->find($id, $columns);
+     }
 
-        return $model;
-    }
+     /**
+      * Update model record for given id.
+      *
+      * @param array $input Input values to save.
+      * @param int   $id    ID for the record to update.
+      *
+      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model
+      */
+     public function update($input, $id)
+     {
+         $query = $this->model->newQuery();
 
-    /**
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return bool|mixed|null
-     */
-    public function delete($id)
-    {
-        $query = $this->model->newQuery();
+         $model = $query->findOrFail($id);
 
-        $model = $query->findOrFail($id);
+         $model->fill($input);
 
-        return $model->delete();
-    }
-}
+         $model->save();
+
+         return $model;
+     }
+
+     /**
+      * Delete model record for a given id.
+      *
+      * @param int $id ID for the record to delete.
+      *
+      * @throws \Exception
+      *
+      * @return bool|mixed|null
+      */
+     public function delete($id)
+     {
+         $query = $this->model->newQuery();
+
+         $model = $query->findOrFail($id);
+
+         return $model->delete();
+     }
+ }
