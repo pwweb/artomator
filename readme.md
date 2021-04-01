@@ -130,6 +130,16 @@ As this is an extension to the [`InfyOmLabs/laravel-generator`](https://github.c
 
 ## Usage
 
+### VueJS Support
+
+Running the `*scaffold` based commands (see [commands](#commands)) you can use the following additional flag to generate the views using the VueJS templates instead.
+
+```bash
+$php artisan artomator.scaffold [...] --vue=true
+```
+
+This will follow the same additional switches as the `viewsGenerator` i.e. `--skip=views` will skip the generation of the VueJS views too.
+
 ### Commands
 
 As this is an extension of the [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package the documentation for the base package can be found [here](https://labs.infyom.com/laravelgenerator/docs/6.0/introduction).
@@ -238,31 +248,31 @@ Below is an example output for the `web.json` file. You are free to add the `"fa
 
 ```json
 {
-    "Gran": {
-        "prefix": "gran",
-        "name": "gran",
-        "fallback": "gran.parent.somethings.index",
-        "group": {
-            "Parent": {
-                "prefix": "parent",
-                "name": "parent",
-                "resources": {
-                    "Something": {
-                        "only": "index,create,store",
-                        "controller": "App\\Http\\Controllers\\Gran\\Parent\\SomethingController",
-                        "as": "WeirdnameController"
-                    }
-                }
-            }
+  "Gran": {
+    "prefix": "gran",
+    "name": "gran",
+    "fallback": "gran.parent.somethings.index",
+    "group": {
+      "Parent": {
+        "prefix": "parent",
+        "name": "parent",
+        "resources": {
+          "Something": {
+            "only": "index,create,store",
+            "controller": "App\\Http\\Controllers\\Gran\\Parent\\SomethingController",
+            "as": "WeirdnameController"
+          }
         }
+      }
     }
+  }
 }
 ```
 
--   `"fallback"` - this is the name of the route you want to use as the fallback for the group level. This is appended to the end of the group after all the other resources and groups have been generated.
--   `"only"` - a comma separated list of the routes you want to limit to.
--   `"controller"` - this is the full namespace path of the controller for the routes. If you update this, it will be set at the top of the `web.php` file in the `use` calls.
--   `"as"` - this allows you to override the name used for the controller. It defaults to the name of the controller but this allows you to override it should there be a clash.
+- `"fallback"` - this is the name of the route you want to use as the fallback for the group level. This is appended to the end of the group after all the other resources and groups have been generated.
+- `"only"` - a comma separated list of the routes you want to limit to.
+- `"controller"` - this is the full namespace path of the controller for the routes. If you update this, it will be set at the top of the `web.php` file in the `use` calls.
+- `"as"` - this allows you to override the name used for the controller. It defaults to the name of the controller but this allows you to override it should there be a clash.
 
 **!! WARNING !!** These additional fields are not compatible with prior versions. Please manually update the JSON file with the missing fields.
 
@@ -272,16 +282,15 @@ If you discover any security related issues, please email security@pw-websolutio
 
 ## Credits
 
--   [Richard Browne](https://github.com/orgs/pwweb/people/rabrowne85)
--   [Frank Pillukeit](https://github.com/orgs/pwweb/people/frankpde)
--   [PWWEB][link-author]
--   [All Contributors][link-contributors]
--   [InfyOmLabs](https://github.com/InfyOmLabs)
+- [Richard Browne](https://github.com/orgs/pwweb/people/rabrowne85)
+- [Frank Pillukeit](https://github.com/orgs/pwweb/people/frankpde)
+- [PWWEB][link-author]
+- [All Contributors][link-contributors]
+- [InfyOmLabs](https://github.com/InfyOmLabs)
 
 ## License
 
 Copyright © pw-websolutions.com. Please see the [license file](license.md) for more information.
 
 [link-author]: https://github.com/pwweb
-
 [link-contributors]: https://github.com/pwweb/artomator/graphs/contributors

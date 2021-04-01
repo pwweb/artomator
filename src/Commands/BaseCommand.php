@@ -2,10 +2,12 @@
 
 namespace PWWEB\Artomator\Commands;
 
+use Illuminate\Support\Str;
 use InfyOm\Generator\Commands\BaseCommand as Base;
 use InfyOm\Generator\Generators\Scaffold\ControllerGenerator;
 use InfyOm\Generator\Generators\Scaffold\MenuGenerator;
 use InfyOm\Generator\Generators\Scaffold\RequestGenerator;
+use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLInputGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLMutationGenerator;
 use PWWEB\Artomator\Generators\GraphQL\GraphQLQueryGenerator;
@@ -14,6 +16,7 @@ use PWWEB\Artomator\Generators\GraphQL\GraphQLTypeGenerator;
 use PWWEB\Artomator\Generators\InterfaceGenerator;
 use PWWEB\Artomator\Generators\Scaffold\RoutesGenerator;
 use PWWEB\Artomator\Generators\Scaffold\ViewGenerator;
+use PWWEB\Artomator\Generators\Scaffold\VueGenerator;
 use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Base
@@ -22,6 +25,7 @@ class BaseCommand extends Base
     {
         parent::handle();
         $this->commandData->config->prepareGraphQLNames($this->option('gqlName'));
+        $this->commandData->config->prepareVueNames($this->option('vue'));
         $this->commandData = $this->commandData->config->loadDynamicGraphQLVariables($this->commandData);
     }
 
@@ -75,9 +79,14 @@ class BaseCommand extends Base
             $controllerGenerator->generate();
         }
 
-        if (false === $this->isSkip('views')) {
+        if (false === $this->isSkip('views') and false === $this->commandData->getOption('vue')) {
             $viewGenerator = new ViewGenerator($this->commandData);
             $viewGenerator->generate();
+        }
+
+        if (false === $this->isSkip('views') and true === $this->commandData->getOption('vue')) {
+            $vueGenerator = new VueGenerator($this->commandData);
+            $vueGenerator->generate();
         }
 
         if (false === $this->isSkip('routes') and false === $this->isSkip('scaffold_routes')) {
@@ -98,9 +107,14 @@ class BaseCommand extends Base
      */
     public function getOptions()
     {
-        return array_merge(parent::getOptions(), [
-            ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
-        ]);
+        return array_merge(
+            parent::getOptions(),
+            [
+                ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
+                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views' ]
+            ]
+        );
+    }
 
     /**
      * Perform the Post Generator Actions
