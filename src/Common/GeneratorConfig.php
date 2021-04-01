@@ -39,7 +39,14 @@ class GeneratorConfig extends Config
             $prefix .= '/';
         }
 
+        $this->pathFactory = $this->pathFactory.$prefix;
+
         $this->pathGraphQL = config('lighthouse.schema.register', base_path('graphql/schema.graphql'));
+
+
+        $this->pathLocales = config('infyom.laravel_generator.path.models_locale_files', base_path('resources/lang/en/models/')).$prefix;
+
+        $this->pathSchemas = config('infyom.laravel_generator.path.schema_files', resource_path('model_schemas/')).$prefix;
 
         $this->pathInterface = config(
             'pwweb.artomator.path.interface',

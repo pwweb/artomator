@@ -101,5 +101,112 @@ class BaseCommand extends Base
         return array_merge(parent::getOptions(), [
             ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
         ]);
+
+    /**
+     * Perform the Post Generator Actions
+     *
+     * @param  boolean $runMigration Boolean flag to run migrations.
+     * @return void
+     */
+    public function performPostActions($runMigration = false)
+    {
+        if ($this->commandData->getOption('save')) {
+            $this->saveSchemaFile();
+        }
+
+        if ($runMigration) {
+            if ($this->commandData->getOption('forceMigrate')) {
+                $this->runMigration();
+            } elseif (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
+                $requestFromConsole = (php_sapi_name() == 'cli') ? true : false;
+                if ($this->commandData->getOption('jsonFromGUI') && $requestFromConsole) {
+                    $this->runMigration();
+                } elseif ($requestFromConsole && $this->confirm("\nDo you want to migrate database? [y|N]", false)) {
+                    $this->runMigration();
+                }
+            }
+        }
+
+        if ($this->commandData->getOption('localized')) {
+            $this->saveLocaleFile();
+        }
+
+        if (!$this->isSkip('dump-autoload')) {
+            $this->info('Generating autoload files');
+            $this->composer->dumpOptimized();
+        }
+    }
+
+    /**
+     * Save the Schema File.
+     *
+     * @return void
+     */
+    private function saveSchemaFile()
+    {
+        $fileFields = [];
+
+        foreach ($this->commandData->fields as $field) {
+            $fileFields[] = [
+                'name'        => $field->name,
+                'dbType'      => $field->dbInput,
+                'htmlType'    => $field->htmlInput,
+                'validations' => $field->validations,
+                'searchable'  => $field->isSearchable,
+                'fillable'    => $field->isFillable,
+                'primary'     => $field->isPrimary,
+                'inForm'      => $field->inForm,
+                'inIndex'     => $field->inIndex,
+                'inView'      => $field->inView,
+            ];
+        }
+
+        foreach ($this->commandData->relations as $relation) {
+            $fileFields[] = [
+                'type'     => 'relation',
+                'relation' => $relation->type.','.implode(',', $relation->inputs),
+            ];
+        }
+
+        $path = $this->commandData->config->pathSchemas;
+
+        $fileName = $this->commandData->modelName.'.json';
+
+        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+            return;
+        }
+        FileUtil::createFile($path, $fileName, json_encode($fileFields, JSON_PRETTY_PRINT));
+        $this->commandData->commandComment("\nSchema File saved: ");
+        $this->commandData->commandInfo($fileName);
+    }
+
+    /**
+     * Save the Locale File.
+     *
+     * @return void
+     */
+    private function saveLocaleFile()
+    {
+        $locales = [
+            'singular' => $this->commandData->modelName,
+            'plural'   => $this->commandData->config->mPlural,
+            'fields'   => [],
+        ];
+
+        foreach ($this->commandData->fields as $field) {
+            $locales['fields'][$field->name] = Str::title(str_replace('_', ' ', $field->name));
+        }
+
+        $path = $this->commandData->config->pathLocales;
+
+        $fileName = $this->commandData->config->mCamelPlural.'.php';
+
+        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+            return;
+        }
+        $content = "<?php\n\nreturn ".var_export($locales, true).';'.\PHP_EOL;
+        FileUtil::createFile($path, $fileName, $content);
+        $this->commandData->commandComment("\nModel Locale File saved: ");
+        $this->commandData->commandInfo($fileName);
     }
 }
