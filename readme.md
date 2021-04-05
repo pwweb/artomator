@@ -26,7 +26,7 @@ $ php artisan vendor:publish --tag=artomator
 
 This will publish the config files for the necesary packages and the `graphql.schema` file needed to run the GraphQL server.
 
-Add the following aliases to the aliases array in `config/app/php`:
+Add the following aliases to the aliases array in `config/app.php`:
 
 ```php
 'Form'  => Collective\Html\FormFacade::class,
