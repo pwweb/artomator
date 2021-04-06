@@ -8,30 +8,46 @@ use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Utils\VueFieldGenerator;
 use PWWEB\Artomator\Common\CommandData;
+use PWWEB\Artomator\Generators\ViewServiceProviderGenerator;
 use PWWEB\Artomator\Generators\VueServiceProviderGenerator;
 
 class VueGenerator extends BaseGenerator
 {
     /**
+     * Command data.
+     *
      * @var CommandData
      */
     private $commandData;
 
     /**
+     * Path.
+     *
      * @var string
      */
     private $path;
 
     /**
+     * Template type.
+     *
      * @var string
      */
     private $templateType;
 
     /**
+     * Html Fields.
+     *
      * @var array
      */
     private $htmlFields;
 
+    /**
+     * Construct function.
+     *
+     * @param CommandData $commandData Command Data.
+     *
+     * @return void
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -39,23 +55,28 @@ class VueGenerator extends BaseGenerator
         $this->templateType = config('infyom.laravel_generator.templates', 'adminlte-templates');
     }
 
+    /**
+     * Generate Function.
+     *
+     * @return void
+     */
     public function generate()
     {
-        if (! file_exists($this->path)) {
+        if (false === file_exists($this->path)) {
             mkdir($this->path, 0755, true);
         }
 
         $htmlInputs = Arr::pluck($this->commandData->fields, 'htmlInput');
-        if (in_array('file', $htmlInputs)) {
+        if (true === in_array('file', $htmlInputs)) {
             $this->commandData->addDynamicVariable('$FILES$', ", 'files' => true");
         }
 
         $this->commandData->commandComment("\nGenerating Vues...");
 
-        if ($this->commandData->getOption('views')) {
+        if (true === $this->commandData->getOption('views')) {
             $vuesToBeGenerated = explode(',', $this->commandData->getOption('views'));
 
-            if (in_array('index', $vuesToBeGenerated)) {
+            if (true === in_array('index', $vuesToBeGenerated)) {
                 $this->generateTable();
                 $this->generateIndex();
             }
@@ -64,15 +85,15 @@ class VueGenerator extends BaseGenerator
                 $this->generateFields();
             }
 
-            if (in_array('create', $vuesToBeGenerated)) {
+            if (true === in_array('create', $vuesToBeGenerated)) {
                 $this->generateCreate();
             }
 
-            if (in_array('edit', $vuesToBeGenerated)) {
+            if (true === in_array('edit', $vuesToBeGenerated)) {
                 $this->generateUpdate();
             }
 
-            if (in_array('show', $vuesToBeGenerated)) {
+            if (true === in_array('show', $vuesToBeGenerated)) {
                 $this->generateShowFields();
                 $this->generateShow();
             }
@@ -89,9 +110,14 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandComment('Vues created: ');
     }
 
+    /**
+     * Generate Table.
+     *
+     * @return void
+     */
     private function generateTable()
     {
-        if ($this->commandData->getAddOn('datatables')) {
+        if (true === $this->commandData->getAddOn('datatables')) {
             $templateData = $this->generateDataTableBody();
             $this->generateDataTableActions();
         } else {
@@ -103,6 +129,11 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('table.vue created');
     }
 
+    /**
+     * Generate Data Table Body.
+     *
+     * @return void
+     */
     private function generateDataTableBody()
     {
         $templateData = get_artomator_template('scaffold.vues.datatable_body');
@@ -110,11 +141,16 @@ class VueGenerator extends BaseGenerator
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
 
+    /**
+     * Generate Data Table Actions.
+     *
+     * @return void
+     */
     private function generateDataTableActions()
     {
         $templateName = 'datatables_actions';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -127,11 +163,16 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('datatables_actions.vue created');
     }
 
+    /**
+     * Generate Blade Table Body.
+     *
+     * @return void
+     */
     private function generateBladeTableBody()
     {
         $templateName = 'blade_table_body';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -146,7 +187,7 @@ class VueGenerator extends BaseGenerator
         $tableBodyFields = [];
 
         foreach ($this->commandData->fields as $field) {
-            if (! $field->inIndex) {
+            if (false === $field->inIndex) {
                 continue;
             }
 
@@ -163,12 +204,17 @@ class VueGenerator extends BaseGenerator
         return str_replace('$FIELD_BODY$', $tableBodyFields, $templateData);
     }
 
+    /**
+     * Generate Table Header Fields.
+     *
+     * @return void
+     */
     private function generateTableHeaderFields()
     {
         $templateName = 'table_header';
 
         $localized = false;
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
             $localized = true;
         }
@@ -178,11 +224,11 @@ class VueGenerator extends BaseGenerator
         $headerFields = [];
 
         foreach ($this->commandData->fields as $field) {
-            if (! $field->inIndex) {
+            if (false === $field->inIndex) {
                 continue;
             }
 
-            if ($localized) {
+            if (true === $localized) {
                 $headerFields[] = $fieldTemplate = fill_template_with_field_data_locale(
                     $this->commandData->dynamicVars,
                     $this->commandData->fieldNamesMapping,
@@ -202,11 +248,16 @@ class VueGenerator extends BaseGenerator
         return implode(infy_nl_tab(1, 2), $headerFields);
     }
 
+    /**
+     * Generate Index.
+     *
+     * @return void
+     */
     private function generateIndex()
     {
         $templateName = 'index';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -214,12 +265,12 @@ class VueGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        if ($this->commandData->getAddOn('datatables')) {
+        if (true === $this->commandData->getAddOn('datatables')) {
             $templateData = str_replace('$PAGINATE$', '', $templateData);
         } else {
             $paginate = $this->commandData->getOption('paginate');
 
-            if ($paginate) {
+            if (true === $paginate) {
                 $paginateTemplate = get_artomator_template('scaffold.vues.paginate');
 
                 $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
@@ -235,12 +286,17 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('index.vue created');
     }
 
+    /**
+     * Generate Fields.
+     *
+     * @return void
+     */
     private function generateFields()
     {
         $templateName = 'fields';
 
         $localized = false;
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
             $localized = true;
         }
@@ -248,7 +304,7 @@ class VueGenerator extends BaseGenerator
         $this->htmlFields = [];
 
         foreach ($this->commandData->fields as $field) {
-            if (! $field->inForm) {
+            if (false === $field->inForm) {
                 continue;
             }
 
@@ -256,23 +312,23 @@ class VueGenerator extends BaseGenerator
             $minMaxRules = '';
             $required = '';
             foreach ($validations as $validation) {
-                if (! Str::contains($validation, ['max:', 'min:'])) {
+                if (false === Str::contains($validation, ['max:', 'min:'])) {
                     continue;
                 }
 
                 $validationText = substr($validation, 0, 3);
                 $sizeInNumber = substr($validation, 4);
 
-                $sizeText = ('min' == $validationText) ? 'minlength' : 'maxlength';
-                if ('number' == $field->htmlType) {
+                $sizeText = ('min' === $validationText) ? 'minlength' : 'maxlength';
+                if ('number' === $field->htmlType) {
                     $sizeText = $validationText;
                 }
 
-                if (Str::contains($validation, 'required')) {
-                    $required = ',\'required\' => true';
+                if (true === Str::contains($validation, 'required')) {
+                    $required = ' required';
                 }
 
-                $size = ",'$sizeText' => $sizeInNumber";
+                $size = " $sizeText=\"$sizeInNumber\"";
                 $minMaxRules .= $size;
             }
 
@@ -282,33 +338,36 @@ class VueGenerator extends BaseGenerator
 
             $fieldTemplate = VueFieldGenerator::generateHTML($field, $this->templateType, $localized);
 
-            if ('selectTable' == $field->htmlType) {
+            if ('selectTable' === $field->htmlType) {
                 $inputArr = explode(',', $field->htmlValues[1]);
                 $columns = '';
                 foreach ($inputArr as $item) {
-                    $columns .= "'$item'".',';  //e.g 'email,id,'
+                    $columns .= "'$item'".',';
+                    //e.g 'email,id,'
                 }
-                $columns = substr_replace($columns, '', -1); // remove last ,
+                $columns = substr_replace($columns, '', -1);
+                // remove last ,
 
                 $htmlValues = explode(',', $field->htmlValues[0]);
                 $selectTable = $htmlValues[0];
                 $modalName = null;
-                if (2 == count($htmlValues)) {
+                if (2 === count($htmlValues)) {
                     $modalName = $htmlValues[1];
                 }
 
                 $tableName = $this->commandData->config->tableName;
                 $vuePath = $this->commandData->config->prefixes['vue'];
-                if (! empty($vuePath)) {
+                if (false === empty($vuePath)) {
                     $tableName = $vuePath.'.'.$tableName;
                 }
 
-                $variableName = Str::singular($selectTable).'Items'; // e.g $userItems
+                $variableName = Str::singular($selectTable).'Items';
+                // e.g $userItems
 
                 $fieldTemplate = $this->generateVueComposer($tableName, $variableName, $columns, $selectTable, $modalName);
             }
 
-            if (! empty($fieldTemplate)) {
+            if (false === empty($fieldTemplate)) {
                 $fieldTemplate = fill_template_with_field_data(
                     $this->commandData->dynamicVars,
                     $this->commandData->fieldNamesMapping,
@@ -328,32 +387,49 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('field.vue created');
     }
 
+    /**
+     * Generate Vue Composer
+     *
+     * @param string      $tableName    Table Name.
+     * @param string      $variableName Variable Name.
+     * @param array       $columns      Columns.
+     * @param string      $selectTable  Select Table.
+     * @param string|null $modelName    Model Name.
+     *
+     * @return void
+     */
     private function generateVueComposer($tableName, $variableName, $columns, $selectTable, $modelName = null)
     {
         $templateName = 'scaffold.fields.select';
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
         $fieldTemplate = get_artomator_template($templateName);
 
-        $vueServiceProvider = new VueServiceProviderGenerator($this->commandData);
-        $vueServiceProvider->generate();
-        $vueServiceProvider->addViewVariables($tableName.'.fields', $variableName, $columns, $selectTable, $modelName);
+        //TODO: Confirm if this is required still.
+        // $vueServiceProvider = new ViewServiceProviderGenerator($this->commandData);
+        // $vueServiceProvider->generate();
+        // $vueServiceProvider->addViewVariables($tableName.'.fields', $variableName, $columns, $selectTable, $modelName);
 
         $fieldTemplate = str_replace(
             '$INPUT_ARR$',
-            '$'.$variableName,
+            $variableName,
             $fieldTemplate
         );
 
         return $fieldTemplate;
     }
 
+    /**
+     * Generate Create.
+     *
+     * @return void
+     */
     private function generateCreate()
     {
         $templateName = 'create';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -365,11 +441,16 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('create.vue created');
     }
 
+    /**
+     * Generate Update.
+     *
+     * @return void
+     */
     private function generateUpdate()
     {
         $templateName = 'edit';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -381,10 +462,15 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('edit.vue created');
     }
 
+    /**
+     * Generate Show Fields.
+     *
+     * @return void
+     */
     private function generateShowFields()
     {
         $templateName = 'show_field';
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
         $fieldTemplate = get_artomator_template('scaffold.vues.'.$templateName);
@@ -392,7 +478,7 @@ class VueGenerator extends BaseGenerator
         $fieldsStr = '';
 
         foreach ($this->commandData->fields as $field) {
-            if (! $field->inVue) {
+            if (false === $field->inVue) {
                 continue;
             }
             $singleFieldStr = str_replace(
@@ -410,11 +496,16 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('show_fields.vue created');
     }
 
+    /**
+     * Generate Show.
+     *
+     * @return void
+     */
     private function generateShow()
     {
         $templateName = 'show';
 
-        if ($this->commandData->isLocalizedTemplates()) {
+        if (true === $this->commandData->isLocalizedTemplates()) {
             $templateName .= '_locale';
         }
 
@@ -426,6 +517,13 @@ class VueGenerator extends BaseGenerator
         $this->commandData->commandInfo('show.vue created');
     }
 
+    /**
+     * Rollback Function.
+     *
+     * @param array $vues Vue views to rollback.
+     *
+     * @return void
+     */
     public function rollback($vues = [])
     {
         $files = [
@@ -438,19 +536,19 @@ class VueGenerator extends BaseGenerator
             'show_fields.vue',
         ];
 
-        if (! empty($vues)) {
+        if (false === empty($vues)) {
             $files = [];
             foreach ($vues as $vue) {
                 $files[] = $vue.'.vue';
             }
         }
 
-        if ($this->commandData->getAddOn('datatables')) {
+        if (true === $this->commandData->getAddOn('datatables')) {
             $files[] = 'datatables_actions.vue';
         }
 
         foreach ($files as $file) {
-            if ($this->rollbackFile($this->path, $file)) {
+            if (true === $this->rollbackFile($this->path, $file)) {
                 $this->commandData->commandComment($file.' file deleted');
             }
         }

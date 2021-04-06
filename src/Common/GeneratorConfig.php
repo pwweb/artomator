@@ -8,27 +8,104 @@ use InfyOm\Generator\Common\GeneratorConfig as Config;
 
 class GeneratorConfig extends Config
 {
-    /* Path variables */
+    /**
+     * Path GraphQL.
+     *
+     * @var string
+     */
     public $pathGraphQL;
+    /**
+     * Path Interface.
+     *
+     * @var string
+     */
     public $pathInterface;
 
-    /* Model Names */
+    /**
+     * GraphQL Name.
+     *
+     * @var string
+     */
     public $gName;
+    /**
+     * GraphQL Plural.
+     *
+     * @var string
+     */
     public $gPlural;
+    /**
+     * GraphQL Camel.
+     *
+     * @var string
+     */
     public $gCamel;
+    /**
+     * GraphQL Camel Plural.
+     *
+     * @var string
+     */
     public $gCamelPlural;
+    /**
+     * GraphQL Snake.
+     *
+     * @var string
+     */
     public $gSnake;
+    /**
+     * GraphQL Snake Plural.
+     *
+     * @var string
+     */
     public $gSnakePlural;
+    /**
+     * GraphQL Dashed.
+     *
+     * @var string
+     */
     public $gDashed;
+    /**
+     * GraphQL Dashed Plural
+     *
+     * @var string
+     */
     public $gDashedPlural;
+    /**
+     * GraphQL Slash.
+     *
+     * @var string
+     */
     public $gSlash;
+    /**
+     * GraphQL Slash Plural.
+     *
+     * @var string
+     */
     public $gSlashPlural;
+    /**
+     * GraphQL Human.
+     *
+     * @var string
+     */
     public $gHuman;
+    /**
+     * GraphQL Human Plural.
+     *
+     * @var string
+     */
     public $gHumanPlural;
 
-    /* Namespace variables */
+    /**
+     * GraphQL Namespace Interface.
+     *
+     * @var string
+     */
     public $nsInterface;
 
+    /**
+     * Load Paths.
+     *
+     * @return void
+     */
     public function loadPaths()
     {
         parent::loadPaths();
@@ -55,6 +132,13 @@ class GeneratorConfig extends Config
         ).$prefix;
     }
 
+    /**
+     * Load Dynamic Variables.
+     *
+     * @param Data $commandData Command Data.\
+     *
+     * @return Data
+     */
     public function loadDynamicVariables(Data &$commandData)
     {
         parent::loadDynamicVariables($commandData);
@@ -66,7 +150,7 @@ class GeneratorConfig extends Config
 
         $prefix = $this->prefixes['ns'];
 
-        if (! empty($prefix)) {
+        if (false === empty($prefix)) {
             $prefix = '\\'.$prefix;
         }
         $this->nsInterface = config('pwweb.artomator.namespace.interface', 'App\Interfaces').$prefix;
@@ -75,9 +159,16 @@ class GeneratorConfig extends Config
         return $commandData;
     }
 
+    /**
+     * Prepare GraphQL Names.
+     *
+     * @param string|null $name Name.
+     *
+     * @return void
+     */
     public function prepareGraphQLNames($name = null)
     {
-        if (is_null($name)) {
+        if (true === is_null($name)) {
             $name = $this->mName;
         }
         $this->gName = $name;
@@ -94,6 +185,13 @@ class GeneratorConfig extends Config
         $this->gHumanPlural = Str::title(str_replace('_', ' ', Str::snake($this->gSnakePlural)));
     }
 
+    /**
+     * Load Dynamic GraphQL Variables.
+     *
+     * @param Data $commandData Command Data.
+     *
+     * @return Data
+     */
     public function loadDynamicGraphQLVariables(Data &$commandData)
     {
         $commandData->addDynamicVariable('$GRAPHQL_NAME$', $this->gName);

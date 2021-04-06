@@ -8,15 +8,32 @@ use PWWEB\Artomator\Common\CommandData;
 
 class InterfaceGenerator extends BaseGenerator
 {
-    /** @var CommandData */
+    /**
+     * Command Data.
+     *
+     * @var CommandData
+     */
     private $commandData;
 
-    /** @var string */
+    /**
+     * Path.
+     *
+     * @var string
+     */
     private $path;
 
-    /** @var string */
+    /**
+     * Filename.
+     *
+     * @var string
+     */
     private $fileName;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command Data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -24,6 +41,11 @@ class InterfaceGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName.'RepositoryInterface.php';
     }
 
+    /**
+     * Generate.
+     *
+     * @return void
+     */
     public function generate()
     {
         $templateData = get_artomator_template('interface');
@@ -33,7 +55,7 @@ class InterfaceGenerator extends BaseGenerator
         $searchables = [];
 
         foreach ($this->commandData->fields as $field) {
-            if ($field->isSearchable) {
+            if (true === $field->isSearchable) {
                 $searchables[] = "'".$field->name."'";
             }
         }
@@ -46,9 +68,14 @@ class InterfaceGenerator extends BaseGenerator
         $this->commandData->commandInfo($this->fileName);
     }
 
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->fileName)) {
+        if (true === $this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Repository Interface file deleted: '.$this->fileName);
         }
     }

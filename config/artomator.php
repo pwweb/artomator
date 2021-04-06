@@ -39,7 +39,8 @@ return [
 
     'options' => [
 
-        'subscription' => false, // Enable GraphQL Subscriptions; Requires Pusher.
+        'subscription' => false,
+    // Enable GraphQL Subscriptions; Requires Pusher.
 
     ],
 

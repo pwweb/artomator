@@ -8,15 +8,32 @@ use InfyOm\Generator\Utils\FileUtil;
 
 class RepositoryGenerator extends BaseGenerator
 {
-    /** @var CommandData */
+    /**
+     * Command Data.
+     *
+     * @var CommandData
+     */
     private $commandData;
 
-    /** @var string */
+    /**
+     * Path.
+     *
+     * @var string
+     */
     private $path;
 
-    /** @var string */
+    /**
+     * Filename.
+     *
+     * @var string
+     */
     private $fileName;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -24,6 +41,11 @@ class RepositoryGenerator extends BaseGenerator
         $this->fileName = $this->commandData->modelName.'Repository.php';
     }
 
+    /**
+     * Generate.
+     *
+     * @return void
+     */
     public function generate()
     {
         $templateData = get_artomator_template('repository');
@@ -33,7 +55,7 @@ class RepositoryGenerator extends BaseGenerator
         $searchables = [];
 
         foreach ($this->commandData->fields as $field) {
-            if ($field->isSearchable) {
+            if (true === $field->isSearchable) {
                 $searchables[] = "'".$field->name."'";
             }
         }
@@ -51,10 +73,14 @@ class RepositoryGenerator extends BaseGenerator
         $this->commandData->commandComment("\nRepository created: ");
         $this->commandData->commandInfo($this->fileName);
     }
-
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->fileName)) {
+        if (true === $this->rollbackFile($this->path, $this->fileName)) {
             $this->commandData->commandComment('Repository file deleted: '.$this->fileName);
         }
     }

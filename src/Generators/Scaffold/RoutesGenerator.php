@@ -149,7 +149,8 @@ class RoutesGenerator
         if (1 !== preg_match(
             '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
             $this->routeContents
-        )) {
+        )
+        ) {
             $this->routeContents = preg_replace(
                 '/(<\?php)/sU',
                 "<?php\n\n// Artomator Class References Start\n// Artomator Class References Stop",
@@ -199,7 +200,8 @@ class RoutesGenerator
         if (1 !== preg_match(
             '/\/\/ Artomator Class References Start(.*)\/\/ Artomator Class References Stop/sU',
             $this->routeContents
-        )) {
+        )
+        ) {
             $this->routeContents = preg_replace(
                 '/(<\?php)/sU',
                 "<?php\n\n// Artomator Class References Start\n// Artomator Class References Stop",
@@ -265,8 +267,8 @@ class RoutesGenerator
                     $templateString = fill_template($vars, $templateString);
                 }
             }
-            if (isset($route['resources'])) {
-                $tabs = (isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
+            if (true === isset($route['resources'])) {
+                $tabs = (true === isset($route['prefix'])) ? (($indent * 3) + 3) : 0;
                 foreach ($route['resources'] as $resource_key => $resource) {
                     if (true === isset($resource['only']) && '*' !== $resource['only']) {
                         $only = '->only([\''.implode('\', \'', explode(',', $resource['only'])).'\'])';

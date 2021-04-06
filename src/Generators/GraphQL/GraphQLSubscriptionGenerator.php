@@ -9,25 +9,38 @@ use PWWEB\Artomator\Common\CommandData;
 class GraphQLSubscriptionGenerator extends BaseGenerator
 {
     /**
+     * Command Data.
+     *
      * @var CommandData
      */
     private $commandData;
 
     /**
+     * Filename.
+     *
      * @var string
      */
     private $fileName;
 
     /**
+     * File Contents.
+     *
      * @var string
      */
     private $fileContents;
 
     /**
+     * Template Data.
+     *
      * @var string
      */
     private $templateData;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command Data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -37,6 +50,11 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
     }
 
+    /**
+     * Generate.
+     *
+     * @return void
+     */
     public function generate()
     {
         if (true === Str::contains($this->fileContents, $this->templateData)) {
@@ -52,9 +70,14 @@ class GraphQLSubscriptionGenerator extends BaseGenerator
         $this->commandData->commandComment("\nGraphQL Subscription created");
     }
 
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if (Str::contains($this->fileContents, $this->templateData)) {
+        if (true === Str::contains($this->fileContents, $this->templateData)) {
             file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
             $this->commandData->commandComment('GraphQL Subscription deleted');
         }

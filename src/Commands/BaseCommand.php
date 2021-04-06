@@ -21,6 +21,11 @@ use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Base
 {
+    /**
+     * Handle.
+     *
+     * @return void
+     */
     public function handle()
     {
         parent::handle();
@@ -29,16 +34,26 @@ class BaseCommand extends Base
         $this->commandData = $this->commandData->config->loadDynamicGraphQLVariables($this->commandData);
     }
 
+    /**
+     * Generate Common Items.
+     *
+     * @return void
+     */
     public function generateCommonItems()
     {
         parent::generateCommonItems();
 
-        if (! $this->isSkip('repository') && $this->commandData->getOption('repositoryPattern')) {
+        if (false === $this->isSkip('repository') && true === $this->commandData->getOption('repositoryPattern')) {
             $interfaceGenerator = new InterfaceGenerator($this->commandData);
             $interfaceGenerator->generate();
         }
     }
 
+    /**
+     * Generate GraphQL Items.
+     *
+     * @return void
+     */
     public function generateGraphQLItems()
     {
         if (false === ($this->isSkip('queries') or $this->isSkip('graphql_query'))) {
@@ -67,6 +82,11 @@ class BaseCommand extends Base
         }
     }
 
+    /**
+     * Generate Scaffold Items.
+     *
+     * @return void
+     */
     public function generateScaffoldItems()
     {
         if (false === $this->isSkip('requests') and false === $this->isSkip('scaffold_requests')) {
@@ -119,33 +139,34 @@ class BaseCommand extends Base
     /**
      * Perform the Post Generator Actions
      *
-     * @param  boolean $runMigration Boolean flag to run migrations.
+     * @param boolean $runMigration Boolean flag to run migrations.
+     *
      * @return void
      */
     public function performPostActions($runMigration = false)
     {
-        if ($this->commandData->getOption('save')) {
+        if (true === $this->commandData->getOption('save')) {
             $this->saveSchemaFile();
         }
 
-        if ($runMigration) {
-            if ($this->commandData->getOption('forceMigrate')) {
+        if (true === $runMigration) {
+            if (true === $this->commandData->getOption('forceMigrate')) {
                 $this->runMigration();
-            } elseif (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
-                $requestFromConsole = (php_sapi_name() == 'cli') ? true : false;
-                if ($this->commandData->getOption('jsonFromGUI') && $requestFromConsole) {
+            } elseif (false === $this->commandData->getOption('fromTable') && false === $this->isSkip('migration')) {
+                $requestFromConsole = (php_sapi_name() === 'cli') ? true : false;
+                if (true === $this->commandData->getOption('jsonFromGUI') && true === $requestFromConsole) {
                     $this->runMigration();
-                } elseif ($requestFromConsole && $this->confirm("\nDo you want to migrate database? [y|N]", false)) {
+                } elseif (true === $requestFromConsole && true === $this->confirm("\nDo you want to migrate database? [y|N]", false)) {
                     $this->runMigration();
                 }
             }
         }
 
-        if ($this->commandData->getOption('localized')) {
+        if (true === $this->commandData->getOption('localized')) {
             $this->saveLocaleFile();
         }
 
-        if (!$this->isSkip('dump-autoload')) {
+        if (false === $this->isSkip('dump-autoload')) {
             $this->info('Generating autoload files');
             $this->composer->dumpOptimized();
         }
@@ -186,7 +207,7 @@ class BaseCommand extends Base
 
         $fileName = $this->commandData->modelName.'.json';
 
-        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (true === file_exists($path.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
         FileUtil::createFile($path, $fileName, json_encode($fileFields, JSON_PRETTY_PRINT));
@@ -215,7 +236,7 @@ class BaseCommand extends Base
 
         $fileName = $this->commandData->config->mCamelPlural.'.php';
 
-        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (true === file_exists($path.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
         $content = "<?php\n\nreturn ".var_export($locales, true).';'.\PHP_EOL;

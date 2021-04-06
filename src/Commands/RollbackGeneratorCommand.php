@@ -29,6 +29,8 @@ class RollbackGeneratorCommand extends Base
     protected $name = 'artomator:rollback';
 
     /**
+     * Composer.
+     *
      * @var Composer
      */
     public $composer;
@@ -50,13 +52,17 @@ class RollbackGeneratorCommand extends Base
      */
     public function handle()
     {
-        if (false === in_array($this->argument('type'), [
+        if (false === in_array(
+            $this->argument('type'),
+            [
             CommandData::$COMMAND_TYPE_API,
             CommandData::$COMMAND_TYPE_SCAFFOLD,
             CommandData::$COMMAND_TYPE_API_SCAFFOLD,
             CommandData::$COMMAND_TYPE_GRAPHQL,
             CommandData::$COMMAND_TYPE_GRAPHQL_SCAFFOLD,
-        ])) {
+            ]
+        )
+        ) {
             $this->error('invalid rollback type');
         }
 
@@ -89,7 +95,7 @@ class RollbackGeneratorCommand extends Base
         $mutationGenerator = new GraphQLMutationGenerator($this->commandData);
         $mutationGenerator->rollback();
 
-        if (config('pwweb.artomator.options.subscription')) {
+        if (true === config('pwweb.artomator.options.subscription')) {
             $subscriptionGenerator = new GraphQLSubscriptionGenerator($this->commandData);
             $subscriptionGenerator->rollback();
         }
