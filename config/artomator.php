@@ -12,7 +12,7 @@ return [
     'path' => [
 
         'interface' => app_path('Interfaces/'),
-        
+
         'vues' => resource_path('js/Pages/'),
 
     ],

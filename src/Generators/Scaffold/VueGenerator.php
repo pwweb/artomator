@@ -6,9 +6,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
-use PWWEB\Artomator\Utils\VueFieldGenerator;
 use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Generators\VueServiceProviderGenerator;
+use PWWEB\Artomator\Utils\VueFieldGenerator;
 
 class VueGenerator extends BaseGenerator
 {

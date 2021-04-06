@@ -111,15 +111,15 @@ class BaseCommand extends Base
             parent::getOptions(),
             [
                 ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
-                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views' ]
+                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views'],
             ]
         );
     }
 
     /**
-     * Perform the Post Generator Actions
+     * Perform the Post Generator Actions.
      *
-     * @param  boolean $runMigration Boolean flag to run migrations.
+     * @param  bool $runMigration Boolean flag to run migrations.
      * @return void
      */
     public function performPostActions($runMigration = false)
@@ -131,7 +131,7 @@ class BaseCommand extends Base
         if ($runMigration) {
             if ($this->commandData->getOption('forceMigrate')) {
                 $this->runMigration();
-            } elseif (!$this->commandData->getOption('fromTable') and !$this->isSkip('migration')) {
+            } elseif (! $this->commandData->getOption('fromTable') and ! $this->isSkip('migration')) {
                 $requestFromConsole = (php_sapi_name() == 'cli') ? true : false;
                 if ($this->commandData->getOption('jsonFromGUI') && $requestFromConsole) {
                     $this->runMigration();
@@ -145,7 +145,7 @@ class BaseCommand extends Base
             $this->saveLocaleFile();
         }
 
-        if (!$this->isSkip('dump-autoload')) {
+        if (! $this->isSkip('dump-autoload')) {
             $this->info('Generating autoload files');
             $this->composer->dumpOptimized();
         }
@@ -186,7 +186,7 @@ class BaseCommand extends Base
 
         $fileName = $this->commandData->modelName.'.json';
 
-        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($path.$fileName) && ! $this->confirmOverwrite($fileName)) {
             return;
         }
         FileUtil::createFile($path, $fileName, json_encode($fileFields, JSON_PRETTY_PRINT));
@@ -215,7 +215,7 @@ class BaseCommand extends Base
 
         $fileName = $this->commandData->config->mCamelPlural.'.php';
 
-        if (file_exists($path.$fileName) && !$this->confirmOverwrite($fileName)) {
+        if (file_exists($path.$fileName) && ! $this->confirmOverwrite($fileName)) {
             return;
         }
         $content = "<?php\n\nreturn ".var_export($locales, true).';'.\PHP_EOL;
