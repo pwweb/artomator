@@ -387,11 +387,11 @@ class ViewGenerator extends BaseGenerator
     /**
      * Generate View Composer.
      *
-     * @param String      $tableName    Table name.
-     * @param String      $variableName Variable name.
-     * @param String      $columns      Column names.
-     * @param String      $selectTable  Select table name.
-     * @param String|null $modelName    Model name.
+     * @param string      $tableName    Table name.
+     * @param string      $variableName Variable name.
+     * @param string      $columns      Column names.
+     * @param string      $selectTable  Select table name.
+     * @param string|null $modelName    Model name.
      *
      * @return void
      */

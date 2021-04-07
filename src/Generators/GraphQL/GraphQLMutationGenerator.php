@@ -16,14 +16,14 @@ class GraphQLMutationGenerator extends BaseGenerator
     private $commandData;
 
     /**
-     * Filename
+     * Filename.
      *
      * @var string
      */
     private $fileName;
 
     /**
-     * File Contents
+     * File Contents.
      *
      * @var string
      */

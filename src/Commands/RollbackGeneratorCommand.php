@@ -55,11 +55,11 @@ class RollbackGeneratorCommand extends Base
         if (false === in_array(
             $this->argument('type'),
             [
-            CommandData::$COMMAND_TYPE_API,
-            CommandData::$COMMAND_TYPE_SCAFFOLD,
-            CommandData::$COMMAND_TYPE_API_SCAFFOLD,
-            CommandData::$COMMAND_TYPE_GRAPHQL,
-            CommandData::$COMMAND_TYPE_GRAPHQL_SCAFFOLD,
+                CommandData::$COMMAND_TYPE_API,
+                CommandData::$COMMAND_TYPE_SCAFFOLD,
+                CommandData::$COMMAND_TYPE_API_SCAFFOLD,
+                CommandData::$COMMAND_TYPE_GRAPHQL,
+                CommandData::$COMMAND_TYPE_GRAPHQL_SCAFFOLD,
             ]
         )
         ) {

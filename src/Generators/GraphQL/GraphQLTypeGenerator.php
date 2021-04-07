@@ -163,8 +163,8 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Generate Relation.
      *
-     * @param String $functionName Function Name.
-     * @param String $template     Template.
+     * @param string $functionName Function Name.
+     * @param string $template     Template.
      *
      * @return void
      */
@@ -273,7 +273,7 @@ class GraphQLTypeGenerator extends BaseGenerator
      * Prepare Relationship.
      *
      * @param Model       $relationship Relationship.
-     * @param String|null $relationText Relation Text.
+     * @param string|null $relationText Relation Text.
      *
      * @return array
      */

@@ -51,7 +51,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
     }
 
     /**
-     * Add View Variables
+     * Add View Variables.
      *
      * @param string      $views        Views.
      * @param string      $variableName Variable Name.
@@ -166,7 +166,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
     }
 
     /**
-     * Add Property
+     * Add Property.
      *
      * @param string $model           Model.
      * @param string $mainViewContent Main View Content.

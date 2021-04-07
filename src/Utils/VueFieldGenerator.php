@@ -12,7 +12,7 @@ class VueFieldGenerator
      *
      * @param GeneratorField $field        Field.
      * @param string         $templateType Template type.
-     * @param boolean        $localized    Localized.
+     * @param bool        $localized    Localized.
      *
      * @return string
      */
