@@ -11,7 +11,7 @@ return [
 
     'path' => [
 
-        'interface' => app_path('Interfaces/'),
+        'contract' => app_path('Contracts/'),
 
         'vues' => resource_path('js/Pages/'),
 
@@ -26,7 +26,7 @@ return [
 
     'namespace' => [
 
-        'interface' => 'App\Interfaces',
+        'contract' => 'App\Contracts',
 
     ],
 

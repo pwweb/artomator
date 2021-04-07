@@ -1,22 +1,22 @@
 <?php
 
-namespace $NAMESPACE_INTERFACE$;
+namespace $NAMESPACE_CONTRACT$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
-use $NAMESPACE_APP$\Interfaces\BaseRepositoryInterface;
+use $NAMESPACE_APP$\Contracts\BaseRepositoryContract;
 
 /**
- * $NAMESPACE_REPOSITORY$\$MODEL_NAME$RepositoryInterface $MODEL_NAME$RepositoryInterface
+ * $NAMESPACE_REPOSITORY$\$MODEL_NAME$RepositoryContract $MODEL_NAME$RepositoryContract
  *
- * The repository interface for $MODEL_NAME$.
- * Class $MODEL_NAME$RepositoryInterface
+ * The repository contract for $MODEL_NAME$.
+ * Class $MODEL_NAME$RepositoryContract
  *
  * @package   $LICENSE_PACKAGE$
  * @author    $LICENSE_AUTHORS$
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
-interface $MODEL_NAME$RepositoryInterface extends BaseRepositoryInterface
+contract $MODEL_NAME$RepositoryContract extends BaseRepositoryContract
 {
 
     /**

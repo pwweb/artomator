@@ -9,7 +9,7 @@ use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Laracasts\Flash\Flash;
+use Inertia\Inertia;
 
 /**
  * $NAMESPACE_CONTROLLER$\$MODEL_NAME$Controller $MODEL_NAME$Controller
@@ -52,8 +52,7 @@ class $MODEL_NAME$Controller extends AppBaseController
     {
         $$MODEL_NAME_PLURAL_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->$RENDER_TYPE$;
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index')
-            ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Index', compact('$MODEL_NAME_PLURAL_CAMEL$'));
     }
 
     /**
@@ -63,7 +62,7 @@ class $MODEL_NAME$Controller extends AppBaseController
      */
     public function create()
     {
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.create');
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Create');
     }
 
     /**
@@ -101,7 +100,7 @@ class $MODEL_NAME$Controller extends AppBaseController
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.show')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Show', compact('$MODEL_NAME_CAMEL$'));
     }
 
     /**
@@ -121,7 +120,7 @@ class $MODEL_NAME$Controller extends AppBaseController
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Edit', compact('$MODEL_NAME_CAMEL$'));
     }
 
     /**

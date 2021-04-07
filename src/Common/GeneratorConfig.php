@@ -15,11 +15,11 @@ class GeneratorConfig extends Config
      */
     public $pathGraphQL;
     /**
-     * Path Interface.
+     * Path Contract.
      *
      * @var string
      */
-    public $pathInterface;
+    public $pathContract;
 
     /**
      * GraphQL Name.
@@ -95,11 +95,11 @@ class GeneratorConfig extends Config
     public $gHumanPlural;
 
     /**
-     * GraphQL Namespace Interface.
+     * GraphQL Namespace Contract.
      *
      * @var string
      */
-    public $nsInterface;
+    public $nsContract;
 
     /**
      * Command Options.
@@ -164,9 +164,9 @@ class GeneratorConfig extends Config
 
         $this->pathSchemas = config('infyom.laravel_generator.path.schema_files', resource_path('model_schemas/')).$prefix;
 
-        $this->pathInterface = config(
-            'pwweb.artomator.path.interface',
-            app_path('Interfaces/')
+        $this->pathContract = config(
+            'pwweb.artomator.path.contract',
+            app_path('Contracts/')
         ).$prefix;
     }
 
@@ -191,8 +191,8 @@ class GeneratorConfig extends Config
         if (false === empty($prefix)) {
             $prefix = '\\'.$prefix;
         }
-        $this->nsInterface = config('pwweb.artomator.namespace.interface', 'App\Interfaces').$prefix;
-        $commandData->addDynamicVariable('$NAMESPACE_INTERFACE$', $this->nsInterface);
+        $this->nsContract = config('pwweb.artomator.namespace.contract', 'App\Contracts').$prefix;
+        $commandData->addDynamicVariable('$NAMESPACE_CONTRACT$', $this->nsContract);
 
         if (false === empty($this->prefixes['view'])) {
             $commandData->addDynamicVariable('$VUE_PREFIX$', $this->prefixes['view'].'/');

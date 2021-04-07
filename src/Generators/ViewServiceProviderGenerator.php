@@ -144,7 +144,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
      */
     public function addNamespace($model, $mainViewContent)
     {
-        $newModelStatement = 'use '.$this->commandData->config->nsInterface.'\\'.$model.'RepositoryInterface as '.$model.';';
+        $newModelStatement = 'use '.$this->commandData->config->nsContract.'\\'.$model.'RepositoryContract as '.$model.';';
         $isNameSpaceExist = strpos($mainViewContent, $newModelStatement);
         $newModelStatement = infy_nl().$newModelStatement;
         if (false === $isNameSpaceExist) {

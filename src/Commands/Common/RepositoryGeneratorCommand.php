@@ -4,7 +4,7 @@ namespace PWWEB\Artomator\Commands\Common;
 
 use InfyOm\Generator\Commands\Common\RepositoryGeneratorCommand as Base;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\InterfaceGenerator;
+use PWWEB\Artomator\Generators\ContractGenerator;
 use PWWEB\Artomator\Generators\RepositoryGenerator;
 
 class RepositoryGeneratorCommand extends Base
@@ -38,8 +38,8 @@ class RepositoryGeneratorCommand extends Base
         $repositoryGenerator = new RepositoryGenerator($this->commandData);
         $repositoryGenerator->generate();
 
-        $interfaceGenerator = new InterfaceGenerator($this->commandData);
-        $interfaceGenerator->generate();
+        $contractGenerator = new ContractGenerator($this->commandData);
+        $contractGenerator->generate();
 
         $this->performPostActions();
     }
