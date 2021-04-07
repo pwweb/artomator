@@ -27,13 +27,19 @@ class InstallCommand extends Command
      */
     public function handle()
     {
+        $bar = $this->ouput->createProgressBar(5);
+        $bar->start();
         // Publish...
         $this->callSilent('vendor:publish', ['--tag' => 'artomator', '--force' => true]);
-
+        $bar->advance();
         $this->callSilent('vendor:publish', ['--provider' => 'InfyOm\Generator\InfyOmGeneratorServiceProvider', '--force' => true]);
+        $bar->advance();
         $this->callSilent('vendor:publish', ['--tag' => 'lighthouse-schema', '--force' => true]);
+        $bar->advance();
         $this->callSilent('vendor:publish', ['--tag' => 'lighthouse-config', '--force' => true]);
+        $bar->advance();
 
         $this->callSilent('artomator:publish');
+        $bar->finish();
     }
 }
