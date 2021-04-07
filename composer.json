@@ -41,7 +41,7 @@
         "mll-lab/laravel-graphql-playground": "^2.0",
         "laravel/ui": "^3.0",
         "pusher/pusher-php-server": "^4.0",
-        "inertiajs/inertia-laravel": "^0.4.1"
+        "inertiajs/inertia-laravel": "^0.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
