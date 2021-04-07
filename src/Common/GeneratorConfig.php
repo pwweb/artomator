@@ -102,6 +102,38 @@ class GeneratorConfig extends Config
     public $nsInterface;
 
     /**
+     * Command Options.
+     *
+     * @var array
+     */
+    public static $availableOptions = [
+        'fieldsFile',
+        'jsonFromGUI',
+        'tableName',
+        'fromTable',
+        'ignoreFields',
+        'save',
+        'primary',
+        'prefix',
+        'paginate',
+        'skip',
+        'datatables',
+        'views',
+        'relations',
+        'plural',
+        'softDelete',
+        'forceMigrate',
+        'factory',
+        'seeder',
+        'repositoryPattern',
+        'resources',
+        'localized',
+        'connection',
+        'jqueryDT',
+        'vue',
+    ];
+
+    /**
      * Load Paths.
      *
      * @return void
@@ -214,5 +246,57 @@ class GeneratorConfig extends Config
         $commandData->addDynamicVariable('$GRAPHQL_NAME_PLURAL_HUMAN$', $this->gHumanPlural);
 
         return $commandData;
+    }
+
+    /**
+     * Prepare Options.
+     *
+     * @param Data $commandData Command Data.
+     *
+     * @return void
+     */
+    public function prepareOptions(Data &$commandData)
+    {
+        foreach (self::$availableOptions as $option) {
+            $this->options[$option] = $commandData->commandObj->option($option);
+        }
+
+        if (true === isset($options['fromTable']) && true === $this->options['fromTable']) {
+            if (false === $this->options['tableName']) {
+                $commandData->commandError('tableName required with fromTable option.');
+                exit;
+            }
+        }
+
+        if (true === empty($this->options['save'])) {
+            $this->options['save'] = config('infyom.laravel_generator.options.save_schema_file', true);
+        }
+
+        if (true === empty($this->options['vue'])) {
+            $this->options['vue'] = config('pwweb.artomator.options.vue_files', false);
+        }
+
+        if (true === empty($this->options['localized'])) {
+            $this->options['localized'] = config('infyom.laravel_generator.options.localized', false);
+        }
+
+        if (true === $this->options['localized']) {
+            $commandData->getTemplatesManager()->setUseLocale(true);
+        }
+
+        $this->options['softDelete'] = config('infyom.laravel_generator.options.softDelete', false);
+        $this->options['repositoryPattern'] = config('infyom.laravel_generator.options.repository_pattern', true);
+        $this->options['resources'] = config('infyom.laravel_generator.options.resources', true);
+        if (false === empty($this->options['skip'])) {
+            $this->options['skip'] = array_map('trim', explode(',', $this->options['skip']));
+        }
+
+        if (false === empty($this->options['datatables'])) {
+            if ('true' === strtolower($this->options['datatables'])) {
+                $this->addOns['datatables'] = true;
+            } else {
+                $this->addOns['datatables'] = false;
+            }
+        }
     }
 }

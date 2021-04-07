@@ -30,7 +30,7 @@ class BaseCommand extends Base
     {
         parent::handle();
         $this->commandData->config->prepareGraphQLNames($this->option('gqlName'));
-        $this->commandData->config->prepareVueNames($this->option('vue'));
+        // $this->commandData->config->prepareVueNames($this->option('vue'));
         $this->commandData = $this->commandData->config->loadDynamicGraphQLVariables($this->commandData);
     }
 
@@ -131,7 +131,7 @@ class BaseCommand extends Base
             parent::getOptions(),
             [
                 ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
-                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views'],
+                ['vue', null, InputOption::VALUE_NONE, 'Generate Vuejs views rather than blade views'],
             ]
         );
     }
@@ -153,7 +153,7 @@ class BaseCommand extends Base
             if (true === $this->commandData->getOption('forceMigrate')) {
                 $this->runMigration();
             } elseif (false === $this->commandData->getOption('fromTable') && false === $this->isSkip('migration')) {
-                $requestFromConsole = (php_sapi_name() === 'cli') ? true : false;
+                $requestFromConsole = ('cli' === php_sapi_name()) ? true : false;
                 if (true === $this->commandData->getOption('jsonFromGUI') && true === $requestFromConsole) {
                     $this->runMigration();
                 } elseif (true === $requestFromConsole && true === $this->confirm("\nDo you want to migrate database? [y|N]", false)) {
