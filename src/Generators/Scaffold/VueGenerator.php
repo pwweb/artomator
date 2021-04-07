@@ -379,8 +379,8 @@ class VueGenerator extends BaseGenerator
             }
         }
 
-        $this->commandData->addDynamicVariable('$CREATE_DATA$', implode('\n', $createForm));
-        $this->commandData->addDynamicVariable('$EDIT_DATA$', implode('\n', $editForm));
+        $this->commandData->addDynamicVariable('$CREATE_DATA$', implode("\n", $createForm));
+        $this->commandData->addDynamicVariable('$EDIT_DATA$', implode("\n", $editForm));
 
         $templateData = get_artomator_template('scaffold.vues.'.$templateName);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
@@ -440,6 +440,7 @@ class VueGenerator extends BaseGenerator
         $templateData = get_artomator_template('scaffold.vues.'.$templateName);
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         FileUtil::createFile($this->path, 'Create.vue', $templateData);
         $this->commandData->commandInfo('Create.vue created');
@@ -460,6 +461,7 @@ class VueGenerator extends BaseGenerator
 
         $templateData = get_artomator_template('scaffold.vues.'.$templateName);
 
+        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         FileUtil::createFile($this->path, 'Edit.vue', $templateData);

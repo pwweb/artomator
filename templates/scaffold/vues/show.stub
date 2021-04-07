@@ -23,7 +23,11 @@
     import ShowFields from './ShowFields';
 
     export default {
-        metaInfo: { title: '$MODEL_NAME_HUMAN$ - ' + this.$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$},
+        metaInfo() {
+            return {
+                title: '$MODEL_NAME_HUMAN$ - ' + this.$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$
+            };
+        },
 
         layout: (h, page) => h(Layout, [page]),
 
