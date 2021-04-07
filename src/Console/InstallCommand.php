@@ -104,14 +104,14 @@ class InstallCommand extends Command
         $this->newLine();
         $this->info('Template package added to composer.');
 
-        if (true === $this->confirm('Do you want to setup the default artisan UI bootstrap?')) {
-            $this->call('ui', ['bootstrap', '--auth']);
-            $this->info('UI Boostrap files published.');
-        }
-
-        if (true === $this->confirm('Do you want to publish the default layout files?')) {
-            $this->call('artomator.publish:layout');
-            $this->info('Layout files published.');
+        if (true === $this->confirm('Do you want to install Laravel Jetstream (Inertia & Vue)?')) {
+            $this->requireComposerPackages('laravel/jetstream');
+            if (true === $this->confirm('Do you want to support Laravel Jetstream Teams?')) {
+                $this->call('jetstream:install', ['stack' => 'inertia', '--teams']);
+            } else {
+                $this->call('jetstream:install', ['stack' => 'inertia']);
+            }
+            $this->info('Laravel Jetstream Installed.');
         }
 
         if (true === $this->confirm('Do you want to publish the stub files?')) {
