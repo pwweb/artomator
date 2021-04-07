@@ -72,6 +72,19 @@ class InstallCommand extends Command
 
         $this->info('Artomator base files published.');
 
+        $aliases = [
+            "'View' => Illuminate\Support\Facades\View::class",
+            "'Form' => Collective\Html\FormFacade::class",
+            "'Html' => Collective\Html\HtmlFacade::class",
+            "'Flash' => Laracasts\Flash\Flash::class",
+        ];
+
+        $this->replaceInFile(
+            "'View' => Illuminate\Support\Facades\View::class",
+            implode(",\n\t\t", $aliases),
+            config_path('app.php')
+        );
+
         $template = $this->choice(
             'Choose your templating package',
             ['CoreUI', 'AdminLTE'],
@@ -90,6 +103,16 @@ class InstallCommand extends Command
         }
         $this->newLine();
         $this->info('Template package added to composer.');
+
+        if (true === $this->confirm('Do you want to setup the default artisan UI bootstrap?')) {
+            $this->call('ui', ['bootstrap', '--auth']);
+            $this->info('UI Boostrap files published.');
+        }
+
+        if (true === $this->confirm('Do you want to publish the default layout files?')) {
+            $this->call('artomator.publish:layout');
+            $this->info('Layout files published.');
+        }
 
         if (true === $this->confirm('Do you want to publish the stub files?')) {
             $this->call('artomator.publish:templates');

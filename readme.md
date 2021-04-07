@@ -24,7 +24,9 @@ To simplify the installation the following command can be run:
 $ php artisan artomator:install
 ```
 
-This will publish the necessary files.
+This will guide you through the various steps to set things up.
+
+### Alternate Installation (MANUAL)
 
 Alternatively you can do the following, which is what the `install` command does:
 
@@ -87,6 +89,18 @@ return [
     'templates'         => 'coreui-templates',
     ...
 ];
+```
+
+You will need to add to the appropriate package to your composer:
+
+```bash
+$ composer require infyomlabs/coreui-templates
+```
+
+or
+
+```bash
+$ composer require infyomlabs/adminlte-templates
 ```
 
 It's recommended that you change this config setting now, before progressing, as the next commands will use whatever template is defined when generating the view files.
