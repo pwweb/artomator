@@ -46,7 +46,7 @@ class ArtomatorServiceProvider extends ServiceProvider
                 // $configPathInfyom => config_path('infyom/laravel_generator.php'),
                 // $configPathNuwave => config_path('lighthouse.php'),
                 // $schemaPath => config('lighthouse.schema.register', base_path('graphql/schema.graphql')),
-                $paginationResource => resource_path('js/Shared/Pagination.vuee'),
+                $paginationResource => resource_path('js/Shared/Pagination.vue'),
             ],
             'artomator'
         );
