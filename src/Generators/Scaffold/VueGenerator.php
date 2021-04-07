@@ -444,6 +444,7 @@ class VueGenerator extends BaseGenerator
         FileUtil::createFile($this->path, 'Create.vue', $templateData);
         $this->commandData->commandInfo('Create.vue created');
     }
+
     /**
      * Generate Update.
      *

@@ -131,15 +131,15 @@ class BaseCommand extends Base
             parent::getOptions(),
             [
                 ['gqlName', null, InputOption::VALUE_REQUIRED, 'Override the name used in the GraphQL schema file'],
-                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views' ]
+                ['vue', false, InputOption::VALUE_OPTIONAL, 'Generate Vuejs views rather than blade views'],
             ]
         );
     }
 
     /**
-     * Perform the Post Generator Actions
+     * Perform the Post Generator Actions.
      *
-     * @param boolean $runMigration Boolean flag to run migrations.
+     * @param bool $runMigration Boolean flag to run migrations.
      *
      * @return void
      */

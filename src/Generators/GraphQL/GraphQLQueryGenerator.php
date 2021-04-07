@@ -69,7 +69,7 @@ class GraphQLQueryGenerator extends BaseGenerator
 
         $this->commandData->commandComment("\nGraphQL Query created");
     }
-    
+
     /**
      * Rollback.
      *

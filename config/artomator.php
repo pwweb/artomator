@@ -12,7 +12,7 @@ return [
     'path' => [
 
         'interface' => app_path('Interfaces/'),
-        
+
         'vues' => resource_path('js/Pages/'),
 
     ],
@@ -40,7 +40,7 @@ return [
     'options' => [
 
         'subscription' => false,
-    // Enable GraphQL Subscriptions; Requires Pusher.
+        // Enable GraphQL Subscriptions; Requires Pusher.
 
     ],
 

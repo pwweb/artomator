@@ -156,8 +156,6 @@ class GeneratorConfig extends Config
         $this->nsInterface = config('pwweb.artomator.namespace.interface', 'App\Interfaces').$prefix;
         $commandData->addDynamicVariable('$NAMESPACE_INTERFACE$', $this->nsInterface);
 
-
-
         if (false === empty($this->prefixes['view'])) {
             $commandData->addDynamicVariable('$VUE_PREFIX$', $this->prefixes['view'].'/');
         } else {

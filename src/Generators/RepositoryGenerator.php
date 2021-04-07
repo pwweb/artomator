@@ -73,6 +73,7 @@ class RepositoryGenerator extends BaseGenerator
         $this->commandData->commandComment("\nRepository created: ");
         $this->commandData->commandInfo($this->fileName);
     }
+
     /**
      * Rollback.
      *
