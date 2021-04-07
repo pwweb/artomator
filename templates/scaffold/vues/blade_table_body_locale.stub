@@ -1,0 +1,33 @@
+<table id="$MODEL_NAME_PLURAL_CAMEL$-table">
+    <thead>
+        <tr>
+            $FIELD_HEADERS$
+            <th>{{ $t('crud.action') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="$MODEL_NAME_CAMEL$ in $MODEL_NAME_PLURAL_CAMEL$" :key="$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$">
+            $FIELD_BODY$
+            <td>
+                <div class='btn-group'>
+                    <inertia-link
+                        :href="route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.show', [$$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$])">
+                        <span class="sr-only">{{$('crud.show')}}</span>
+                        <i class="fa fa-eye"></i>
+                    </inertia-link>
+                    <inertia-link
+                        :href="route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.edit', [$$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$])">
+                        <span class="sr-only">{{$('crud.edit')}}</span>
+                        <i class="fa fa-edit"></i>
+                    </inertia-link>
+                    <inertia-link
+                        :href="route($ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.destroy, [$$MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$])"
+                        as="button" type="button" onclick="return confirm($t('crud.are_you_sure'));">
+                        <span class="sr-only">{{$('crud.destroy')}}</span>
+                        <i class="fa fa-trash"></i>
+                    </inertia-link>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

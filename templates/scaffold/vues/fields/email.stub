@@ -2,5 +2,9 @@
 <div class="form-group col-sm-6">
     {!! Form::label('$FIELD_NAME$', '$FIELD_NAME_TITLE$:') !!}
     <label for="$FIELD_NAME$">$FIELD_NAME_TITLE$:</label>
-    <input type="email" name="$FIELD_NAME$"$SIZE$$REQUIRED$ v-model="$MODEL_NAME_CAMEL$.$FIELD_NAME$" />
+    <input type="email" name="$FIELD_NAME$" $SIZE$$REQUIRED$ v-model="form.$FIELD_NAME$" class="form-control"
+        :class="form.errors.$FIELD_NAME$ ? 'is-invalid' : ''" />
+    <div class="invalid-feedback" v-if="form.errors.$FIELD_NAME$">
+        {{form.errors.$FIELD_NAME$}}
+    </div>
 </div>

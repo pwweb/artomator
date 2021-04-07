@@ -6,10 +6,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
-use PWWEB\Artomator\Utils\VueFieldGenerator;
 use PWWEB\Artomator\Common\CommandData;
 use PWWEB\Artomator\Generators\ViewServiceProviderGenerator;
-use PWWEB\Artomator\Generators\VueServiceProviderGenerator;
+use PWWEB\Artomator\Utils\VueFieldGenerator;
 
 class VueGenerator extends BaseGenerator
 {
@@ -68,7 +67,7 @@ class VueGenerator extends BaseGenerator
 
         $htmlInputs = Arr::pluck($this->commandData->fields, 'htmlInput');
         if (true === in_array('file', $htmlInputs)) {
-            $this->commandData->addDynamicVariable('$FILES$', ", 'files' => true");
+            $this->commandData->addDynamicVariable('$FILES$', ' enctype="multipart/form-data"');
         }
 
         $this->commandData->commandComment("\nGenerating Vues...");
@@ -77,7 +76,6 @@ class VueGenerator extends BaseGenerator
             $vuesToBeGenerated = explode(',', $this->commandData->getOption('views'));
 
             if (true === in_array('index', $vuesToBeGenerated)) {
-                $this->generateTable();
                 $this->generateIndex();
             }
 
@@ -98,7 +96,6 @@ class VueGenerator extends BaseGenerator
                 $this->generateShow();
             }
         } else {
-            $this->generateTable();
             $this->generateIndex();
             $this->generateFields();
             $this->generateCreate();
@@ -124,9 +121,7 @@ class VueGenerator extends BaseGenerator
             $templateData = $this->generateBladeTableBody();
         }
 
-        FileUtil::createFile($this->path, 'table.vue', $templateData);
-
-        $this->commandData->commandInfo('table.vue created');
+        return $templateData;
     }
 
     /**
@@ -136,7 +131,7 @@ class VueGenerator extends BaseGenerator
      */
     private function generateDataTableBody()
     {
-        $templateData = get_artomator_template('scaffold.vues.datatable_body');
+        $templateData = get_artomator_template('scaffold.views.datatable_body');
 
         return fill_template($this->commandData->dynamicVars, $templateData);
     }
@@ -154,13 +149,13 @@ class VueGenerator extends BaseGenerator
             $templateName .= '_locale';
         }
 
-        $templateData = get_artomator_template('scaffold.vues.'.$templateName);
+        $templateData = get_artomator_template('scaffold.views.'.$templateName);
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        FileUtil::createFile($this->path, 'datatables_actions.vue', $templateData);
+        FileUtil::createFile($this->path, 'datatables_actions.blade.php', $templateData);
 
-        $this->commandData->commandInfo('datatables_actions.vue created');
+        $this->commandData->commandInfo('datatables_actions.blade.php created');
     }
 
     /**
@@ -265,25 +260,27 @@ class VueGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        if (true === $this->commandData->getAddOn('datatables')) {
-            $templateData = str_replace('$PAGINATE$', '', $templateData);
-        } else {
-            $paginate = $this->commandData->getOption('paginate');
+        // if (true === $this->commandData->getAddOn('datatables')) {
+        //     $templateData = str_replace('$PAGINATE$', '', $templateData);
+        // } else {
+        //     $paginate = $this->commandData->getOption('paginate');
 
-            if (true === $paginate) {
-                $paginateTemplate = get_artomator_template('scaffold.vues.paginate');
+        //     if (true === $paginate) {
+        //         $paginateTemplate = get_artomator_template('scaffold.vues.paginate');
 
-                $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
+        //         $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
 
-                $templateData = str_replace('$PAGINATE$', $paginateTemplate, $templateData);
-            } else {
-                $templateData = str_replace('$PAGINATE$', '', $templateData);
-            }
-        }
+        //         $templateData = str_replace('$PAGINATE$', $paginateTemplate, $templateData);
+        //     } else {
+        //         $templateData = str_replace('$PAGINATE$', '', $templateData);
+        //     }
+        // }
 
-        FileUtil::createFile($this->path, 'index.vue', $templateData);
+        $templateData = str_replace('$TABLE$', $this->generateTable(), $templateData);
 
-        $this->commandData->commandInfo('index.vue created');
+        FileUtil::createFile($this->path, 'Index.vue', $templateData);
+
+        $this->commandData->commandInfo('Index.vue created');
     }
 
     /**
@@ -302,6 +299,8 @@ class VueGenerator extends BaseGenerator
         }
 
         $this->htmlFields = [];
+        $createForm = [];
+        $editForm = [];
 
         foreach ($this->commandData->fields as $field) {
             if (false === $field->inForm) {
@@ -375,6 +374,8 @@ class VueGenerator extends BaseGenerator
                     $field
                 );
                 $this->htmlFields[] = $fieldTemplate;
+                $createForm[] = $field.': null,';
+                $editForm[] = $field.': props.$MODEL_NAME_CAMEL$.'.$field.',';
             }
         }
 
@@ -383,12 +384,15 @@ class VueGenerator extends BaseGenerator
 
         $templateData = str_replace('$FIELDS$', implode("\n\n", $this->htmlFields), $templateData);
 
-        FileUtil::createFile($this->path, 'fields.vue', $templateData);
+        $this->commandData->addDynamicVariable('$CREATE_DATA$', implode('\n', $createForm));
+        $this->commandData->addDynamicVariable('$EDIT_DATA$', implode('\n', $editForm));
+
+        FileUtil::createFile($this->path, 'Fields.vue', $templateData);
         $this->commandData->commandInfo('field.vue created');
     }
 
     /**
-     * Generate Vue Composer
+     * Generate Vue Composer.
      *
      * @param string      $tableName    Table Name.
      * @param string      $variableName Variable Name.
@@ -437,10 +441,9 @@ class VueGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        FileUtil::createFile($this->path, 'create.vue', $templateData);
-        $this->commandData->commandInfo('create.vue created');
+        FileUtil::createFile($this->path, 'Create.vue', $templateData);
+        $this->commandData->commandInfo('Create.vue created');
     }
-
     /**
      * Generate Update.
      *
@@ -458,8 +461,8 @@ class VueGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        FileUtil::createFile($this->path, 'edit.vue', $templateData);
-        $this->commandData->commandInfo('edit.vue created');
+        FileUtil::createFile($this->path, 'Edit.vue', $templateData);
+        $this->commandData->commandInfo('Edit.vue created');
     }
 
     /**
@@ -478,7 +481,7 @@ class VueGenerator extends BaseGenerator
         $fieldsStr = '';
 
         foreach ($this->commandData->fields as $field) {
-            if (false === $field->inVue) {
+            if (false === $field->inView) {
                 continue;
             }
             $singleFieldStr = str_replace(
@@ -491,9 +494,13 @@ class VueGenerator extends BaseGenerator
 
             $fieldsStr .= $singleFieldStr."\n\n";
         }
+        $templateName = 'show_fields';
+        $fieldTemplate = get_artomator_template('scaffold.vues.'.$templateName);
 
-        FileUtil::createFile($this->path, 'show_fields.vue', $fieldsStr);
-        $this->commandData->commandInfo('show_fields.vue created');
+        $fieldTemplate = str_replace('$FIELDS$', $fieldsStr, $fieldTemplate);
+
+        FileUtil::createFile($this->path, 'Show_fields.vue', $fieldTemplate);
+        $this->commandData->commandInfo('Show_fields.vue created');
     }
 
     /**
@@ -513,8 +520,8 @@ class VueGenerator extends BaseGenerator
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
-        FileUtil::createFile($this->path, 'show.vue', $templateData);
-        $this->commandData->commandInfo('show.vue created');
+        FileUtil::createFile($this->path, 'Show.vue', $templateData);
+        $this->commandData->commandInfo('Show.vue created');
     }
 
     /**
@@ -527,13 +534,13 @@ class VueGenerator extends BaseGenerator
     public function rollback($vues = [])
     {
         $files = [
-            'table.vue',
-            'index.vue',
-            'fields.vue',
-            'create.vue',
-            'edit.vue',
-            'show.vue',
-            'show_fields.vue',
+            'Table.vue',
+            'Index.vue',
+            'Fields.vue',
+            'Create.vue',
+            'Edit.vue',
+            'Show.vue',
+            'Show_fields.vue',
         ];
 
         if (false === empty($vues)) {
@@ -544,7 +551,7 @@ class VueGenerator extends BaseGenerator
         }
 
         if (true === $this->commandData->getAddOn('datatables')) {
-            $files[] = 'datatables_actions.vue';
+            $files[] = 'datatables_actions.blade.php';
         }
 
         foreach ($files as $file) {

@@ -1,0 +1,11 @@
+<template>
+    $FIELDS$
+</template>
+
+<script>
+    export default {
+        props: {
+            $MODEL_NAME_CAMEL$: Object,
+        }
+    }
+</script>

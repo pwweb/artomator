@@ -1,0 +1,17 @@
+<template>
+    $FIELDS$
+
+    <!-- Submit Field -->
+    <div class="form-group col-sm-12">
+        <button type="submit" :disabled="form.processing" class="btn btn-primary">{{ $t('crud.save') }}</button>
+        <a href="#" onClick="history.back();" class="btn btn-default">{{ $t('crud.cancel') }}</a>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            form: Object,
+        }
+    }
+</script>

@@ -4,11 +4,12 @@ namespace $NAMESPACE_CONTROLLER$;
 
 use $NAMESPACE_REQUEST$\Create$MODEL_NAME$Request;
 use $NAMESPACE_REQUEST$\Update$MODEL_NAME$Request;
-use $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository;
+use $NAMESPACE_INTERFACE$\$MODEL_NAME$RepositoryInterface;
 use $NAMESPACE_APP$\Http\Controllers\AppBaseController;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Laracasts\Flash\Flash;
-use Response;
+use Illuminate\View\View;
+use Inertia\Inertia;
 
 /**
  * $NAMESPACE_CONTROLLER$\$MODEL_NAME$Controller $MODEL_NAME$Controller
@@ -26,16 +27,16 @@ class $MODEL_NAME$Controller extends AppBaseController
     /**
      * The Model repository.
      *
-     * @var $MODEL_NAME$Repository
+     * @var $MODEL_NAME$RepositoryInterface
      */
     private $$MODEL_NAME_CAMEL$Repository;
 
     /**
-     * Constructor for the $MODLE_NAME$Controller.
+     * Constructor for the $MODEL_NAME$Controller.
      *
-     * @param $MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repo Model Respository
+     * @param $MODEL_NAME$RepositoryInterface $$MODEL_NAME_CAMEL$Repo Model Respository
      */
-    public function __construct($MODEL_NAME$Repository $$MODEL_NAME_CAMEL$Repo)
+    public function __construct($MODEL_NAME$RepositoryInterface $$MODEL_NAME_CAMEL$Repo)
     {
         $this->$MODEL_NAME_CAMEL$Repository = $$MODEL_NAME_CAMEL$Repo;
     }
@@ -45,24 +46,33 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @param Request $request Request
      *
-     * @return Response
+     * @return View
      */
     public function index(Request $request)
     {
+        $actions = [
+            [
+                'class' => 'ghost-primary',
+                'route' => '',
+                'icon' => 'fad fa-fw fa-plus',
+                'name' => 'crud.create',
+            ],
+        ];
+
         $$MODEL_NAME_PLURAL_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->$RENDER_TYPE$;
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.index')
-            ->with('$MODEL_NAME_PLURAL_CAMEL$', $$MODEL_NAME_PLURAL_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Index', compact('$MODEL_NAME_PLURAL_CAMEL$'))
+            ->with('pageActions', $actions);
     }
 
     /**
      * Show the form for creating a new $MODEL_NAME$.
      *
-     * @return Response
+     * @return View
      */
     public function create()
     {
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.create');
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Create');
     }
 
     /**
@@ -70,7 +80,7 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @param Create$MODEL_NAME$Request $request Create request
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Create$MODEL_NAME$Request $request)
     {
@@ -88,19 +98,19 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @param int $id Model ID
      *
-     * @return Response
+     * @return View|RedirectResponse
      */
     public function show($id)
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$) === true) {
+        if (true === empty($$MODEL_NAME_CAMEL$)) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.show')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Show', compact('$MODEL_NAME_CAMEL$'));
     }
 
     /**
@@ -108,19 +118,19 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @param int $id Model ID
      *
-     * @return Response
+     * @return View|RedirectResponse
      */
     public function edit($id)
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$) === true) {
+        if (true === empty($$MODEL_NAME_CAMEL$)) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
-        return view('$VIEW_PREFIX$$MODEL_NAME_PLURAL_SNAKE$.edit')->with('$MODEL_NAME_CAMEL$', $$MODEL_NAME_CAMEL$);
+        return Inertia::render('$VUE_PREFIX$$MODEL_NAME_PLURAL_SNAKE$/Edit', compact('$MODEL_NAME_CAMEL$'));
     }
 
     /**
@@ -129,13 +139,13 @@ class $MODEL_NAME$Controller extends AppBaseController
      * @param int $id Model ID
      * @param Update$MODEL_NAME$Request $request Update Request
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function update($id, Update$MODEL_NAME$Request $request)
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (true === empty($$MODEL_NAME_CAMEL$)) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
@@ -155,13 +165,13 @@ class $MODEL_NAME$Controller extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
-        if (empty($$MODEL_NAME_CAMEL$)) {
+        if (true === empty($$MODEL_NAME_CAMEL$)) {
             Flash::error(__('messages.not_found', ['model' => __('models/$MODEL_NAME_PLURAL_CAMEL$.singular')]));
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));

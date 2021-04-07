@@ -1,9 +1,12 @@
 <!-- 'bootstrap / Toggle Switch $FIELD_NAME_TITLE$ Field' -->
 <div class="d-flex align-items-center form-group col-sm-6">
- <label for="$FIELD_NAME$">$FIELD_NAME_TITLE$:</label>
+    <label for="$FIELD_NAME$">$FIELD_NAME_TITLE$:</label>
     <label class="c-switch c-switch-pill c-switch-primary c-switch-sm ml-2">
         <input type="hidden" value="0" name="$FIELD_NAME$" />
-        <input type="checkbox" value="1" name="$FIELD_NAME$" class="c-switch-input" v-model="$MODEL_NAME_CAMEL$.$FIELD_NAME$" />
+        <input type="checkbox" value="1" name="$FIELD_NAME$" class="c-switch-input" v-model="form.$FIELD_NAME$" />
         <span class="c-switch-slider" data-checked="On" data-unchecked="Off"></span>
     </label>
+    <div class="invalid-feedback" v-if="form.errors.$FIELD_NAME$">
+        {{form.errors.$FIELD_NAME$}}
+    </div>
 </div>

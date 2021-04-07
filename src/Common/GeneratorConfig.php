@@ -64,7 +64,7 @@ class GeneratorConfig extends Config
      */
     public $gDashed;
     /**
-     * GraphQL Dashed Plural
+     * GraphQL Dashed Plural.
      *
      * @var string
      */
@@ -119,7 +119,7 @@ class GeneratorConfig extends Config
         $this->pathFactory = $this->pathFactory.$prefix;
 
         $this->pathGraphQL = config('lighthouse.schema.register', base_path('graphql/schema.graphql'));
-        
+
         $this->pathVues = config('pwweb.artomator.path.vues', resource_path('js/Pages/'));
 
         $this->pathLocales = config('infyom.laravel_generator.path.models_locale_files', base_path('resources/lang/en/models/')).$prefix;
@@ -155,6 +155,14 @@ class GeneratorConfig extends Config
         }
         $this->nsInterface = config('pwweb.artomator.namespace.interface', 'App\Interfaces').$prefix;
         $commandData->addDynamicVariable('$NAMESPACE_INTERFACE$', $this->nsInterface);
+
+
+
+        if (false === empty($this->prefixes['view'])) {
+            $commandData->addDynamicVariable('$VUE_PREFIX$', $this->prefixes['view'].'/');
+        } else {
+            $commandData->addDynamicVariable('$VUE_PREFIX$', '');
+        }
 
         return $commandData;
     }
