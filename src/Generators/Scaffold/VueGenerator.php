@@ -374,18 +374,18 @@ class VueGenerator extends BaseGenerator
                     $field
                 );
                 $this->htmlFields[] = $fieldTemplate;
-                $createForm[] = $field.': null,';
-                $editForm[] = $field.': props.$MODEL_NAME_CAMEL$.'.$field.',';
+                $createForm[] = $field->name.': null,';
+                $editForm[] = $field->name.': props.$MODEL_NAME_CAMEL$.'.$field->name.',';
             }
         }
+
+        $this->commandData->addDynamicVariable('$CREATE_DATA$', implode('\n', $createForm));
+        $this->commandData->addDynamicVariable('$EDIT_DATA$', implode('\n', $editForm));
 
         $templateData = get_artomator_template('scaffold.vues.'.$templateName);
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         $templateData = str_replace('$FIELDS$', implode("\n\n", $this->htmlFields), $templateData);
-
-        $this->commandData->addDynamicVariable('$CREATE_DATA$', implode('\n', $createForm));
-        $this->commandData->addDynamicVariable('$EDIT_DATA$', implode('\n', $editForm));
 
         FileUtil::createFile($this->path, 'Fields.vue', $templateData);
         $this->commandData->commandInfo('field.vue created');
@@ -499,6 +499,7 @@ class VueGenerator extends BaseGenerator
         $fieldTemplate = get_artomator_template('scaffold.vues.'.$templateName);
 
         $fieldTemplate = str_replace('$FIELDS$', $fieldsStr, $fieldTemplate);
+        $fieldTemplate = fill_template($this->commandData->dynamicVars, $fieldTemplate);
 
         FileUtil::createFile($this->path, 'Show_fields.vue', $fieldTemplate);
         $this->commandData->commandInfo('Show_fields.vue created');
