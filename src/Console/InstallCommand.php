@@ -27,7 +27,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $bar = $this->ouput->createProgressBar(5);
+        $bar = $this->output->createProgressBar(4);
         $bar->start();
         // Publish...
         $this->callSilent('vendor:publish', ['--tag' => 'artomator', '--force' => true]);
@@ -37,9 +37,8 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'lighthouse-schema', '--force' => true]);
         $bar->advance();
         $this->callSilent('vendor:publish', ['--tag' => 'lighthouse-config', '--force' => true]);
-        $bar->advance();
-
-        $this->callSilent('artomator:publish');
         $bar->finish();
+
+        $this->call('artomator:publish');
     }
 }
