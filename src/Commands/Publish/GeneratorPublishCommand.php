@@ -199,7 +199,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($contractPath);
 
-        $fileName = 'BaseContract.php';
+        $fileName = 'BaseRepositoryContract.php';
 
         if (true === file_exists($contractPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
