@@ -4,7 +4,9 @@
     <!-- Submit Field -->
     <div class="form-group col-sm-12">
         <button type="submit" :disabled="form.processing" class="btn btn-primary">{{ $t('crud.save') }}</button>
-        <a href="#" onClick="history.back();" class="btn btn-default">{{ $t('crud.cancel') }}</a>
+        <inertia-link :href="route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index')" class="btn btn-ghost-light">
+            {{$t('crud.cancel')}}
+        </inertia-link>
     </div>
 </template>
 

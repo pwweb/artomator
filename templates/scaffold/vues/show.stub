@@ -6,7 +6,9 @@
                     <div class="card-header">
                         <strong>Details</strong>
                         <inertia-link :href="route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index')"
-                            class="btn btn-ghost-light">Back</a>
+                            class="btn btn-ghost-light">
+                            Back
+                        </inertia-link>
                     </div>
                     <div class="card-body">
                         <ShowFields :$MODEL_NAME_CAMEL$="$MODEL_NAME_CAMEL$" />

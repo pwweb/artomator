@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body">
                         <form method="POST" action="$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.store" $FILES$
-                            @submit.prevent="form.post(route($ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.store))">
+                            @submit.prevent="form.post(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.store'))">
                             <FormFields :form="form" />
                         </form>
                     </div>
@@ -30,6 +30,10 @@
         metaInfo: { title: '$MODEL_NAME_PLURAL_HUMAN$'},
                 
         layout: (h, page) => h(Layout, [page]),
+
+        components: {
+            FormFields,
+        },
 
         setup () {
             const form = useForm({
