@@ -18,29 +18,25 @@ Via Composer run the following:
 $ composer require pwweb/artomator --dev
 ```
 
-Then publish the necessary files as follows:
+To simplify the installation the following command can be run:
+
+```bash
+$ php artisan artomator:install
+```
+
+This will publish the necessary files.
+
+Alternatively you can do the following, which is what the `install` command does:
 
 ```bash
 $ php artisan vendor:publish --tag=artomator
-```
-
-This will publish the config files for the necesary packages and the `graphql.schema` file needed to run the GraphQL server.
-
-Add the following aliases to the aliases array in `config/app.php`:
-
-```php
-'Form'  => Collective\Html\FormFacade::class,
-'Html'  => Collective\Html\HtmlFacade::class,
-'Flash' => Laracasts\Flash\Flash::class,
-```
-
-Publish the generator views etc.:
-
-```bash
+$ php artisan vendor:publish --provider="InfyOm\Generator\InfyOmGeneratorServiceProvider"
+$ php artisan vendor:publish --tag=lighthouse-schema
+$ php artisan vendor:publish --tag=lighthouse-config
 $ php artisan artomator:publish
 ```
 
-This will publish the following files:
+This will publish the config files for the necesary packages and the `graphql.schema` file needed to run the GraphQL server and the following files:
 
 ```bash
 ├── app
@@ -54,6 +50,14 @@ This will publish the following files:
     ├── Traits
     ├── APIs
     └── Repositories
+```
+
+Add the following aliases to the aliases array in `config/app.php`:
+
+```php
+'Form'  => Collective\Html\FormFacade::class,
+'Html'  => Collective\Html\HtmlFacade::class,
+'Flash' => Laracasts\Flash\Flash::class,
 ```
 
 **Recommended:** If you have a fresh new Laravel application and want a basic admin panel layout then you can use the following Publish Layout Commands.
@@ -124,6 +128,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 ```
 
+Finally, you should run the following to publish the stub files used by Artomator:
+
+```bash
+$ php artisan artomator.publish:templates
+```
+
 ### InfyoLabs documentation
 
 As this is an extension to the [`InfyOmLabs/laravel-generator`](https://github.com/InfyOmLabs/laravel-generator) package, it's strongly recommended that you make yourself familiar with their [**documentation**](https://labs.infyom.com/laravelgenerator/docs/7.0/introduction). When you are reviewing these, keep in mind that all commands that start: `$ php artisan infyom` should be replaced with `$php artisan artomator` if you want the additional benefits of this package to be utilised.
@@ -135,7 +145,7 @@ As this is an extension to the [`InfyOmLabs/laravel-generator`](https://github.c
 Running the `*scaffold` based commands (see [commands](#commands)) you can use the following additional flag to generate the views using the VueJS templates instead.
 
 ```bash
-$php artisan artomator.scaffold [...] --vue=true
+$php artisan artomator.scaffold [...] --vue
 ```
 
 This will follow the same additional switches as the `viewsGenerator` i.e. `--skip=views` will skip the generation of the VueJS views too.
