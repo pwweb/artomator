@@ -98,7 +98,6 @@ class InstallCommand extends Command
         $this->info('Thanks for installing Artomator.');
     }
 
-
     /**
      * Installs the given Composer Packages into the application.
      *
