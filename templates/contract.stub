@@ -16,7 +16,7 @@ use $NAMESPACE_APP$\Contracts\BaseRepositoryContract;
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
-contract $MODEL_NAME$RepositoryContract extends BaseRepositoryContract
+interface $MODEL_NAME$RepositoryContract extends BaseRepositoryContract
 {
 
     /**

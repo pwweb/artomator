@@ -39,6 +39,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $repositoryPattern = config('infyom.laravel_generator.options.repository_pattern', true);
         if (true === $repositoryPattern) {
             $this->publishBaseRepository();
+            $this->publishBaseContract();
         }
         if (true === $this->option('localized')) {
             $this->publishLocaleFiles();
@@ -181,6 +182,32 @@ class GeneratorPublishCommand extends PublishBaseCommand
         FileUtil::createFile($repositoryPath, $fileName, $templateData);
 
         $this->info('BaseRepository created');
+    }
+
+    /**
+     * Publish Base Contract.
+     *
+     * @return void
+     */
+    private function publishBaseContract()
+    {
+        $templateData = get_artomator_template('base_contract');
+
+        $templateData = $this->fillTemplate($templateData);
+
+        $contractPath = app_path('Contracts/');
+
+        FileUtil::createDirectoryIfNotExist($contractPath);
+
+        $fileName = 'BaseContract.php';
+
+        if (true === file_exists($contractPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+            return;
+        }
+
+        FileUtil::createFile($contractPath, $fileName, $templateData);
+
+        $this->info('BaseContract created');
     }
 
     /**
