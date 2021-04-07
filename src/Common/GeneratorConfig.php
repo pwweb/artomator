@@ -148,11 +148,17 @@ class GeneratorConfig extends Config
             $prefix .= '/';
         }
 
+        $viewPrefix = $this->prefixes['view'];
+
+        if (false === empty($viewPrefix)) {
+            $viewPrefix .= '/';
+        }
+
         $this->pathFactory = $this->pathFactory.$prefix;
 
         $this->pathGraphQL = config('lighthouse.schema.register', base_path('graphql/schema.graphql'));
 
-        $this->pathVues = config('pwweb.artomator.path.vues', resource_path('js/Pages/'));
+        $this->pathVues = config('pwweb.artomator.path.vues', resource_path('js/Pages/')).$viewPrefix.$this->mSnakePlural.'/';
 
         $this->pathLocales = config('infyom.laravel_generator.path.models_locale_files', base_path('resources/lang/en/models/')).$prefix;
 
