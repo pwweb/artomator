@@ -201,7 +201,7 @@ class GeneratorConfig extends Config
         }
 
         if (false === empty($this->prefixes['path'])) {
-            $commandData->addDynamicVariable('$LANG_PREFIX$', $this->prefixes['path'].'/');
+            $commandData->addDynamicVariable('$LANG_PREFIX$', Str::lower($this->prefixes['path'].'/'));
         } else {
             $commandData->addDynamicVariable('$LANG_PREFIX$', '');
         }
