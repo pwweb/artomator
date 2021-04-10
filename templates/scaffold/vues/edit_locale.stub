@@ -6,7 +6,7 @@
                     <div class="card-header">
                         <i class="fa fa-plus-square-o fa-lg"></i>
                         <strong>
-                            {{$t('crud.edit model', ['model' => 'models/$MODEL_NAME_PLURAL_CAMEL$.singular'])}}
+                            {{$t('crud.edit model', ['model' => 'models/$LANG_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.singular'])}}
                         </strong>
                     </div>
                     <div class="card-body">

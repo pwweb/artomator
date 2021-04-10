@@ -200,6 +200,12 @@ class GeneratorConfig extends Config
             $commandData->addDynamicVariable('$VUE_PREFIX$', '');
         }
 
+        if (false === empty($this->prefixes['path'])) {
+            $commandData->addDynamicVariable('$LANG_PREFIX$', Str::lower($this->prefixes['path'].'/'));
+        } else {
+            $commandData->addDynamicVariable('$LANG_PREFIX$', '');
+        }
+
         return $commandData;
     }
 

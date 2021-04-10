@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
-use PWWEB\Artomator\Generators\ViewServiceProviderGenerator;
 use PWWEB\Artomator\Utils\VueFieldGenerator;
 
 class VueGenerator extends BaseGenerator
@@ -222,22 +221,15 @@ class VueGenerator extends BaseGenerator
             if (false === $field->inIndex) {
                 continue;
             }
+            $singleFieldStr = str_replace(
+                '$FIELD_NAME_TITLE$',
+                Str::title(str_replace('_', ' ', $field->name)),
+                $headerFieldTemplate
+            );
+            $singleFieldStr = str_replace('$FIELD_NAME$', $field->name, $singleFieldStr);
+            $singleFieldStr = fill_template($this->commandData->dynamicVars, $singleFieldStr);
 
-            if (true === $localized) {
-                $headerFields[] = $fieldTemplate = fill_template_with_field_data_locale(
-                    $this->commandData->dynamicVars,
-                    $this->commandData->fieldNamesMapping,
-                    $headerFieldTemplate,
-                    $field
-                );
-            } else {
-                $headerFields[] = $fieldTemplate = fill_template_with_field_data(
-                    $this->commandData->dynamicVars,
-                    $this->commandData->fieldNamesMapping,
-                    $headerFieldTemplate,
-                    $field
-                );
-            }
+            $headerFields[] = $singleFieldStr;
         }
 
         return implode(infy_nl_tab(1, 2), $headerFields);
@@ -259,22 +251,6 @@ class VueGenerator extends BaseGenerator
         $templateData = get_artomator_template('scaffold.vues.'.$templateName);
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
-
-        // if (true === $this->commandData->getAddOn('datatables')) {
-        //     $templateData = str_replace('$PAGINATE$', '', $templateData);
-        // } else {
-        //     $paginate = $this->commandData->getOption('paginate');
-
-        //     if (true === $paginate) {
-        //         $paginateTemplate = get_artomator_template('scaffold.vues.paginate');
-
-        //         $paginateTemplate = fill_template($this->commandData->dynamicVars, $paginateTemplate);
-
-        //         $templateData = str_replace('$PAGINATE$', $paginateTemplate, $templateData);
-        //     } else {
-        //         $templateData = str_replace('$PAGINATE$', '', $templateData);
-        //     }
-        // }
 
         $templateData = str_replace('$TABLE$', $this->generateTable(), $templateData);
 
@@ -388,7 +364,7 @@ class VueGenerator extends BaseGenerator
         $templateData = str_replace('$FIELDS$', implode("\n\n", $this->htmlFields), $templateData);
 
         FileUtil::createFile($this->path, 'Fields.vue', $templateData);
-        $this->commandData->commandInfo('field.vue created');
+        $this->commandData->commandInfo('Field.vue created');
     }
 
     /**
@@ -409,11 +385,6 @@ class VueGenerator extends BaseGenerator
             $templateName .= '_locale';
         }
         $fieldTemplate = get_artomator_template($templateName);
-
-        //TODO: Confirm if this is required still.
-        // $vueServiceProvider = new ViewServiceProviderGenerator($this->commandData);
-        // $vueServiceProvider->generate();
-        // $vueServiceProvider->addViewVariables($tableName.'.fields', $variableName, $columns, $selectTable, $modelName);
 
         $fieldTemplate = str_replace(
             '$INPUT_ARR$',

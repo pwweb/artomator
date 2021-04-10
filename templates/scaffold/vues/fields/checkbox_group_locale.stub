@@ -1,5 +1,5 @@
 <!-- $FIELD_NAME_TITLE$ Field -->
 <div class="form-group col-sm-12">
-    <label for="$FIELD_NAME$">{{$t('models/$LANG_PREFIX$$TABLE_NAME$.fields.$FIELD_NAME$')}}:</label>
-$CHECKBOXES$
+    <label for="$FIELD_NAME$">{{$t('models/$LANG_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.fields.$FIELD_NAME$')}}:</label>
+    $CHECKBOXES$
 </div>
