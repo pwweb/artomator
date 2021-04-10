@@ -1,0 +1,14 @@
+{
+  "include": [
+    "./resources/**/*"
+  ],
+  "allowJs": true
+  // "compilerOptions": {
+  //     "baseUrl": ".",
+  //     "paths": {
+  //         "js/components/*": [
+  //             "src/components/*"
+  //         ]
+  //     }
+  // }
+}

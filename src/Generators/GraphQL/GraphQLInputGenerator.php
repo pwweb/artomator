@@ -9,25 +9,38 @@ use PWWEB\Artomator\Common\CommandData;
 class GraphQLInputGenerator extends BaseGenerator
 {
     /**
+     * Command data.
+     *
      * @var CommandData
      */
     private $commandData;
 
     /**
+     * Filename.
+     *
      * @var string
      */
     private $fileName;
 
     /**
+     * File contents.
+     *
      * @var string
      */
     private $fileContents;
 
     /**
+     * Template data.
+     *
      * @var string
      */
     private $templateData;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command Data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -38,6 +51,11 @@ class GraphQLInputGenerator extends BaseGenerator
         $this->templateData = fill_template($this->generateSchema(), $this->templateData);
     }
 
+    /**
+     * Generate Command.
+     *
+     * @return void
+     */
     public function generate()
     {
         if (true === Str::contains($this->fileContents, $this->templateData)) {
@@ -53,14 +71,26 @@ class GraphQLInputGenerator extends BaseGenerator
         $this->commandData->commandComment("\nGraphQL Inputs created");
     }
 
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if (Str::contains($this->fileContents, $this->templateData)) {
+        if (true === Str::contains($this->fileContents, $this->templateData)) {
             file_put_contents($this->fileName, str_replace($this->templateData, '', $this->fileContents));
             $this->commandData->commandComment('GraphQL Inputs deleted');
         }
     }
 
+    /**
+     * Sanitise the field types.
+     *
+     * @param string $fieldType Field type.
+     *
+     * @return void
+     */
     private function sanitiseFieldTypes(string $fieldType)
     {
         $needle = "/\(.+\)?/";
@@ -147,18 +177,23 @@ class GraphQLInputGenerator extends BaseGenerator
         }
     }
 
+    /**
+     * Generate Schema.
+     *
+     * @return void
+     */
     private function generateSchema()
     {
         $schema = [];
         foreach ($this->commandData->fields as $field) {
-            if ($field->isFillable) {
+            if (true === $field->isFillable) {
                 if ('foreignId' === $field->fieldType) {
                     continue;
                 } else {
                     $field_type = $this->sanitiseFieldTypes($field->fieldType);
                 }
 
-                $field_type .= (Str::contains($field->validations, 'required') ? '!' : '');
+                $field_type .= ((true === Str::contains($field->validations, 'required')) ? '!' : '');
 
                 $schema[] = $field->name.': '.$field_type;
             }
@@ -176,6 +211,11 @@ class GraphQLInputGenerator extends BaseGenerator
         ];
     }
 
+    /**
+     * Generate Relations.
+     *
+     * @return void
+     */
     private function generateRelations()
     {
         $relations = [];
@@ -183,10 +223,10 @@ class GraphQLInputGenerator extends BaseGenerator
         $count = 1;
         $fieldsArr = [];
         foreach ($this->commandData->relations as $relation) {
-            $field = (isset($relation->inputs[0])) ? $relation->inputs[0] : null;
+            $field = (true === isset($relation->inputs[0])) ? $relation->inputs[0] : null;
 
             $relationShipText = $field;
-            if (in_array($field, $fieldsArr)) {
+            if (true === in_array($field, $fieldsArr)) {
                 $relationShipText = $relationShipText.'_'.$count;
                 $count++;
             }
@@ -201,6 +241,14 @@ class GraphQLInputGenerator extends BaseGenerator
         return $relations;
     }
 
+    /**
+     * Get the relation function tex.t.
+     *
+     * @param string      $relationship Relationship type.
+     * @param string|null $relationText Relationship text.
+     *
+     * @return void
+     */
     protected function getRelationFunctionText($relationship, $relationText = null)
     {
         extract($this->prepareRelationship($relationship, $relationText));
@@ -212,6 +260,14 @@ class GraphQLInputGenerator extends BaseGenerator
         return '';
     }
 
+    /**
+     * Generate Relation.
+     *
+     * @param string $functionName Function name.
+     * @param string $template     Template text.
+     *
+     * @return void
+     */
     private function generateRelation($functionName, $template)
     {
         $template = str_replace('$FUNCTION_NAME$', $functionName, $template);
@@ -220,6 +276,14 @@ class GraphQLInputGenerator extends BaseGenerator
         return $template;
     }
 
+    /**
+     * Prepare Relationship.
+     *
+     * @param Model       $relationship Relationship.
+     * @param string|null $relationText Relation Text.
+     *
+     * @return array
+     */
     protected function prepareRelationship($relationship, $relationText = null)
     {
         $singularRelation = (false === empty($relationship->relationName)) ? $relationship->relationName : Str::camel(Str::singular($relationText));
@@ -241,7 +305,7 @@ class GraphQLInputGenerator extends BaseGenerator
             case 'mt1':
                 if (false === empty($relationship->relationName)) {
                     $singularRelation = $relationship->relationName;
-                } elseif (isset($relationship->inputs[1])) {
+                } elseif (true === isset($relationship->inputs[1])) {
                     $singularRelation = Str::camel(str_replace('_id', '', strtolower($relationship->inputs[1])));
                 }
                 $functionName = $singularRelation;

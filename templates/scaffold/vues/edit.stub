@@ -1,0 +1,51 @@
+<template>
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-plus-square-o fa-lg"></i>
+                        <strong>
+                            Edit $MODEL_NAME_HUMAN$
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.store" $FILES$
+                            @submit.prevent="form.patch(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.update',
+                            $MODEL_NAME_CAMEL$.$PRIMARY_KEY_NAME$))">
+                            <FormFields :form="form" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Layout from '@/Layout';
+    import FormFields from './Fields';
+    import { useForm } from '@inertiajs/inertia-vue3';
+
+    export default {
+        metaInfo: { title: '$MODEL_NAME_PLURAL_HUMAN$'},
+                
+        layout: (h, page) => h(Layout, [page]),
+
+        props: {
+            $MODEL_NAME_CAMEL$: Object,
+        },
+
+        components: {
+            FormFields,
+        },
+
+        setup (props) {
+            const form = useForm({
+                $EDIT_DATA$
+            });
+
+            return { form }
+        }
+    }
+</script>

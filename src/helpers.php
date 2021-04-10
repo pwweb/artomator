@@ -2,10 +2,10 @@
 
 if (false === function_exists('get_artomator_template_file_path')) {
     /**
-     * get path for template file.
+     * Get path for template file.
      *
-     * @param string $templateName
-     * @param string $templateType
+     * @param string $templateName Template name.
+     * @param string $templateType Template type.
      *
      * @return string
      */
@@ -20,11 +20,11 @@ if (false === function_exists('get_artomator_template_file_path')) {
 
         $path = $templatesPath.$templateName.'.stub';
 
-        if (file_exists($path)) {
+        if (true === file_exists($path)) {
             return $path;
         }
 
-        if (file_exists(base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub'))) {
+        if (true === file_exists(base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub'))) {
             return base_path('vendor/pwweb/'.$templateType.'/templates/'.$templateName.'.stub');
         }
 
@@ -34,10 +34,10 @@ if (false === function_exists('get_artomator_template_file_path')) {
 
 if (false === function_exists('get_artomator_template')) {
     /**
-     * get template contents.
+     * Get template contents.
      *
-     * @param string $templateName
-     * @param string $templateType
+     * @param string $templateName Template name.
+     * @param string $templateType Template type.
      *
      * @return string
      */
@@ -51,9 +51,9 @@ if (false === function_exists('get_artomator_template')) {
 
 if (false === function_exists('license_authors')) {
     /**
-     * format authors for codeblock.
+     * Format authors for codeblock.
      *
-     * @param string|array $authors
+     * @param string|array $authors Authors.
      *
      * @return string
      */

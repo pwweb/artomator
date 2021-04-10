@@ -1,0 +1,7 @@
+<label class="radio-inline">
+    <input type="radio" name="$FIELD_NAME$" value="$VALUE$" v-model="form.$FIELD_NAME$" class="form-control"
+        :class="form.errors.$FIELD_NAME$ ? 'is-invalid' : ''" /> $LABEL$
+    <div class="invalid-feedback" v-if="form.errors.$FIELD_NAME$">
+        {{form.errors.$FIELD_NAME$}}
+    </div>
+</label>

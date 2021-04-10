@@ -8,13 +8,25 @@ use InfyOm\Generator\Common\TemplatesManager;
 
 class CommandData extends Data
 {
+    /**
+     * Command type graphql.
+     *
+     * @var string
+     */
     public static $COMMAND_TYPE_GRAPHQL = 'graphql';
+    /**
+     * Command type graphql_scaffold.
+     *
+     * @var string
+     */
     public static $COMMAND_TYPE_GRAPHQL_SCAFFOLD = 'graphql_scaffold';
 
     /**
-     * @param Command          $commandObj
-     * @param string|string[]  $commandType
-     * @param TemplatesManager $templatesManager
+     * Constructor.
+     *
+     * @param Command          $commandObj       Command object.
+     * @param string|string[]  $commandType      Commant type.
+     * @param TemplatesManager $templatesManager Template Manager.
      */
     public function __construct(Command $commandObj, $commandType, TemplatesManager $templatesManager = null)
     {

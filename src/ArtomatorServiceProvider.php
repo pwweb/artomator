@@ -38,16 +38,12 @@ class ArtomatorServiceProvider extends ServiceProvider
     public function boot()
     {
         $configPath = __DIR__.'/../config/artomator.php';
-        $configPathInfyom = __DIR__.'/../../../infyomlabs/laravel-generator/config/laravel_generator.php';
-        $schemaPath = __DIR__.'/../../../nuwave/lighthouse/src/default-schema.graphql';
-        $configPathNuwave = __DIR__.'/../../../nuwave/lighthouse/src/lighthouse.php';
+        $paginationResource = __DIR__.'/../resource/js/Shared/Pagination.vue';
 
         $this->publishes(
             [
-                $configPath       => config_path('pwweb/artomator.php'),
-                $configPathInfyom => config_path('infyom/laravel_generator.php'),
-                $configPathNuwave => config_path('lighthouse.php'),
-                $schemaPath       => config('lighthouse.schema.register', base_path('graphql/schema.graphql')),
+                $configPath => config_path('pwweb/artomator.php'),
+                $paginationResource => resource_path('js/Shared/Pagination.vue'),
             ],
             'artomator'
         );
@@ -258,6 +254,7 @@ class ArtomatorServiceProvider extends ServiceProvider
                 'artomator.graphql.mutations',
                 'artomator.graphql.type',
                 'artomator.graphql.subscription',
+                Console\InstallCommand::class,
             ]
         );
     }

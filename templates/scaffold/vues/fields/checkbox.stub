@@ -1,0 +1,12 @@
+<!-- $FIELD_NAME_TITLE$ Field -->
+<div class="form-group col-sm-6">
+    <label for="$FIELD_NAME$">$FIELD_NAME_TITLE$:</label>
+    <label class="checkbox-inline">
+        <input type="hidden" name="$FIELD_NAME$" value="0" />
+        <input type="checkbox" name="$FIELD_NAME$" value="$CHECKBOX_VALUE$" v-model="form.$FIELD_NAME$"
+            class="form-control" :class="form.errors.$FIELD_NAME$ ? 'is-invalid' : ''" />
+    </label>
+    <div class="invalid-feedback" v-if="form.errors.$FIELD_NAME$">
+        {{form.errors.$FIELD_NAME$}}
+    </div>
+</div>
