@@ -1,0 +1,37 @@
+<template>
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fad fa-fw fa-list"></i>
+                        $MODEL_NAME_PLURAL$
+                    </div>
+                    <div class="card-body p-0">
+                        $TABLE$
+                        <pagination :links="$MODEL_NAME_PLURAL_CAMEL$.links" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Layout from '@/Layout';
+    import Pagination from '@/Shared/Pagination';
+
+    export default {
+        metaInfo: { title: '$MODEL_NAME_PLURAL_HUMAN$'},
+
+        layout: (h, page) => h(Layout, [page]),
+
+        components: {
+            Pagination,
+        },
+
+        props: {
+            $MODEL_NAME_PLURAL_CAMEL$: Object,
+        }
+    }
+</script>

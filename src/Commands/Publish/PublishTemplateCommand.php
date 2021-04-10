@@ -20,10 +20,17 @@ class PublishTemplateCommand extends PublishBaseCommand
      */
     protected $description = 'Publishes artomator generator templates.';
 
+    /**
+     * Templates Directory.
+     *
+     * @var string
+     */
     private $templatesDir;
 
     /**
      * Execute the command.
+     *
+     * @return void
      */
     public function handle()
     {
@@ -32,7 +39,7 @@ class PublishTemplateCommand extends PublishBaseCommand
             resource_path('infyom/infyom-generator-templates/')
         );
 
-        if ($this->publishGeneratorTemplates()) {
+        if (true === $this->publishGeneratorTemplates()) {
             $this->publishScaffoldTemplates();
             $this->publishSwaggerTemplates();
         }
@@ -40,6 +47,8 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Publishes templates.
+     *
+     * @return bool
      */
     public function publishGeneratorTemplates()
     {
@@ -54,6 +63,8 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Publishes scaffold stemplates.
+     *
+     * @return bool
      */
     public function publishScaffoldTemplates()
     {
@@ -66,6 +77,8 @@ class PublishTemplateCommand extends PublishBaseCommand
 
     /**
      * Publishes swagger stemplates.
+     *
+     * @return bool
      */
     public function publishSwaggerTemplates()
     {

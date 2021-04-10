@@ -1,0 +1,19 @@
+<template>
+    $FIELDS$
+
+    <!-- Submit Field -->
+    <div class="form-group col-sm-12">
+        <button type="submit" :disabled="form.processing" class="btn btn-primary">{{ $t('crud.save') }}</button>
+        <inertia-link :href="route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index')" class="btn btn-ghost-light">
+            {{$t('crud.cancel')}}
+        </inertia-link>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: {
+            form: Object,
+        }
+    }
+</script>

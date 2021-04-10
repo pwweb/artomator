@@ -4,7 +4,7 @@ namespace $NAMESPACE_REPOSITORY$;
 
 use $NAMESPACE_MODEL$\$MODEL_NAME$;
 use $NAMESPACE_APP$\Repositories\BaseRepository;
-use $NAMESPACE_INTERFACE$\$MODEL_NAME$RepositoryInterface;
+use $NAMESPACE_CONTRACT$\$MODEL_NAME$RepositoryContract;
 
 /**
  * $NAMESPACE_REPOSITORY$\$MODEL_NAME$Repository $MODEL_NAME$Repository
@@ -17,7 +17,7 @@ use $NAMESPACE_INTERFACE$\$MODEL_NAME$RepositoryInterface;
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
-class $MODEL_NAME$Repository extends BaseRepository implements $MODEL_NAME$RepositoryInterface
+class $MODEL_NAME$Repository extends BaseRepository implements $MODEL_NAME$RepositoryContract
 {
     /**
      *  Fields that are searchable

@@ -37,10 +37,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->publishTestCases();
         $this->publishBaseController();
         $repositoryPattern = config('infyom.laravel_generator.options.repository_pattern', true);
-        if ($repositoryPattern) {
+        if (true === $repositoryPattern) {
             $this->publishBaseRepository();
+            $this->publishBaseContract();
         }
-        if ($this->option('localized')) {
+        if (true === $this->option('localized')) {
             $this->publishLocaleFiles();
         }
     }
@@ -49,7 +50,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      * THIS IS A NEW FUNCTION ADDED.
      *
-     * @param string $templateData
+     * @param string $templateData Template Data.
      *
      * @return string
      */
@@ -71,7 +72,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
     /**
      * Replaces dynamic variables of template.
      *
-     * @param string $templateData
+     * @param string $templateData Template Data.
      *
      * @return string
      */
@@ -83,7 +84,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $templateData = str_replace('$API_VERSION$', $apiVersion, $templateData);
         $templateData = str_replace('$API_PREFIX$', $apiPrefix, $templateData);
         $appNamespace = $this->getLaravel()->getNamespace();
-        $appNamespace = substr($appNamespace, 0, strlen($appNamespace) - 1);
+        $appNamespace = substr($appNamespace, 0, (strlen($appNamespace) - 1));
         $templateData = str_replace('$NAMESPACE_APP$', $appNamespace, $templateData);
 
         // return $templateData;
@@ -91,6 +92,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
         return $this->fillLicense($templateData);
     }
 
+    /**
+     * Publish Test Cases.
+     *
+     * @return void
+     */
     private function publishTestCases()
     {
         $testsPath = config('infyom.laravel_generator.path.tests', base_path('tests/'));
@@ -108,7 +114,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'ApiTestTrait.php';
 
-        if (file_exists($testsPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($testsPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -128,6 +134,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
         }
     }
 
+    /**
+     * Publish Base Controller.
+     *
+     * @return void
+     */
     private function publishBaseController()
     {
         $templateData = get_artomator_template('app_base_controller');
@@ -138,7 +149,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'AppBaseController.php';
 
-        if (file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -147,6 +158,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->info('AppBaseController created');
     }
 
+    /**
+     * Publish Base Repository.
+     *
+     * @return void
+     */
     private function publishBaseRepository()
     {
         $templateData = get_artomator_template('base_repository');
@@ -159,7 +175,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $fileName = 'BaseRepository.php';
 
-        if (file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -168,6 +184,37 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->info('BaseRepository created');
     }
 
+    /**
+     * Publish Base Contract.
+     *
+     * @return void
+     */
+    private function publishBaseContract()
+    {
+        $templateData = get_artomator_template('base_contract');
+
+        $templateData = $this->fillTemplate($templateData);
+
+        $contractPath = app_path('Contracts/');
+
+        FileUtil::createDirectoryIfNotExist($contractPath);
+
+        $fileName = 'BaseRepositoryContract.php';
+
+        if (true === file_exists($contractPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+            return;
+        }
+
+        FileUtil::createFile($contractPath, $fileName, $templateData);
+
+        $this->info('BaseContract created');
+    }
+
+    /**
+     * Publish Locale Files.
+     *
+     * @return void
+     */
     private function publishLocaleFiles()
     {
         $localesDir = __DIR__.'/../../../locale/';

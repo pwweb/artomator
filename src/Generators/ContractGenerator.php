@@ -6,34 +6,56 @@ use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Utils\FileUtil;
 use PWWEB\Artomator\Common\CommandData;
 
-class InterfaceGenerator extends BaseGenerator
+class ContractGenerator extends BaseGenerator
 {
-    /** @var CommandData */
+    /**
+     * Command Data.
+     *
+     * @var CommandData
+     */
     private $commandData;
 
-    /** @var string */
+    /**
+     * Path.
+     *
+     * @var string
+     */
     private $path;
 
-    /** @var string */
+    /**
+     * Filename.
+     *
+     * @var string
+     */
     private $fileName;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command Data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
-        $this->path = $commandData->config->pathInterface;
-        $this->fileName = $this->commandData->modelName.'RepositoryInterface.php';
+        $this->path = $commandData->config->pathContract;
+        $this->fileName = $this->commandData->modelName.'RepositoryContract.php';
     }
 
+    /**
+     * Generate.
+     *
+     * @return void
+     */
     public function generate()
     {
-        $templateData = get_artomator_template('interface');
+        $templateData = get_artomator_template('contract');
 
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         $searchables = [];
 
         foreach ($this->commandData->fields as $field) {
-            if ($field->isSearchable) {
+            if (true === $field->isSearchable) {
                 $searchables[] = "'".$field->name."'";
             }
         }
@@ -42,14 +64,19 @@ class InterfaceGenerator extends BaseGenerator
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
-        $this->commandData->commandComment("\nRepository Interface created: ");
+        $this->commandData->commandComment("\nRepository Contract created: ");
         $this->commandData->commandInfo($this->fileName);
     }
 
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->commandData->commandComment('Repository Interface file deleted: '.$this->fileName);
+        if (true === $this->rollbackFile($this->path, $this->fileName)) {
+            $this->commandData->commandComment('Repository Contract file deleted: '.$this->fileName);
         }
     }
 }

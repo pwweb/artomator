@@ -1,0 +1,5 @@
+<!-- $FIELD_NAME_TITLE$ Field -->
+<div class="form-group">
+    <strong>$FIELD_NAME_TITLE$:</strong>
+    <p>{{ $MODEL_NAME_CAMEL$.$FIELD_NAME$ }}</p>
+</div>

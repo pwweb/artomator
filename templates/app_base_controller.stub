@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE_APP$\Http\Controllers;
 
+use Illuminate\Http\Response;
 use InfyOm\Generator\Utils\ResponseUtil;
-use Response;
 
 /**
  * $NAMESPACE_APP$\Http\Controllers\AppBaseController AppBaseController

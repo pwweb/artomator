@@ -1,0 +1,9 @@
+<!-- $FIELD_NAME_TITLE$ Field -->
+<div class="form-group col-sm-6">
+    <label for="$FIELD_NAME$">{{$t('models/$LANG_PREFIX$$TABLE_NAME$.fields.$FIELD_NAME$')}}:</label>
+    <input type="date" name="$FIELD_NAME$" $REQUIRED$ v-model="form.$FIELD_NAME$" class="form-control"
+        :class="form.errors.$FIELD_NAME$ ? 'is-invalid' : ''" />
+    <div class="invalid-feedback" v-if="form.errors.$FIELD_NAME$">
+        {{form.errors.$FIELD_NAME$}}
+    </div>
+</div>

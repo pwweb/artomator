@@ -37,13 +37,18 @@ class PublishUserCommand extends PublishBaseCommand
         $this->updateRoutes();
         $this->updateMenu();
         $this->publishUserController();
-        if (config('infyom.laravel_generator.options.repository_pattern')) {
+        if (true === config('infyom.laravel_generator.options.repository_pattern')) {
             $this->publishUserRepository();
         }
         $this->publishCreateUserRequest();
         $this->publishUpdateUserRequest();
     }
 
+    /**
+     * Copy Views.
+     *
+     * @return void
+     */
     private function copyViews()
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
@@ -60,11 +65,23 @@ class PublishUserCommand extends PublishBaseCommand
         }
     }
 
+    /**
+     * Create Directories.
+     *
+     * @param string $dir Directory.
+     *
+     * @return void
+     */
     private function createDirectories($dir)
     {
         FileUtil::createDirectoryIfNotExist($dir);
     }
 
+    /**
+     * Get Views.
+     *
+     * @return array
+     */
     private function getViews()
     {
         return [
@@ -78,6 +95,11 @@ class PublishUserCommand extends PublishBaseCommand
         ];
     }
 
+    /**
+     * Update Routes.
+     *
+     * @return void
+     */
     private function updateRoutes()
     {
         $path = config('infyom.laravel_generator.path.routes', base_path('routes/web.php'));
@@ -92,6 +114,11 @@ class PublishUserCommand extends PublishBaseCommand
         $this->comment("\nUser route added");
     }
 
+    /**
+     * Update Menu.
+     *
+     * @return void
+     */
     private function updateMenu()
     {
         $viewsPath = config('infyom.laravel_generator.path.views', resource_path('views/'));
@@ -105,6 +132,11 @@ class PublishUserCommand extends PublishBaseCommand
         $this->comment("\nUser Menu added");
     }
 
+    /**
+     * Publish User Controller.
+     *
+     * @return void
+     */
     private function publishUserController()
     {
         $templateData = get_template('user/user_controller', 'laravel-generator');
@@ -119,7 +151,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         $fileName = 'UserController.php';
 
-        if (file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($controllerPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -128,6 +160,11 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('UserController created');
     }
 
+    /**
+     * Publish User Repository.
+     *
+     * @return void
+     */
     private function publishUserRepository()
     {
         $templateData = get_template('user/user_repository', 'laravel-generator');
@@ -140,7 +177,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($repositoryPath);
 
-        if (file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($repositoryPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -149,6 +186,11 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('UserRepository created');
     }
 
+    /**
+     * Publish Create User Request.
+     *
+     * @return void
+     */
     private function publishCreateUserRequest()
     {
         $templateData = get_template('user/create_user_request', 'laravel-generator');
@@ -161,7 +203,7 @@ class PublishUserCommand extends PublishBaseCommand
 
         FileUtil::createDirectoryIfNotExist($requestPath);
 
-        if (file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -170,6 +212,11 @@ class PublishUserCommand extends PublishBaseCommand
         $this->info('CreateUserRequest created');
     }
 
+    /**
+     * Publish Update User Request.
+     *
+     * @return void
+     */
     private function publishUpdateUserRequest()
     {
         $templateData = get_template('user/update_user_request', 'laravel-generator');
@@ -179,7 +226,7 @@ class PublishUserCommand extends PublishBaseCommand
         $requestPath = config('infyom.laravel_generator.path.request', app_path('Http/Requests/'));
 
         $fileName = 'UpdateUserRequest.php';
-        if (file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
+        if (true === file_exists($requestPath.$fileName) && false === $this->confirmOverwrite($fileName)) {
             return;
         }
 
@@ -192,7 +239,7 @@ class PublishUserCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      * THIS IS A NEW FUNCTION ADDED.
      *
-     * @param string $templateData
+     * @param string $templateData Template Data.
      *
      * @return string
      */
@@ -214,7 +261,7 @@ class PublishUserCommand extends PublishBaseCommand
     /**
      * Replaces dynamic variables of template.
      *
-     * @param string $templateData
+     * @param string $templateData Template Data.
      *
      * @return string
      */

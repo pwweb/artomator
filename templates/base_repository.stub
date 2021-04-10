@@ -4,7 +4,7 @@ namespace $NAMESPACE_APP$\Repositories;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
-use $NAMESPACE_APP$\Interfaces\BaseRepositoryInterface;
+use $NAMESPACE_APP$\Contracts\BaseRepositoryContract;
 
 /**
  * $NAMESPACE_APP$\Repositories\BaseRepository BaseRepository
@@ -17,7 +17,7 @@ use $NAMESPACE_APP$\Interfaces\BaseRepositoryInterface;
  * @copyright $LICENSE_COPYRIGHT$
  * @license   $LICENSE$
  */
- abstract class BaseRepository implements BaseRepositoryInterface
+ abstract class BaseRepository implements BaseRepositoryContract
  {
      /**
       * The model instance.

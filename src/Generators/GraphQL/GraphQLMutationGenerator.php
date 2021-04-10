@@ -9,25 +9,38 @@ use PWWEB\Artomator\Common\CommandData;
 class GraphQLMutationGenerator extends BaseGenerator
 {
     /**
+     * Command Data.
+     *
      * @var CommandData
      */
     private $commandData;
 
     /**
+     * Filename.
+     *
      * @var string
      */
     private $fileName;
 
     /**
+     * File Contents.
+     *
      * @var string
      */
     private $fileContents;
 
     /**
+     * Template Data.
+     *
      * @var string
      */
     private $templateData;
 
+    /**
+     * Constructor.
+     *
+     * @param CommandData $commandData Command Data.
+     */
     public function __construct(CommandData $commandData)
     {
         $this->commandData = $commandData;
@@ -37,6 +50,11 @@ class GraphQLMutationGenerator extends BaseGenerator
         $this->templateData = fill_template($this->commandData->dynamicVars, $this->templateData);
     }
 
+    /**
+     * Generate.
+     *
+     * @return void
+     */
     public function generate()
     {
         if (true === Str::contains($this->fileContents, $this->templateData)) {
@@ -56,6 +74,11 @@ class GraphQLMutationGenerator extends BaseGenerator
         $this->commandData->commandComment("\nGraphQL Mutations created");
     }
 
+    /**
+     * Rollback.
+     *
+     * @return void
+     */
     public function rollback()
     {
         $strings = [
@@ -66,7 +89,7 @@ class GraphQLMutationGenerator extends BaseGenerator
         $model = $this->commandData->config->gHuman;
 
         foreach ($strings as $string) {
-            if (Str::contains($this->fileContents, $string.$model)) {
+            if (true === Str::contains($this->fileContents, $string.$model)) {
                 $this->fileContents = preg_replace('/(\s)+('.$string.$model.'\()(.+?)(\):.+?)(\))/is', '', $this->fileContents);
 
                 file_put_contents($this->fileName, $this->fileContents);
