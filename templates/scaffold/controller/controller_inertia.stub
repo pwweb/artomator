@@ -78,7 +78,8 @@ class $MODEL_NAME$Controller extends AppBaseController
 
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->create($input);
 
-        Flash::success('$MODEL_NAME_HUMAN$ saved successfully.');
+        session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ saved successfully.');
 
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
@@ -95,7 +96,8 @@ class $MODEL_NAME$Controller extends AppBaseController
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
         if (true === empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
+            session()->flash('flash.bannerStyle', 'danger');
+            session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ not found');
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
@@ -115,7 +117,8 @@ class $MODEL_NAME$Controller extends AppBaseController
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
         if (true === empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
+            session()->flash('flash.bannerStyle', 'danger');
+            session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ not found');
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
@@ -136,14 +139,16 @@ class $MODEL_NAME$Controller extends AppBaseController
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
         if (true === empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
+            session()->flash('flash.bannerStyle', 'danger');
+            session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ not found');
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->update($request->all(), $id);
 
-        Flash::success('$MODEL_NAME_HUMAN$ updated successfully.');
+        session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ updated successfully.');
 
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
@@ -162,14 +167,16 @@ class $MODEL_NAME$Controller extends AppBaseController
         $$MODEL_NAME_CAMEL$ = $this->$MODEL_NAME_CAMEL$Repository->find($id);
 
         if (true === empty($$MODEL_NAME_CAMEL$)) {
-            Flash::error('$MODEL_NAME_HUMAN$ not found');
+            session()->flash('flash.bannerStyle', 'danger');
+            session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ not found');
 
             return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
         }
 
         $this->$MODEL_NAME_CAMEL$Repository->delete($id);
 
-        Flash::success('$MODEL_NAME_HUMAN$ deleted successfully.');
+        session()->flash('flash.bannerStyle', 'success');
+        session()->flash('flash.banner', '$MODEL_NAME_HUMAN$ deleted successfully.');
 
         return redirect(route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index'));
     }
