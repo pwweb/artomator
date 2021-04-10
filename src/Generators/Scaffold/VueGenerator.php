@@ -503,8 +503,8 @@ class VueGenerator extends BaseGenerator
         $fieldTemplate = str_replace('$FIELDS$', $fieldsStr, $fieldTemplate);
         $fieldTemplate = fill_template($this->commandData->dynamicVars, $fieldTemplate);
 
-        FileUtil::createFile($this->path, 'Show_fields.vue', $fieldTemplate);
-        $this->commandData->commandInfo('Show_fields.vue created');
+        FileUtil::createFile($this->path, 'ShowFields.vue', $fieldTemplate);
+        $this->commandData->commandInfo('ShowFields.vue created');
     }
 
     /**
@@ -544,7 +544,7 @@ class VueGenerator extends BaseGenerator
             'Create.vue',
             'Edit.vue',
             'Show.vue',
-            'Show_fields.vue',
+            'ShowFields.vue',
         ];
 
         if (false === empty($vues)) {
