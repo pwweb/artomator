@@ -1,1 +1,1 @@
-<th>$FIELD_NAME_TITLE$</th>
+<th>{{$t('models/$LANG_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.fields.$FIELD_NAME$')}}:</th>
