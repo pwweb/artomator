@@ -71,7 +71,7 @@ class VueGenerator extends BaseGenerator
 
         $this->commandData->commandComment("\nGenerating Vues...");
 
-        if (true === $this->commandData->getOption('views')) {
+        if (false !== $this->commandData->getOption('views')) {
             $vuesToBeGenerated = explode(',', $this->commandData->getOption('views'));
 
             if (true === in_array('index', $vuesToBeGenerated)) {
