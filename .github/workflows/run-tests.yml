@@ -41,10 +41,9 @@ jobs:
       # - name:               Execute tests
       #   run:                vendor/bin/phpunit
 
-  report-failure:
+  report-status:
     needs: php-tests
     runs-on: ubuntu-latest
-    if: ${{ failure() }}
     steps:
       - uses: martialonline/workflow-status@v2
         id: check
