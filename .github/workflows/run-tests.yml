@@ -46,10 +46,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
     steps:
-      - name: Send Slack Notification
       - uses: martialonline/workflow-status@v2
         id: check
-      - uses: 8398a7/action-slack@v3
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
         with:
           status: ${{ steps.check.outputs.status }}
           author_name: ${{ github.actor }}
