@@ -32,19 +32,18 @@
         "graphql"
     ],
     "require": {
-        "php": ">=7.3 || ~8.0",
-        "laravel/framework": "^8.0",
-        "laracasts/flash": "~3.0",
-        "laravelcollective/html": "^6.1",
+        "php": ">=7.4 || ~8.0",
+        "laravel/framework": "^8.0 || ^9.0",
+        "laracasts/flash": "^3.2.1",
+        "laravelcollective/html": "^6.3",
         "doctrine/dbal": "~2.3",
-        "infyomlabs/laravel-generator": "8.0.x-dev",
+        "infyomlabs/laravel-generator": "~4.0",
         "nuwave/lighthouse": "^4.0 || ^5.0",
         "mll-lab/laravel-graphql-playground": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
-        "orchestra/testbench": "^6.0",
-        "psalm/plugin-laravel": "dev-master@dev"
+        "phpunit/phpunit": "^8.5 || ^9.3",
+        "orchestra/testbench": "^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
