@@ -39,7 +39,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command Data.
+     * @param  CommandData  $commandData  Command Data.
      */
     public function __construct(CommandData $commandData)
     {
@@ -144,9 +144,8 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Get Relation Function Text.
      *
-     * @param string      $relationship Relationship.
-     * @param string|null $relationText Relation text.
-     *
+     * @param  string  $relationship  Relationship.
+     * @param  string|null  $relationText  Relation text.
      * @return void
      */
     protected function getRelationFunctionText($relationship, $relationText = null)
@@ -163,9 +162,8 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Generate Relation.
      *
-     * @param string $functionName Function Name.
-     * @param string $template     Template.
-     *
+     * @param  string  $functionName  Function Name.
+     * @param  string  $template  Template.
      * @return void
      */
     private function generateRelation($functionName, $template)
@@ -179,8 +177,7 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Sanitise Field Types.
      *
-     * @param string $fieldType Field Type.
-     *
+     * @param  string  $fieldType  Field Type.
      * @return void
      */
     private function sanitiseFieldTypes(string $fieldType)
@@ -272,9 +269,8 @@ class GraphQLTypeGenerator extends BaseGenerator
     /**
      * Prepare Relationship.
      *
-     * @param Model       $relationship Relationship.
-     * @param string|null $relationText Relation Text.
-     *
+     * @param  Model  $relationship  Relationship.
+     * @param  string|null  $relationText  Relation Text.
      * @return array
      */
     protected function prepareRelationship($relationship, $relationText = null)

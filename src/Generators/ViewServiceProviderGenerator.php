@@ -21,7 +21,7 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * ViewServiceProvider constructor.
      *
-     * @param CommandData $commandData Command data.
+     * @param  CommandData  $commandData  Command data.
      */
     public function __construct(CommandData $commandData)
     {
@@ -53,12 +53,11 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Add View Variables.
      *
-     * @param string      $views        Views.
-     * @param string      $variableName Variable Name.
-     * @param string      $columns      Columns.
-     * @param string      $tableName    Table name.
-     * @param string|null $modelName    Model name.
-     *
+     * @param  string  $views  Views.
+     * @param  string  $variableName  Variable Name.
+     * @param  string  $columns  Columns.
+     * @param  string  $tableName  Table name.
+     * @param  string|null  $modelName  Model name.
      * @return void
      */
     public function addViewVariables($views, $variableName, $columns, $tableName, $modelName = null)
@@ -137,9 +136,8 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Add Namespace.
      *
-     * @param string $model           Model.
-     * @param string $mainViewContent Main View Content.
-     *
+     * @param  string  $model  Model.
+     * @param  string  $mainViewContent  Main View Content.
      * @return string
      */
     public function addNamespace($model, $mainViewContent)
@@ -168,9 +166,8 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Add Property.
      *
-     * @param string $model           Model.
-     * @param string $mainViewContent Main View Content.
-     *
+     * @param  string  $model  Model.
+     * @param  string  $mainViewContent  Main View Content.
      * @return string
      */
     public function addProperty($model, $mainViewContent)
@@ -197,9 +194,8 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Add Boot.
      *
-     * @param string $model           Model.
-     * @param string $mainViewContent Main view content.
-     *
+     * @param  string  $model  Model.
+     * @param  string  $mainViewContent  Main view content.
      * @return string
      */
     public function addBoot($model, $mainViewContent)
@@ -262,10 +258,9 @@ class ViewServiceProviderGenerator extends BaseGenerator
     /**
      * Add Select.
      *
-     * @param string $model           Model.
-     * @param string $view            View.
-     * @param string $mainViewContent Main View Content.
-     *
+     * @param  string  $model  Model.
+     * @param  string  $view  View.
+     * @param  string  $mainViewContent  Main View Content.
      * @return string
      */
     public function addSelect($model, $view, $mainViewContent)

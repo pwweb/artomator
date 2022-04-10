@@ -138,8 +138,7 @@ class BaseCommand extends Base
     /**
      * Perform the Post Generator Actions.
      *
-     * @param bool $runMigration Boolean flag to run migrations.
-     *
+     * @param  bool  $runMigration  Boolean flag to run migrations.
      * @return void
      */
     public function performPostActions($runMigration = false)

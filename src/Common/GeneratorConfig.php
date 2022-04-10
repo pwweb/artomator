@@ -173,8 +173,7 @@ class GeneratorConfig extends Config
     /**
      * Load Dynamic Variables.
      *
-     * @param Data $commandData Command Data.\
-     *
+     * @param  Data  $commandData  Command Data.\
      * @return Data
      */
     public function loadDynamicVariables(Data &$commandData)
@@ -212,8 +211,7 @@ class GeneratorConfig extends Config
     /**
      * Prepare GraphQL Names.
      *
-     * @param string|null $name Name.
-     *
+     * @param  string|null  $name  Name.
      * @return void
      */
     public function prepareGraphQLNames($name = null)
@@ -238,8 +236,7 @@ class GeneratorConfig extends Config
     /**
      * Load Dynamic GraphQL Variables.
      *
-     * @param Data $commandData Command Data.
-     *
+     * @param  Data  $commandData  Command Data.
      * @return Data
      */
     public function loadDynamicGraphQLVariables(Data &$commandData)
@@ -263,8 +260,7 @@ class GeneratorConfig extends Config
     /**
      * Prepare Options.
      *
-     * @param Data $commandData Command Data.
-     *
+     * @param  Data  $commandData  Command Data.
      * @return void
      */
     public function prepareOptions(Data &$commandData)

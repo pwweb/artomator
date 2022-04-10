@@ -124,8 +124,7 @@ class InstallCommand extends Command
     /**
      * Installs the given Composer Packages into the application.
      *
-     * @param mixed $packages Packages to install.
-     *
+     * @param  mixed  $packages  Packages to install.
      * @return void
      */
     protected function requireComposerPackages($packages)
@@ -153,9 +152,8 @@ class InstallCommand extends Command
     /**
      * Update the "package.json" file.
      *
-     * @param callable $callback Callback function.
-     * @param bool     $dev      Dev.
-     *
+     * @param  callable  $callback  Callback function.
+     * @param  bool  $dev  Dev.
      * @return void
      */
     protected static function updateNodePackages(callable $callback, $dev = true)
@@ -202,10 +200,9 @@ class InstallCommand extends Command
     /**
      * Replace a given string within a given file.
      *
-     * @param string $search  Search term.
-     * @param string $replace Replace term.
-     * @param string $path    Path.
-     *
+     * @param  string  $search  Search term.
+     * @param  string  $replace  Replace term.
+     * @param  string  $path  Path.
      * @return void
      */
     protected function replaceInFile($search, $replace, $path)

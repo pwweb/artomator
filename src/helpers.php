@@ -4,9 +4,8 @@ if (false === function_exists('get_artomator_template_file_path')) {
     /**
      * Get path for template file.
      *
-     * @param string $templateName Template name.
-     * @param string $templateType Template type.
-     *
+     * @param  string  $templateName  Template name.
+     * @param  string  $templateType  Template type.
      * @return string
      */
     function get_artomator_template_file_path($templateName, $templateType)
@@ -36,9 +35,8 @@ if (false === function_exists('get_artomator_template')) {
     /**
      * Get template contents.
      *
-     * @param string $templateName Template name.
-     * @param string $templateType Template type.
-     *
+     * @param  string  $templateName  Template name.
+     * @param  string  $templateType  Template type.
      * @return string
      */
     function get_artomator_template($templateName, $templateType = 'artomator')
@@ -53,8 +51,7 @@ if (false === function_exists('license_authors')) {
     /**
      * Format authors for codeblock.
      *
-     * @param string|array $authors Authors.
-     *
+     * @param  string|array  $authors  Authors.
      * @return string
      */
     function license_authors($authors)

@@ -50,8 +50,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      * THIS IS A NEW FUNCTION ADDED.
      *
-     * @param string $templateData Template Data.
-     *
+     * @param  string  $templateData  Template Data.
      * @return string
      */
     private function fillLicense($templateData)
@@ -72,8 +71,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
     /**
      * Replaces dynamic variables of template.
      *
-     * @param string $templateData Template Data.
-     *
+     * @param  string  $templateData  Template Data.
      * @return string
      */
     protected function fillTemplate($templateData)

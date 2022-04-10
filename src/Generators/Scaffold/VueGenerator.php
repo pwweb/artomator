@@ -42,8 +42,7 @@ class VueGenerator extends BaseGenerator
     /**
      * Construct function.
      *
-     * @param CommandData $commandData Command Data.
-     *
+     * @param  CommandData  $commandData  Command Data.
      * @return void
      */
     public function __construct(CommandData $commandData)
@@ -370,12 +369,11 @@ class VueGenerator extends BaseGenerator
     /**
      * Generate Vue Composer.
      *
-     * @param string      $tableName    Table Name.
-     * @param string      $variableName Variable Name.
-     * @param array       $columns      Columns.
-     * @param string      $selectTable  Select Table.
-     * @param string|null $modelName    Model Name.
-     *
+     * @param  string  $tableName  Table Name.
+     * @param  string  $variableName  Variable Name.
+     * @param  array  $columns  Columns.
+     * @param  string  $selectTable  Select Table.
+     * @param  string|null  $modelName  Model Name.
      * @return void
      */
     private function generateVueComposer($tableName, $variableName, $columns, $selectTable, $modelName = null)
@@ -502,8 +500,7 @@ class VueGenerator extends BaseGenerator
     /**
      * Rollback Function.
      *
-     * @param array $vues Vue views to rollback.
-     *
+     * @param  array  $vues  Vue views to rollback.
      * @return void
      */
     public function rollback($vues = [])

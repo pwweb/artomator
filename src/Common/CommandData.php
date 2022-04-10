@@ -24,9 +24,9 @@ class CommandData extends Data
     /**
      * Constructor.
      *
-     * @param Command          $commandObj       Command object.
-     * @param string|string[]  $commandType      Commant type.
-     * @param TemplatesManager $templatesManager Template Manager.
+     * @param  Command  $commandObj  Command object.
+     * @param  string|string[]  $commandType  Commant type.
+     * @param  TemplatesManager  $templatesManager  Template Manager.
      */
     public function __construct(Command $commandObj, $commandType, TemplatesManager $templatesManager = null)
     {
