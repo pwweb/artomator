@@ -44,11 +44,12 @@ jobs:
 
   report-failure:
     needs: php-tests
-    name: Send Slack Notification
-    uses: 8398a7/action-slack@v3
     if: failure()
-    with:
-      status: ${{ job.status }}
-      author_name: ${{ github.actor }}
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+    steps:
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ${{ github.actor }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
