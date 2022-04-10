@@ -68,8 +68,7 @@ class PublishUserCommand extends PublishBaseCommand
     /**
      * Create Directories.
      *
-     * @param string $dir Directory.
-     *
+     * @param  string  $dir  Directory.
      * @return void
      */
     private function createDirectories($dir)
@@ -239,8 +238,7 @@ class PublishUserCommand extends PublishBaseCommand
      * Replaces dynamic variables of template.
      * THIS IS A NEW FUNCTION ADDED.
      *
-     * @param string $templateData Template Data.
-     *
+     * @param  string  $templateData  Template Data.
      * @return string
      */
     private function fillLicense($templateData)
@@ -261,8 +259,7 @@ class PublishUserCommand extends PublishBaseCommand
     /**
      * Replaces dynamic variables of template.
      *
-     * @param string $templateData Template Data.
-     *
+     * @param  string  $templateData  Template Data.
      * @return string
      */
     private function fillTemplate($templateData)

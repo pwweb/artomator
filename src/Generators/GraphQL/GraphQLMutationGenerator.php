@@ -39,7 +39,7 @@ class GraphQLMutationGenerator extends BaseGenerator
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command Data.
+     * @param  CommandData  $commandData  Command Data.
      */
     public function __construct(CommandData $commandData)
     {

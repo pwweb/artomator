@@ -39,7 +39,7 @@ class ControllerGenerator extends Base
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command data.
+     * @param  CommandData  $commandData  Command data.
      */
     public function __construct(CommandData $commandData)
     {

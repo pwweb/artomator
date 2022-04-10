@@ -32,7 +32,7 @@ class RepositoryGenerator extends BaseGenerator
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command data.
+     * @param  CommandData  $commandData  Command data.
      */
     public function __construct(CommandData $commandData)
     {

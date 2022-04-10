@@ -43,7 +43,7 @@ class ViewGenerator extends BaseGenerator
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command data.
+     * @param  CommandData  $commandData  Command data.
      */
     public function __construct(CommandData $commandData)
     {
@@ -387,12 +387,11 @@ class ViewGenerator extends BaseGenerator
     /**
      * Generate View Composer.
      *
-     * @param string      $tableName    Table name.
-     * @param string      $variableName Variable name.
-     * @param string      $columns      Column names.
-     * @param string      $selectTable  Select table name.
-     * @param string|null $modelName    Model name.
-     *
+     * @param  string  $tableName  Table name.
+     * @param  string  $variableName  Variable name.
+     * @param  string  $columns  Column names.
+     * @param  string  $selectTable  Select table name.
+     * @param  string|null  $modelName  Model name.
      * @return void
      */
     private function generateViewComposer($tableName, $variableName, $columns, $selectTable, $modelName = null)
@@ -516,8 +515,7 @@ class ViewGenerator extends BaseGenerator
     /**
      * Rollback.
      *
-     * @param array $views Views to rollback.
-     *
+     * @param  array  $views  Views to rollback.
      * @return void
      */
     public function rollback($views = [])

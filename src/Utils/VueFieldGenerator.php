@@ -10,10 +10,9 @@ class VueFieldGenerator
     /**
      * Generate HTML.
      *
-     * @param GeneratorField $field        Field.
-     * @param string         $templateType Template type.
-     * @param bool           $localized    Localized.
-     *
+     * @param  GeneratorField  $field  Field.
+     * @param  string  $templateType  Template type.
+     * @param  bool  $localized  Localized.
      * @return string
      */
     public static function generateHTML(GeneratorField $field, $templateType, $localized = false)

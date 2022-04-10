@@ -60,7 +60,7 @@ class RoutesGenerator
     /**
      * Constructor.
      *
-     * @param CommandData $commandData Command data passed in from above.
+     * @param  CommandData  $commandData  Command data passed in from above.
      */
     public function __construct(CommandData $commandData)
     {
@@ -236,10 +236,9 @@ class RoutesGenerator
     /**
      * Template text builder function.
      *
-     * @param array  $routes Routes array to process
-     * @param int    $indent Indent counter
-     * @param string $parent Parent prefix for fallback route
-     *
+     * @param  array  $routes  Routes array to process
+     * @param  int  $indent  Indent counter
+     * @param  string  $parent  Parent prefix for fallback route
      * @return string
      */
     private function buildText(array $routes, int $indent = 0, string $parent = '')
